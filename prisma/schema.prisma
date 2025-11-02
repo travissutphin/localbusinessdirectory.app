@@ -57,19 +57,61 @@ model User {
   role               String    @default("OWNER") // 'OWNER' or 'ADMIN'
   authProvider       String?   @map("auth_provider") // 'email', 'google', 'facebook'
   providerId         String?   @map("provider_id")
-  emailVerified      Boolean   @default(false) @map("email_verified")
+  emailVerified      DateTime? @map("email_verified")
   locationPreference String?   @map("location_preference")
   geolocationFlag    Boolean   @default(false) @map("geolocation_flag")
-  profileImage       String?   @map("profile_image")
+  image              String?
   createdAt          DateTime  @default(now()) @map("created_at")
   updatedAt          DateTime  @updatedAt @map("updated_at")
 
-  location          Location?  @relation(fields: [locationPreference], references: [id])
-  businesses        Business[] @relation("BusinessOwner")
+  location           Location?  @relation(fields: [locationPreference], references: [id])
+  businesses         Business[] @relation("BusinessOwner")
   approvedBusinesses Business[] @relation("BusinessApprover")
-  contacts          Contact[]
+  contacts           Contact[]
+  accounts           Account[]
+  sessions           Session[]
 
   @@map("users")
+}
+
+model Account {
+  id                String  @id @default(uuid())
+  userId            String  @map("user_id")
+  type              String
+  provider          String
+  providerAccountId String  @map("provider_account_id")
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
+}
+
+model Session {
+  id           String   @id @default(uuid())
+  sessionToken String   @unique @map("session_token")
+  userId       String   @map("user_id")
+  expires      DateTime
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+  @@map("verification_tokens")
 }
 
 model Business {
