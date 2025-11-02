@@ -616,6 +616,19 @@
                 <div class="column-title">
                     👀 Code Review
                 </div>
+                <div class="column-count">0</div>
+            </div>
+            <div class="cards-container scrollbar">
+                <!-- Empty -->
+            </div>
+        </div>
+
+        <!-- QA -->
+        <div class="column qa">
+            <div class="column-header">
+                <div class="column-title">
+                    ✔️ QA Testing
+                </div>
                 <div class="column-count">1</div>
             </div>
             <div class="cards-container scrollbar">
@@ -629,19 +642,6 @@
                     </div>
                     <span class="tsp-badge">Infrastructure</span>
                 </div>
-            </div>
-        </div>
-
-        <!-- QA -->
-        <div class="column qa">
-            <div class="column-header">
-                <div class="column-title">
-                    ✔️ QA Testing
-                </div>
-                <div class="column-count">0</div>
-            </div>
-            <div class="cards-container scrollbar">
-                <!-- Empty -->
             </div>
         </div>
 
@@ -724,18 +724,20 @@
         const cardDetails = {
             'TASK-001': {
                 title: 'Setup Railway deployment & PostgreSQL',
-                description: 'Railway.com deployed! Staging URL: stunning-perfection-production-1cd6.up.railway.app. PostgreSQL provisioned. OAuth credentials configured. Awaiting GitHub push to complete auto-deployment.',
+                description: '✅ DEPLOYED! GitHub: https://github.com/travissutphin/localbusinessdirectory.app | Staging: stunning-perfection-production-1cd6.up.railway.app | PostgreSQL ready | Auto-deploy active',
                 assignee: 'Flow',
                 priority: 'P0 (Blocker)',
                 points: '3',
-                status: 'Review',
+                status: 'QA',
                 dod: [
                     '✅ Railway project created and linked to Git repo',
                     '✅ PostgreSQL database provisioned',
-                    '✅ Environment variables configured (DATABASE_URL, NEXTAUTH_URL, OAuth)',
-                    '⏳ Automatic deployment from main branch verified (awaiting push)',
-                    '⏳ Database migrations run successfully (will auto-run on push)',
-                    '✅ Team has staging URL access: stunning-perfection-production-1cd6.up.railway.app'
+                    '✅ Environment variables configured (DATABASE_URL, NEXTAUTH_URL, OAuth, Cloudinary)',
+                    '✅ Automatic deployment from main branch verified',
+                    '🔄 Database migrations running (auto-deploy in progress)',
+                    '✅ Team has staging URL access: stunning-perfection-production-1cd6.up.railway.app',
+                    '✅ GitHub repository active with 2 commits',
+                    '✅ Security: Credentials removed from codebase (GitHub push protection enforced)'
                 ]
             },
             'TASK-002': {
