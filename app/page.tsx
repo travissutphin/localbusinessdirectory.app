@@ -152,7 +152,7 @@ export default function Home() {
               No Locations Available
             </h3>
             <p className="text-neutral-600">
-              We're currently setting up service areas. Please check back soon!
+              We&apos;re currently setting up service areas. Please check back soon!
             </p>
           </div>
         )}
