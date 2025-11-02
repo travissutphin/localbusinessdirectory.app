@@ -1,0 +1,1046 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Local Business Directory - Development Kanban</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: #e2e8f0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            background: rgba(15, 23, 42, 0.8);
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #003d82;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 5px;
+            color: #e67e22;
+        }
+
+        .header p {
+            color: #94a3b8;
+            font-size: 0.95em;
+        }
+
+        .sprint-info {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        .sprint-stat {
+            background: rgba(0, 61, 130, 0.3);
+            padding: 10px 20px;
+            border-radius: 6px;
+            border-left: 3px solid #e67e22;
+        }
+
+        .sprint-stat strong {
+            color: #e67e22;
+        }
+
+        .kanban-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            max-width: 1800px;
+            margin: 0 auto;
+        }
+
+        .column {
+            background: rgba(30, 41, 59, 0.8);
+            border-radius: 8px;
+            border-top: 3px solid #003d82;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            max-height: 80vh;
+        }
+
+        .column.backlog {
+            border-top-color: #6b7280;
+        }
+
+        .column.in-progress {
+            border-top-color: #f39c12;
+        }
+
+        .column.review {
+            border-top-color: #3b82f6;
+        }
+
+        .column.qa {
+            border-top-color: #f59e0b;
+        }
+
+        .column.staging {
+            border-top-color: #8b5cf6;
+        }
+
+        .column.production {
+            border-top-color: #10b981;
+        }
+
+        .column-header {
+            padding: 15px;
+            background: rgba(15, 23, 42, 0.9);
+            border-bottom: 2px solid rgba(148, 163, 184, 0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .column-title {
+            font-weight: 600;
+            font-size: 1.1em;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .column-count {
+            background: rgba(100, 116, 139, 0.5);
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.85em;
+            color: #cbd5e1;
+        }
+
+        .cards-container {
+            flex: 1;
+            overflow-y: auto;
+            padding: 10px;
+        }
+
+        .card {
+            background: rgba(51, 65, 85, 0.8);
+            border: 1px solid rgba(148, 163, 184, 0.2);
+            border-radius: 6px;
+            padding: 12px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border-left: 3px solid #e67e22;
+        }
+
+        .card:hover {
+            background: rgba(71, 85, 105, 0.9);
+            border-color: rgba(148, 163, 184, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .card-id {
+            font-weight: 700;
+            color: #e67e22;
+            font-size: 0.8em;
+            margin-bottom: 4px;
+        }
+
+        .card-title {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #f1f5f9;
+            font-size: 0.95em;
+        }
+
+        .card-meta {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            font-size: 0.75em;
+        }
+
+        .assignee {
+            background: rgba(0, 61, 130, 0.5);
+            padding: 2px 8px;
+            border-radius: 4px;
+            color: #a5d6ff;
+        }
+
+        .priority {
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        .priority.p0 {
+            background: rgba(239, 68, 68, 0.4);
+            color: #fca5a5;
+        }
+
+        .priority.p1 {
+            background: rgba(245, 158, 11, 0.4);
+            color: #fcd34d;
+        }
+
+        .priority.p2 {
+            background: rgba(59, 130, 246, 0.4);
+            color: #93c5fd;
+        }
+
+        .priority.p3 {
+            background: rgba(107, 114, 128, 0.4);
+            color: #d1d5db;
+        }
+
+        .story-points {
+            background: rgba(16, 185, 129, 0.3);
+            padding: 2px 8px;
+            border-radius: 4px;
+            color: #86efac;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: #1e293b;
+            padding: 30px;
+            border-radius: 8px;
+            max-width: 600px;
+            width: 90%;
+            border: 1px solid #003d82;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: #e67e22;
+            font-size: 1.5em;
+            cursor: pointer;
+        }
+
+        .modal-close:hover {
+            color: #f39c12;
+        }
+
+        .modal-body {
+            color: #cbd5e1;
+        }
+
+        .modal-body p {
+            margin: 12px 0;
+            line-height: 1.6;
+        }
+
+        .modal-body strong {
+            color: #f1f5f9;
+        }
+
+        .definition-of-done {
+            background: rgba(0, 61, 130, 0.2);
+            padding: 15px;
+            border-radius: 6px;
+            margin-top: 15px;
+            border-left: 3px solid #e67e22;
+        }
+
+        .definition-of-done h4 {
+            margin-bottom: 10px;
+            color: #e67e22;
+        }
+
+        .definition-of-done ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .definition-of-done li {
+            padding: 4px 0;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .definition-of-done li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #10b981;
+        }
+
+        .legend {
+            background: rgba(30, 41, 59, 0.8);
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 30px;
+            max-width: 1800px;
+            margin-left: auto;
+            margin-right: auto;
+            border: 1px solid rgba(148, 163, 184, 0.2);
+        }
+
+        .legend-title {
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #e67e22;
+        }
+
+        .legend-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .legend-item {
+            padding: 10px;
+            background: rgba(0, 61, 130, 0.2);
+            border-radius: 6px;
+            border-left: 3px solid #e67e22;
+        }
+
+        .legend-item strong {
+            color: #f1f5f9;
+        }
+
+        .legend-item p {
+            color: #94a3b8;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+
+        .tsp-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #003d82, #e67e22);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75em;
+            font-weight: 600;
+            margin-top: 8px;
+        }
+
+        @media (max-width: 768px) {
+            .kanban-container {
+                grid-template-columns: 1fr;
+            }
+
+            .header h1 {
+                font-size: 1.8em;
+            }
+
+            .sprint-info {
+                gap: 15px;
+            }
+        }
+
+        .scrollbar {
+            scrollbar-width: thin;
+            scrollbar-color: #003d82 rgba(0, 61, 130, 0.1);
+        }
+
+        .scrollbar::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .scrollbar::-webkit-scrollbar-track {
+            background: rgba(0, 61, 130, 0.1);
+            border-radius: 4px;
+        }
+
+        .scrollbar::-webkit-scrollbar-thumb {
+            background: #003d82;
+            border-radius: 4px;
+        }
+
+        .scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #e67e22;
+        }
+
+        .cards-container {
+            scrollbar-width: thin;
+            scrollbar-color: #003d82 rgba(0, 61, 130, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🚀 Local Business Directory</h1>
+        <p>MVP Development Sprint - Kanban Board (TSP Framework)</p>
+        <div class="sprint-info">
+            <div class="sprint-stat">
+                <strong>Sprint Goal:</strong> Launch MVP by Friday
+            </div>
+            <div class="sprint-stat">
+                <strong>Team Lead:</strong> Codey (TPM)
+            </div>
+            <div class="sprint-stat">
+                <strong>Framework:</strong> Scrum + Kanban + TSP
+            </div>
+        </div>
+    </div>
+
+    <div class="kanban-container">
+        <!-- BACKLOG -->
+        <div class="column backlog">
+            <div class="column-header">
+                <div class="column-title">
+                    📋 Backlog
+                </div>
+                <div class="column-count">6</div>
+            </div>
+            <div class="cards-container scrollbar">
+                <div class="card" onclick="openCard(this)">
+                    <div class="card-id">TASK-011</div>
+                    <div class="card-title">Static pages (About, Privacy, Contact)</div>
+                    <div class="card-meta">
+                        <span class="assignee">Aesthetica</span>
+                        <span class="priority p1">P1</span>
+                        <span class="story-points">3</span>
+                    </div>
+                    <span class="tsp-badge">Frontend</span>
+                </div>
+
+                <div class="card" onclick="openCard(this)">
+                    <div class="card-id">TASK-012</div>
+                    <div class="card-title">Theme CSS architecture (3-color palette)</div>
+                    <div class="card-meta">
+                        <span class="assignee">Aesthetica</span>
+                        <span class="priority p1">P1</span>
+                        <span class="story-points">2</span>
+                    </div>
+                    <span class="tsp-badge">Design</span>
+                </div>
+
+                <div class="card" onclick="openCard(this)">
+                    <div class="card-id">TASK-013</div>
+                    <div class="card-title">Mobile responsiveness & iOS styling</div>
+                    <div class="card-meta">
+                        <span class="assignee">Verity</span>
+                        <span class="priority p0">P0</span>
+                        <span class="story-points">5</span>
+                    </div>
+                    <span class="tsp-badge">QA</span>
+                </div>
+
+                <div class="card" onclick="openCard(this)">
+                    <div class="card-id">TASK-015</div>
+                    <div class="card-title">Implement geolocation detection with flag</div>
+                    <div class="card-meta">
+                        <span class="assignee">Syntax</span>
+                        <span class="priority p1">P1</span>
+                        <span class="story-points">3</span>
+                    </div>
+                    <span class="tsp-badge">Backend</span>
+                </div>
+
+                <div class="card" onclick="openCard(this)">
+                    <div class="card-id">TASK-020</div>
+                    <div class="card-title">Setup Cloudinary for image uploads</div>
+                    <div class="card-meta">
+                        <span class="assignee">Flow</span>
+                        <span class="priority p2">P2</span>
+                        <span class="story-points">2</span>
+                    </div>
+                    <span class="tsp-badge">Infrastructure</span>
+                </div>
+
+                <div class="card" onclick="openCard(this)">
+                    <div class="card-id">TASK-025</div>
+                    <div class="card-title">Create blog post workflow documentation</div>
+                    <div class="card-meta">
+                        <span class="assignee">Echo</span>
+                        <span class="priority p3">P3</span>
+                        <span class="story-points">2</span>
+                    </div>
+                    <span class="tsp-badge">Content</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- SPRINT -->
+        <div class="column">
+            <div class="column-header">
+                <div class="column-title">
+                    📌 Sprint (Active)
+                </div>
+                <div class="column-count">8</div>
+            </div>
+            <div class="cards-container scrollbar">
+                <div class="card" onclick="openCard(this)">
+                    <div class="card-id">TASK-003</div>
+                    <div class="card-title">Database schema & migrations</div>
+                    <div class="card-meta">
+                        <span class="assignee">Syntax</span>
+                        <span class="priority p0">P0</span>
+                        <span class="story-points">5</span>
+                    </div>
+                    <span class="tsp-badge">Core</span>
+                </div>
+
+                <div class="card" onclick="openCard(this)">
+                    <div class="card-id">TASK-004</div>
+                    <div class="card-title">Home page with location selector</div>
+                    <div class="card-meta">
+                        <span class="assignee">Aesthetica</span>
+                        <span class="priority p0">P0</span>
+                        <span class="story-points">5</span>
+                    </div>
+                    <span class="tsp-badge">Frontend</span>
+                </div>
+
+                <div class="card" onclick="openCard(this)">
+                    <div class="card-id">TASK-005</div>
+                    <div class="card-title">API: Authentication endpoints</div>
+                    <div class="card-meta">
+                        <span class="assignee">Codey</span>
+                        <span class="priority p0">P0</span>
+                        <span class="story-points">5</span>
+                    </div>
+                    <span class="tsp-badge">API</span>
+                </div>
+
+                <div class="card" onclick="openCard(this)">
+                    <div class="card-id">TASK-006</div>
+                    <div class="card-title">API: Business CRUD operations</div>
+                    <div class="card-meta">
+                        <span class="assignee">Syntax</span>
+                        <span class="priority p0">P0</span>
+                        <span class="story-points">8</span>
+                    </div>
+                    <span class="tsp-badge">API</span>
+                </div>
+
+                <div class="card" onclick="openCard(this)">
+                    <div class="card-id">TASK-007</div>
+                    <div class="card-title">Directory listing page</div>
+                    <div class="card-meta">
+                        <span class="assignee">Aesthetica</span>
+                        <span class="priority p0">P0</span>
+                        <span class="story-points">5</span>
+                    </div>
+                    <span class="tsp-badge">Frontend</span>
+                </div>
+
+                <div class="card" onclick="openCard(this)">
+                    <div class="card-id">TASK-008</div>
+                    <div class="card-title">Business list & detail pages</div>
+                    <div class="card-meta">
+                        <span class="assignee">Aesthetica</span>
+                        <span class="priority p0">P0</span>
+                        <span class="story-points">5</span>
+                    </div>
+                    <span class="tsp-badge">Frontend</span>
+                </div>
+
+                <div class="card" onclick="openCard(this)">
+                    <div class="card-id">TASK-009</div>
+                    <div class="card-title">Owner dashboard & business management</div>
+                    <div class="card-meta">
+                        <span class="assignee">Aesthetica</span>
+                        <span class="priority p0">P0</span>
+                        <span class="story-points">8</span>
+                    </div>
+                    <span class="tsp-badge">Frontend</span>
+                </div>
+
+                <div class="card" onclick="openCard(this)">
+                    <div class="card-id">TASK-010</div>
+                    <div class="card-title">Admin panel (approval workflow)</div>
+                    <div class="card-meta">
+                        <span class="assignee">Aesthetica</span>
+                        <span class="priority p0">P0</span>
+                        <span class="story-points">8</span>
+                    </div>
+                    <span class="tsp-badge">Frontend</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- IN PROGRESS -->
+        <div class="column in-progress">
+            <div class="column-header">
+                <div class="column-title">
+                    ⚙️ In Progress
+                </div>
+                <div class="column-count">2</div>
+            </div>
+            <div class="cards-container scrollbar">
+                <div class="card" onclick="openCard(this)">
+                    <div class="card-id">TASK-001</div>
+                    <div class="card-title">Setup Railway deployment & PostgreSQL</div>
+                    <div class="card-meta">
+                        <span class="assignee">Flow</span>
+                        <span class="priority p0">P0</span>
+                        <span class="story-points">3</span>
+                    </div>
+                    <span class="tsp-badge">Infrastructure</span>
+                </div>
+
+                <div class="card" onclick="openCard(this)">
+                    <div class="card-id">TASK-002</div>
+                    <div class="card-title">Configure NextAuth.js (Google/Facebook/Email)</div>
+                    <div class="card-meta">
+                        <span class="assignee">Codey</span>
+                        <span class="priority p0">P0</span>
+                        <span class="story-points">5</span>
+                    </div>
+                    <span class="tsp-badge">Auth</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- REVIEW -->
+        <div class="column review">
+            <div class="column-header">
+                <div class="column-title">
+                    👀 Code Review
+                </div>
+                <div class="column-count">0</div>
+            </div>
+            <div class="cards-container scrollbar">
+                <!-- Empty -->
+            </div>
+        </div>
+
+        <!-- QA -->
+        <div class="column qa">
+            <div class="column-header">
+                <div class="column-title">
+                    ✔️ QA Testing
+                </div>
+                <div class="column-count">0</div>
+            </div>
+            <div class="cards-container scrollbar">
+                <!-- Empty -->
+            </div>
+        </div>
+
+        <!-- STAGING -->
+        <div class="column staging">
+            <div class="column-header">
+                <div class="column-title">
+                    🔄 Staging
+                </div>
+                <div class="column-count">0</div>
+            </div>
+            <div class="cards-container scrollbar">
+                <!-- Empty for now -->
+            </div>
+        </div>
+
+        <!-- PRODUCTION -->
+        <div class="column production">
+            <div class="column-header">
+                <div class="column-title">
+                    ✨ Production
+                </div>
+                <div class="column-count">0</div>
+            </div>
+            <div class="cards-container scrollbar">
+                <!-- Empty for now -->
+            </div>
+        </div>
+    </div>
+
+    <!-- LEGEND -->
+    <div class="legend">
+        <div class="legend-title">📚 Legend & Task Reference</div>
+        <div class="legend-grid">
+            <div class="legend-item">
+                <strong>Priority Levels</strong>
+                <p><strong>P0:</strong> Blocker (must complete for MVP)</p>
+                <p><strong>P1:</strong> High (needed this sprint)</p>
+                <p><strong>P2:</strong> Medium (nice to have)</p>
+                <p><strong>P3:</strong> Low (backlog)</p>
+            </div>
+            <div class="legend-item">
+                <strong>Story Points (Fibonacci)</strong>
+                <p>1 = Quick fix, 2 = Small task, 3 = Medium, 5 = Large, 8 = Epic</p>
+            </div>
+            <div class="legend-item">
+                <strong>Kanban States</strong>
+                <p><strong>Backlog:</strong> Future work</p>
+                <p><strong>Sprint:</strong> Selected for this sprint</p>
+                <p><strong>In Progress:</strong> Actively being worked</p>
+                <p><strong>Review:</strong> Code review pending</p>
+                <p><strong>QA:</strong> Testing phase</p>
+                <p><strong>Staging:</strong> Pre-production</p>
+                <p><strong>Production:</strong> Live ✓</p>
+            </div>
+            <div class="legend-item">
+                <strong>Team Members</strong>
+                <p><strong>Syntax:</strong> Principal Engineer</p>
+                <p><strong>Codey:</strong> TPM, Backend Lead</p>
+                <p><strong>Aesthetica:</strong> Frontend + UI/UX</p>
+                <p><strong>Flow:</strong> DevOps</p>
+                <p><strong>Verity:</strong> QA</p>
+                <p><strong>Sentinal:</strong> Security</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL -->
+    <div class="modal" id="cardModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle"></h2>
+                <button class="modal-close" onclick="closeCard()">×</button>
+            </div>
+            <div class="modal-body" id="modalBody"></div>
+        </div>
+    </div>
+
+    <script>
+        const cardDetails = {
+            'TASK-001': {
+                title: 'Setup Railway deployment & PostgreSQL',
+                description: 'Configure Railway.com project, provision PostgreSQL database, set up environment variables, and enable automatic Git-based deployment. This is the critical infrastructure task that blocks many others.',
+                assignee: 'Flow',
+                priority: 'P0 (Blocker)',
+                points: '3',
+                status: 'In Progress',
+                dod: [
+                    'Railway project created and linked to Git repo',
+                    'PostgreSQL database provisioned',
+                    'Environment variables configured (DATABASE_URL, NEXTAUTH_URL, etc.)',
+                    'Automatic deployment from main branch verified',
+                    'Database migrations run successfully',
+                    'Team has staging URL access'
+                ]
+            },
+            'TASK-002': {
+                title: 'Configure NextAuth.js (Google/Facebook/Email)',
+                description: 'Setup NextAuth.js with OAuth providers (Google, Facebook) and email/password authentication. Test all sign-in methods end-to-end.',
+                assignee: 'Codey',
+                priority: 'P0 (Blocker)',
+                points: '5',
+                status: 'In Progress',
+                dod: [
+                    'NextAuth.js v5 configured in Next.js',
+                    'Google OAuth credentials obtained and configured',
+                    'Facebook OAuth credentials obtained and configured',
+                    'Email/password provider setup with bcrypt hashing',
+                    'Session management tested',
+                    'All three auth methods verified on local & staging',
+                    'Logout clears session completely'
+                ]
+            },
+            'TASK-003': {
+                title: 'Database schema & migrations',
+                description: 'Create PostgreSQL schema for users, businesses, directories, locations, contacts tables. Implement deduplication constraints and validate relationships.',
+                assignee: 'Syntax',
+                priority: 'P0 (Blocker)',
+                points: '5',
+                status: 'Sprint',
+                dod: [
+                    'All 6 core tables created (locations, directories, users, businesses, business_directories, contacts)',
+                    'Foreign key relationships validated',
+                    'Unique constraints for business deduplication implemented',
+                    'Business owner limit constraint working',
+                    'Indexes added for common queries',
+                    'Migrations tracked in Git',
+                    'Tested on staging database'
+                ]
+            },
+            'TASK-004': {
+                title: 'Home page with location selector',
+                description: 'Create landing page with location selector splash screen. Implement geolocation detection and localStorage for preferences.',
+                assignee: 'Aesthetica',
+                priority: 'P0 (Blocker)',
+                points: '5',
+                status: 'Sprint',
+                dod: [
+                    'Home page responsive on all breakpoints',
+                    'Location selector displays all locations',
+                    'Geolocation auto-detection implemented',
+                    'User preference saved in localStorage',
+                    'Location parameter in URL works',
+                    'iOS footer navigation styled & sticky',
+                    'No horizontal scroll on any screen',
+                    'Images load without overflow'
+                ]
+            },
+            'TASK-005': {
+                title: 'API: Authentication endpoints',
+                description: 'Build REST API endpoints for user registration, login, OAuth callbacks, logout, and session verification.',
+                assignee: 'Codey',
+                priority: 'P0 (Blocker)',
+                points: '5',
+                status: 'Sprint',
+                dod: [
+                    'POST /api/auth/register works',
+                    'POST /api/auth/login works',
+                    'OAuth callbacks auto-create users',
+                    'GET /api/auth/session returns current user',
+                    'POST /api/auth/logout clears session',
+                    'All endpoints tested with Postman',
+                    'Error responses follow specification'
+                ]
+            },
+            'TASK-006': {
+                title: 'API: Business CRUD operations',
+                description: 'Implement API endpoints for creating, reading, updating, deleting businesses. Include admin approval workflow.',
+                assignee: 'Syntax',
+                priority: 'P0 (Blocker)',
+                points: '8',
+                status: 'Sprint',
+                dod: [
+                    'POST /api/businesses creates business',
+                    'Duplicate validation prevents same-name businesses',
+                    'Owner limit (max 2) enforced',
+                    'Business status defaults to PENDING',
+                    'GET /api/admin/businesses shows all',
+                    'PUT .../approve works',
+                    'PUT .../reject works with reason',
+                    'All endpoints require proper auth',
+                    'Pagination working on lists'
+                ]
+            },
+            'TASK-007': {
+                title: 'Directory listing page',
+                description: 'Create page showing all service directories for selected location in card layout. Implement category filtering and display.',
+                assignee: 'Aesthetica',
+                priority: 'P0 (Blocker)',
+                points: '5',
+                status: 'Sprint',
+                dod: [
+                    'GET /api/locations/:slug/directories works',
+                    'Directories render as cards with icons',
+                    'Click directory navigates to business list',
+                    'Page responsive on mobile/tablet/desktop',
+                    'Icon from Lucide React displays correctly'
+                ]
+            },
+            'TASK-008': {
+                title: 'Business list & detail pages',
+                description: 'Create pages for listing businesses in directory and detailed single business page with all info.',
+                assignee: 'Aesthetica',
+                priority: 'P0 (Blocker)',
+                points: '5',
+                status: 'Sprint',
+                dod: [
+                    'Business list page filters by directory & location',
+                    'Pagination works (20 per page)',
+                    'Business detail page shows all fields',
+                    'Images display correctly',
+                    'Hours display in readable format',
+                    'Contact button visible (Phase 2 implementation)'
+                ]
+            },
+            'TASK-009': {
+                title: 'Owner dashboard & business management',
+                description: 'Build owner-only dashboard showing their businesses, allow add/edit/delete. Show approval status.',
+                assignee: 'Aesthetica',
+                priority: 'P0 (Blocker)',
+                points: '8',
+                status: 'Sprint',
+                dod: [
+                    'Dashboard lists owner\'s businesses',
+                    '+ Add Business button navigates to form',
+                    'Edit button opens pre-filled form',
+                    'Delete button removes business (confirmation)',
+                    'Status badge shows PENDING/APPROVED/REJECTED',
+                    'Rejection reason displayed if applicable',
+                    'Max 2 businesses enforced with message'
+                ]
+            },
+            'TASK-010': {
+                title: 'Admin panel (approval workflow)',
+                description: 'Build admin-only interface for approving/rejecting business listings, managing all aspects of platform.',
+                assignee: 'Aesthetica',
+                priority: 'P0 (Blocker)',
+                points: '8',
+                status: 'Sprint',
+                dod: [
+                    'Admin dashboard shows pending approvals',
+                    'Approve button changes status & notifies owner',
+                    'Reject button with reason modal',
+                    'View all businesses list with filters',
+                    'Contact submissions viewable',
+                    'Admin-only route protection working'
+                ]
+            },
+            'TASK-011': {
+                title: 'Static pages (About, Privacy, Contact)',
+                description: 'Create static pages for About, Privacy Policy, Code of Conduct, and Contact/Suggestions form.',
+                assignee: 'Aesthetica',
+                priority: 'P1 (High)',
+                points: '3',
+                status: 'Backlog',
+                dod: [
+                    '/about page accessible and informative',
+                    '/privacy policy page complete',
+                    '/code-of-conduct page accessible',
+                    '/contact form submits to database',
+                    'Contact submissions saved with status tracking',
+                    'All pages responsive & accessible'
+                ]
+            },
+            'TASK-012': {
+                title: 'Theme CSS architecture (3-color palette)',
+                description: 'Create master CSS file with CSS variables for easy 3-color theme updates. Implement color system.',
+                assignee: 'Aesthetica',
+                priority: 'P1 (High)',
+                points: '2',
+                status: 'Backlog',
+                dod: [
+                    '/styles/theme.css created with CSS variables',
+                    'Primary, secondary, neutral color palettes defined',
+                    'All components use CSS variables',
+                    'Entire theme changeable from single file',
+                    'Documented for team reference'
+                ]
+            },
+            'TASK-013': {
+                title: 'Mobile responsiveness & iOS styling',
+                description: 'Comprehensive testing and fixes for mobile-first design, iOS footer nav, touch targets, safe areas. Final QA task that blocks launch.',
+                assignee: 'Verity',
+                priority: 'P0 (Blocker)',
+                points: '5',
+                status: 'Backlog',
+                dod: [
+                    'No horizontal scroll on any viewport',
+                    'Footer nav sticky with iOS styling',
+                    'Touch targets minimum 44×44px',
+                    'Safe area insets respected for notch',
+                    'Form inputs zoom correctly',
+                    'Images responsive without overflow',
+                    'Tested on iOS Safari & Chrome',
+                    'Tested on actual iOS device'
+                ]
+            },
+            'TASK-015': {
+                title: 'Implement geolocation detection with flag',
+                description: 'Setup IP geolocation API integration with geolocation_flag to minimize API calls. Store user preference.',
+                assignee: 'Syntax',
+                priority: 'P1 (High)',
+                points: '3',
+                status: 'Backlog',
+                dod: [
+                    'ip-api.com free tier integrated',
+                    'Geolocation flag prevents re-detection',
+                    'Closest location matched to zip codes',
+                    'User preference persisted in DB',
+                    'Fallback to manual selection if no match',
+                    'Rate limiting respected'
+                ]
+            },
+            'TASK-020': {
+                title: 'Setup Cloudinary for image uploads',
+                description: 'Configure Cloudinary for business image uploads. Implement image optimization and CDN delivery.',
+                assignee: 'Flow',
+                priority: 'P2 (Medium)',
+                points: '2',
+                status: 'Backlog',
+                dod: [
+                    'Cloudinary account created and configured',
+                    'Free tier API key secured',
+                    'Upload widget integrated into add business form',
+                    'Images optimized and served from CDN',
+                    'Fallback placeholder for missing images'
+                ]
+            },
+            'TASK-025': {
+                title: 'Create blog post workflow documentation',
+                description: 'Document blog creation process for content team (Phase 1 feature, but prep documentation now).',
+                assignee: 'Echo',
+                priority: 'P3 (Low)',
+                points: '2',
+                status: 'Backlog',
+                dod: [
+                    'Blog creation guide written',
+                    'Markdown format documented',
+                    'Image size/format specifications listed',
+                    'Categories & tags explained',
+                    'Published to /docs/process/BLOG-CREATION-GUIDE.md'
+                ]
+            }
+        };
+
+        function openCard(element) {
+            const cardId = element.querySelector('.card-id').textContent;
+            const details = cardDetails[cardId];
+            
+            if (details) {
+                document.getElementById('modalTitle').textContent = `${cardId} - ${details.title}`;
+                
+                let dod = '';
+                if (details.dod) {
+                    dod = `
+                        <div class="definition-of-done">
+                            <h4>Definition of Done:</h4>
+                            <ul>
+                                ${details.dod.map(item => `<li>${item}</li>`).join('')}
+                            </ul>
+                        </div>
+                    `;
+                }
+                
+                document.getElementById('modalBody').innerHTML = `
+                    <p><strong>Description:</strong></p>
+                    <p>${details.description}</p>
+                    
+                    <p><strong>Assigned to:</strong> ${details.assignee}</p>
+                    <p><strong>Priority:</strong> ${details.priority}</p>
+                    <p><strong>Story Points:</strong> ${details.points}</p>
+                    <p><strong>Status:</strong> ${details.status}</p>
+                    
+                    ${dod}
+                `;
+                
+                document.getElementById('cardModal').classList.add('active');
+            }
+        }
+
+        function closeCard() {
+            document.getElementById('cardModal').classList.remove('active');
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('cardModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeCard();
+            }
+        });
+
+        // Keyboard close
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeCard();
+            }
+        });
+    </script>
+</body>
+</html>

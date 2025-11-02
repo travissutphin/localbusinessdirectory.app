@@ -1,0 +1,135 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Location {
+  id          String       @id @default(uuid())
+  name        String       // "Saint Augustine, FL"
+  zipCode     String       @unique @map("zip_code")
+  slug        String       @unique
+  region      String?
+  description String?
+  isActive    Boolean      @default(true) @map("is_active")
+  createdAt   DateTime     @default(now()) @map("created_at")
+  updatedAt   DateTime     @updatedAt @map("updated_at")
+
+  directories Directory[]
+  businesses  Business[]
+  users       User[]
+  contacts    Contact[]
+
+  @@map("locations")
+}
+
+model Directory {
+  id           String              @id @default(uuid())
+  locationId   String              @map("location_id")
+  name         String
+  slug         String
+  description  String?
+  icon         String?             // Lucide icon name
+  displayOrder Int?                @map("display_order")
+  isActive     Boolean             @default(true) @map("is_active")
+  createdAt    DateTime            @default(now()) @map("created_at")
+  updatedAt    DateTime            @updatedAt @map("updated_at")
+
+  location            Location              @relation(fields: [locationId], references: [id])
+  businesses          Business[]
+  businessDirectories BusinessDirectory[]
+
+  @@unique([locationId, slug])
+  @@map("directories")
+}
+
+model User {
+  id                 String    @id @default(uuid())
+  email              String    @unique
+  name               String?
+  passwordHash       String?   @map("password_hash")
+  role               String    @default("OWNER") // 'OWNER' or 'ADMIN'
+  authProvider       String?   @map("auth_provider") // 'email', 'google', 'facebook'
+  providerId         String?   @map("provider_id")
+  emailVerified      Boolean   @default(false) @map("email_verified")
+  locationPreference String?   @map("location_preference")
+  geolocationFlag    Boolean   @default(false) @map("geolocation_flag")
+  profileImage       String?   @map("profile_image")
+  createdAt          DateTime  @default(now()) @map("created_at")
+  updatedAt          DateTime  @updatedAt @map("updated_at")
+
+  location          Location?  @relation(fields: [locationPreference], references: [id])
+  businesses        Business[] @relation("BusinessOwner")
+  approvedBusinesses Business[] @relation("BusinessApprover")
+  contacts          Contact[]
+
+  @@map("users")
+}
+
+model Business {
+  id                       String    @id @default(uuid())
+  ownerId                  String    @map("owner_id")
+  locationId               String    @map("location_id")
+  directoryId              String    @map("directory_id")
+  name                     String
+  description              String
+  phone                    String
+  website                  String?
+  email                    String
+  address                  String
+  hoursJson                Json?     @map("hours_json")
+  pricing                  String?
+  imageUrl                 String?   @map("image_url")
+  status                   String    @default("PENDING") // 'PENDING', 'APPROVED', 'REJECTED'
+  rejectionReason          String?   @map("rejection_reason")
+  businessRegistrationNumber String? @map("business_registration_number")
+  createdAt                DateTime  @default(now()) @map("created_at")
+  updatedAt                DateTime  @updatedAt @map("updated_at")
+  approvedAt               DateTime? @map("approved_at")
+  approvedBy               String?   @map("approved_by")
+
+  owner               User                @relation("BusinessOwner", fields: [ownerId], references: [id])
+  location            Location            @relation(fields: [locationId], references: [id])
+  directory           Directory           @relation(fields: [directoryId], references: [id])
+  approver            User?               @relation("BusinessApprover", fields: [approvedBy], references: [id])
+  businessDirectories BusinessDirectory[]
+
+  @@unique([ownerId, name, locationId])
+  @@map("businesses")
+}
+
+model BusinessDirectory {
+  id          String   @id @default(uuid())
+  businessId  String   @map("business_id")
+  directoryId String   @map("directory_id")
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  business  Business  @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  directory Directory @relation(fields: [directoryId], references: [id])
+
+  @@unique([businessId, directoryId])
+  @@map("business_directories")
+}
+
+model Contact {
+  id         String   @id @default(uuid())
+  name       String
+  email      String
+  subject    String?
+  message    String
+  locationId String?  @map("location_id")
+  userId     String?  @map("user_id")
+  status     String   @default("NEW") // 'NEW', 'READ', 'RESOLVED'
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  location Location? @relation(fields: [locationId], references: [id])
+  user     User?     @relation(fields: [userId], references: [id])
+
+  @@map("contacts")
+}
