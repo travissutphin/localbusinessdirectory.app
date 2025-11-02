@@ -26,6 +26,7 @@ model Location {
   users       User[]
   contacts    Contact[]
 
+  @@index([isActive])
   @@map("locations")
 }
 
@@ -46,6 +47,8 @@ model Directory {
   businessDirectories BusinessDirectory[]
 
   @@unique([locationId, slug])
+  @@index([locationId, isActive])
+  @@index([displayOrder])
   @@map("directories")
 }
 
@@ -143,6 +146,10 @@ model Business {
   businessDirectories BusinessDirectory[]
 
   @@unique([ownerId, name, locationId])
+  @@index([locationId, directoryId, status])
+  @@index([ownerId, status])
+  @@index([status, createdAt])
+  @@index([approvedAt])
   @@map("businesses")
 }
 
@@ -173,5 +180,7 @@ model Contact {
   location Location? @relation(fields: [locationId], references: [id])
   user     User?     @relation(fields: [userId], references: [id])
 
+  @@index([status, createdAt])
+  @@index([userId])
   @@map("contacts")
 }
