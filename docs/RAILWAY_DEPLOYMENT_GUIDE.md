@@ -45,20 +45,22 @@ openssl rand -base64 32
 
 ### OAuth Credentials (Required for TASK-002)
 
+**Note:** Credentials are configured in Railway. Contact Travis for access.
+
 ```
-GOOGLE_CLIENT_ID=your-google-client-id
-GOOGLE_CLIENT_SECRET=your-google-client-secret
-FACEBOOK_APP_ID=your-facebook-app-id
-FACEBOOK_APP_SECRET=your-facebook-app-secret
+GOOGLE_CLIENT_ID=<your-google-client-id>
+GOOGLE_CLIENT_SECRET=<your-google-client-secret>
+FACEBOOK_APP_ID=<your-facebook-app-id>
+FACEBOOK_APP_SECRET=<your-facebook-app-secret>
 ```
 
 ### Optional (Can add later)
 
 ```
-NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME=your-cloud-name
-CLOUDINARY_API_KEY=your-api-key
-CLOUDINARY_API_SECRET=your-api-secret
-IPAPI_KEY=your-ipapi-key
+NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME=<your-cloud-name>
+CLOUDINARY_API_KEY=<your-api-key>
+CLOUDINARY_API_SECRET=<your-api-secret>
+IPAPI_KEY=<your-ipapi-key>
 ```
 
 ## Step 4: Configure Build Settings

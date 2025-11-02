@@ -594,20 +594,9 @@
                 <div class="column-title">
                     ⚙️ In Progress
                 </div>
-                <div class="column-count">2</div>
+                <div class="column-count">1</div>
             </div>
             <div class="cards-container scrollbar">
-                <div class="card" onclick="openCard(this)">
-                    <div class="card-id">TASK-001</div>
-                    <div class="card-title">Setup Railway deployment & PostgreSQL</div>
-                    <div class="card-meta">
-                        <span class="assignee">Flow</span>
-                        <span class="priority p0">P0</span>
-                        <span class="story-points">3</span>
-                    </div>
-                    <span class="tsp-badge">Infrastructure</span>
-                </div>
-
                 <div class="card" onclick="openCard(this)">
                     <div class="card-id">TASK-002</div>
                     <div class="card-title">Configure NextAuth.js (Google/Facebook/Email)</div>
@@ -627,10 +616,19 @@
                 <div class="column-title">
                     👀 Code Review
                 </div>
-                <div class="column-count">0</div>
+                <div class="column-count">1</div>
             </div>
             <div class="cards-container scrollbar">
-                <!-- Empty -->
+                <div class="card" onclick="openCard(this)">
+                    <div class="card-id">TASK-001</div>
+                    <div class="card-title">Setup Railway deployment & PostgreSQL</div>
+                    <div class="card-meta">
+                        <span class="assignee">Flow</span>
+                        <span class="priority p0">P0</span>
+                        <span class="story-points">3</span>
+                    </div>
+                    <span class="tsp-badge">Infrastructure</span>
+                </div>
             </div>
         </div>
 
@@ -726,18 +724,18 @@
         const cardDetails = {
             'TASK-001': {
                 title: 'Setup Railway deployment & PostgreSQL',
-                description: 'Configure Railway.com project, provision PostgreSQL database, set up environment variables, and enable automatic Git-based deployment. This is the critical infrastructure task that blocks many others.',
+                description: 'Railway.com deployed! Staging URL: stunning-perfection-production-1cd6.up.railway.app. PostgreSQL provisioned. OAuth credentials configured. Awaiting GitHub push to complete auto-deployment.',
                 assignee: 'Flow',
                 priority: 'P0 (Blocker)',
                 points: '3',
-                status: 'In Progress',
+                status: 'Review',
                 dod: [
-                    'Railway project created and linked to Git repo',
-                    'PostgreSQL database provisioned',
-                    'Environment variables configured (DATABASE_URL, NEXTAUTH_URL, etc.)',
-                    'Automatic deployment from main branch verified',
-                    'Database migrations run successfully',
-                    'Team has staging URL access'
+                    '✅ Railway project created and linked to Git repo',
+                    '✅ PostgreSQL database provisioned',
+                    '✅ Environment variables configured (DATABASE_URL, NEXTAUTH_URL, OAuth)',
+                    '⏳ Automatic deployment from main branch verified (awaiting push)',
+                    '⏳ Database migrations run successfully (will auto-run on push)',
+                    '✅ Team has staging URL access: stunning-perfection-production-1cd6.up.railway.app'
                 ]
             },
             'TASK-002': {
