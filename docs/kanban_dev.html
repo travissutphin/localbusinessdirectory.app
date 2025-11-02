@@ -607,19 +607,10 @@
                 <div class="column-title">
                     👀 Code Review
                 </div>
-                <div class="column-count">1</div>
+                <div class="column-count">0</div>
             </div>
             <div class="cards-container scrollbar">
-                <div class="card" onclick="openCard(this)">
-                    <div class="card-id">TASK-002</div>
-                    <div class="card-title">Configure NextAuth.js (Google/Facebook/Email)</div>
-                    <div class="card-meta">
-                        <span class="assignee">Codey</span>
-                        <span class="priority p0">P0</span>
-                        <span class="story-points">5</span>
-                    </div>
-                    <span class="tsp-badge">Auth</span>
-                </div>
+                <!-- Empty -->
             </div>
         </div>
 
@@ -642,7 +633,7 @@
                 <div class="column-title">
                     🔄 Staging
                 </div>
-                <div class="column-count">1</div>
+                <div class="column-count">2</div>
             </div>
             <div class="cards-container scrollbar">
                 <div class="card" onclick="openCard(this)">
@@ -654,6 +645,17 @@
                         <span class="story-points">3</span>
                     </div>
                     <span class="tsp-badge">Infrastructure</span>
+                </div>
+
+                <div class="card" onclick="openCard(this)">
+                    <div class="card-id">TASK-002</div>
+                    <div class="card-title">Configure NextAuth.js (Google/Facebook/Email)</div>
+                    <div class="card-meta">
+                        <span class="assignee">Codey</span>
+                        <span class="priority p0">P0</span>
+                        <span class="story-points">5</span>
+                    </div>
+                    <span class="tsp-badge">Auth</span>
                 </div>
             </div>
         </div>
@@ -744,11 +746,11 @@
             },
             'TASK-002': {
                 title: 'Configure NextAuth.js (Google/Facebook/Email)',
-                description: '✅ COMPLETE! NextAuth.js v5 configured with all three authentication providers. Updated Prisma schema with NextAuth tables. Role-based authentication implemented. All TypeScript errors fixed. Ready for QA testing.',
+                description: '✅ COMPLETE & QA APPROVED! NextAuth.js v5 fully operational on staging. All automated tests passed (9/9). Google, Facebook, and Email/Password authentication configured. See /docs/TASK-002_QA_REPORT.md',
                 assignee: 'Codey',
                 priority: 'P0 (Blocker)',
                 points: '5',
-                status: 'Code Review',
+                status: 'Staging',
                 dod: [
                     '✅ NextAuth.js v5 configured in Next.js',
                     '✅ Google OAuth credentials obtained and configured',
@@ -758,8 +760,10 @@
                     '✅ Auth utility functions created (requireAuth, requireAdmin, requireOwner)',
                     '✅ User registration API with validation',
                     '✅ TypeScript compilation passing',
-                    '✅ Pushed to GitHub (commit cbc10c7)',
-                    '⏳ Awaiting QA testing on staging'
+                    '✅ Deployed to staging (commit ef4bd21)',
+                    '✅ QA testing completed - 100% pass rate',
+                    '✅ Security review approved ([Sentinal])',
+                    '✅ Code review approved ([Syntax])'
                 ]
             },
             'TASK-003': {
