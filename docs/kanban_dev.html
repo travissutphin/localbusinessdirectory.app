@@ -585,30 +585,10 @@
                 <div class="column-title">
                     👀 Code Review
                 </div>
-                <div class="column-count">2</div>
+                <div class="column-count">0</div>
             </div>
             <div class="cards-container scrollbar">
-                <div class="card" onclick="openCard(this)">
-                    <div class="card-id">TASK-003</div>
-                    <div class="card-title">Database schema & migrations</div>
-                    <div class="card-meta">
-                        <span class="assignee">Syntax</span>
-                        <span class="priority p0">P0</span>
-                        <span class="story-points">5</span>
-                    </div>
-                    <span class="tsp-badge">Core</span>
-                </div>
-
-                <div class="card" onclick="openCard(this)">
-                    <div class="card-id">TASK-004</div>
-                    <div class="card-title">Home page with location selector</div>
-                    <div class="card-meta">
-                        <span class="assignee">Aesthetica</span>
-                        <span class="priority p0">P0</span>
-                        <span class="story-points">5</span>
-                    </div>
-                    <span class="tsp-badge">Frontend</span>
-                </div>
+                <!-- Empty -->
             </div>
         </div>
 
@@ -631,7 +611,7 @@
                 <div class="column-title">
                     🔄 Staging
                 </div>
-                <div class="column-count">2</div>
+                <div class="column-count">4</div>
             </div>
             <div class="cards-container scrollbar">
                 <div class="card" onclick="openCard(this)">
@@ -654,6 +634,28 @@
                         <span class="story-points">5</span>
                     </div>
                     <span class="tsp-badge">Auth</span>
+                </div>
+
+                <div class="card" onclick="openCard(this)">
+                    <div class="card-id">TASK-003</div>
+                    <div class="card-title">Database schema & migrations</div>
+                    <div class="card-meta">
+                        <span class="assignee">Syntax</span>
+                        <span class="priority p0">P0</span>
+                        <span class="story-points">5</span>
+                    </div>
+                    <span class="tsp-badge">Core</span>
+                </div>
+
+                <div class="card" onclick="openCard(this)">
+                    <div class="card-id">TASK-004</div>
+                    <div class="card-title">Home page with location selector</div>
+                    <div class="card-meta">
+                        <span class="assignee">Aesthetica</span>
+                        <span class="priority p0">P0</span>
+                        <span class="story-points">5</span>
+                    </div>
+                    <span class="tsp-badge">Frontend</span>
                 </div>
             </div>
         </div>
@@ -766,39 +768,41 @@
             },
             'TASK-003': {
                 title: 'Database schema & migrations',
-                description: '✅ COMPLETE! Schema optimized with 10 performance indexes. All 9 tables verified with proper relationships and constraints. Prisma client generated successfully. Ready for deployment. See /docs/TASK-003_DATABASE_SCHEMA_REPORT.md',
+                description: '✅ DEPLOYED! Schema with 10 performance indexes deployed to Railway PostgreSQL. Database seeded with 1 location (Saint Augustine, FL) and 15 service directories. All tables verified and operational. API returning data correctly. See /docs/TASK-003_DATABASE_SCHEMA_REPORT.md and /docs/DEPLOYMENT_SEED_DATA_GUIDE.md',
                 assignee: 'Syntax',
                 priority: 'P0 (Blocker)',
                 points: '5',
-                status: 'Code Review',
+                status: 'Staging',
                 dod: [
-                    '✅ All 9 tables defined (locations, directories, users, accounts, sessions, verification_tokens, businesses, business_directories, contacts)',
+                    '✅ All 9 tables defined and deployed to Railway',
                     '✅ Foreign key relationships validated',
                     '✅ Unique constraints for business deduplication implemented',
                     '✅ 10 performance indexes added for common queries',
                     '✅ Prisma client generated successfully',
-                    '✅ TypeScript compilation passing',
-                    '✅ Schema documented in detail',
-                    '⏳ Ready for Railway deployment'
+                    '✅ Database seeded with initial data (1 location, 15 directories, 1 admin user)',
+                    '✅ Schema deployed to Railway production environment',
+                    '✅ API endpoints returning seeded data',
+                    '⏳ Awaiting final QA verification and production release approval'
                 ]
             },
             'TASK-004': {
                 title: 'Home page with location selector',
-                description: '✅ COMPLETE! Beautiful responsive home page with location selector. localStorage persistence working. Locations API endpoint created. Auto-redirect on saved preference. Mobile-first design with gradient UI and Lucide icons.',
+                description: '✅ DEPLOYED! Beautiful responsive home page with location selector deployed to Railway. localStorage persistence working. Locations API endpoint returning data. Auto-redirect on saved preference. Mobile-first design with gradient UI and Lucide icons. Ready for browser testing.',
                 assignee: 'Aesthetica',
                 priority: 'P0 (Blocker)',
                 points: '5',
-                status: 'Code Review',
+                status: 'Staging',
                 dod: [
                     '✅ Home page responsive on all breakpoints (mobile-first)',
                     '✅ Location selector modal displays all active locations',
                     '✅ User preference saved in localStorage',
                     '✅ Auto-redirect to saved location on return visits',
-                    '✅ Locations API endpoint (/api/locations) created',
-                    '✅ Loading states and error handling',
+                    '✅ Locations API endpoint (/api/locations) created and returning data',
+                    '✅ Loading states and error handling implemented',
                     '✅ Beautiful gradient UI with hover effects',
                     '✅ Fallback for missing data',
-                    '⏳ Ready for deployment and testing'
+                    '✅ Deployed to Railway staging environment',
+                    '⏳ Awaiting manual browser testing and QA approval'
                 ]
             },
             'TASK-005': {
