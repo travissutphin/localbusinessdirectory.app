@@ -5,16 +5,13 @@ import { MapPin, Phone, Mail, Globe, Clock } from 'lucide-react'
 type Business = {
   id: string
   name: string
-  description: string | null
-  address: string | null
-  city: string | null
-  state: string | null
-  zipCode: string | null
-  phone: string | null
-  email: string | null
+  description: string
+  address: string
+  phone: string
+  email: string
   website: string | null
   imageUrl: string | null
-  hours: string | null
+  hoursJson: any | null
   status: string
 }
 
@@ -90,14 +87,11 @@ async function getPageData(
           name: true,
           description: true,
           address: true,
-          city: true,
-          state: true,
-          zipCode: true,
           phone: true,
           email: true,
           website: true,
           imageUrl: true,
-          hours: true,
+          hoursJson: true,
           status: true,
         },
         orderBy: {
@@ -216,36 +210,29 @@ export default async function DirectoryPage({
                     {business.name}
                   </h3>
 
-                  {business.description && (
-                    <p className="text-sm text-slate-300 mb-4 line-clamp-2">
-                      {business.description}
-                    </p>
-                  )}
+                  <p className="text-sm text-slate-300 mb-4 line-clamp-2">
+                    {business.description}
+                  </p>
 
                   <div className="space-y-2">
-                    {business.address && (
-                      <div className="flex items-start text-sm text-slate-400">
-                        <MapPin className="w-4 h-4 mr-2 mt-0.5 flex-shrink-0" />
-                        <span>
-                          {business.address}
-                          {business.city && `, ${business.city}`}
-                          {business.state && `, ${business.state}`}
-                          {business.zipCode && ` ${business.zipCode}`}
-                        </span>
-                      </div>
-                    )}
+                    <div className="flex items-start text-sm text-slate-400">
+                      <MapPin className="w-4 h-4 mr-2 mt-0.5 flex-shrink-0" />
+                      <span className="line-clamp-1">{business.address}</span>
+                    </div>
 
-                    {business.phone && (
-                      <div className="flex items-center text-sm text-slate-400">
-                        <Phone className="w-4 h-4 mr-2 flex-shrink-0" />
-                        <span>{business.phone}</span>
-                      </div>
-                    )}
+                    <div className="flex items-center text-sm text-slate-400">
+                      <Phone className="w-4 h-4 mr-2 flex-shrink-0" />
+                      <span>{business.phone}</span>
+                    </div>
 
-                    {business.hours && (
+                    {business.hoursJson && (
                       <div className="flex items-start text-sm text-slate-400">
                         <Clock className="w-4 h-4 mr-2 mt-0.5 flex-shrink-0" />
-                        <span className="line-clamp-1">{business.hours}</span>
+                        <span className="line-clamp-1">
+                          {typeof business.hoursJson === 'string'
+                            ? business.hoursJson
+                            : 'See details for hours'}
+                        </span>
                       </div>
                     )}
                   </div>

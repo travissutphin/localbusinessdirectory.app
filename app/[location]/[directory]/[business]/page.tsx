@@ -5,16 +5,13 @@ import { MapPin, Phone, Mail, Globe, Clock, ArrowLeft, MessageSquare } from 'luc
 type Business = {
   id: string
   name: string
-  description: string | null
-  address: string | null
-  city: string | null
-  state: string | null
-  zipCode: string | null
-  phone: string | null
-  email: string | null
+  description: string
+  address: string
+  phone: string
+  email: string
   website: string | null
   imageUrl: string | null
-  hours: string | null
+  hoursJson: any | null
   status: string
   location: {
     name: string
@@ -38,14 +35,11 @@ async function getBusinessData(businessId: string): Promise<Business | null> {
         name: true,
         description: true,
         address: true,
-        city: true,
-        state: true,
-        zipCode: true,
         phone: true,
         email: true,
         website: true,
         imageUrl: true,
-        hours: true,
+        hoursJson: true,
         status: true,
         location: {
           select: {
@@ -155,64 +149,53 @@ export default async function BusinessDetailPage({
                 Contact Information
               </h2>
               <div className="space-y-4">
-                {business.address && (
-                  <div className="flex items-start">
-                    <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-orange-600 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <MapPin className="w-5 h-5 text-white" />
-                    </div>
-                    <div className="ml-4">
-                      <p className="text-sm font-medium text-slate-400 mb-1">
-                        Address
-                      </p>
-                      <p className="text-white">
-                        {business.address}
-                        <br />
-                        {business.city && business.state
-                          ? `${business.city}, ${business.state}`
-                          : business.city || business.state}
-                        {business.zipCode && ` ${business.zipCode}`}
-                      </p>
-                    </div>
+                <div className="flex items-start">
+                  <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-orange-600 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <MapPin className="w-5 h-5 text-white" />
                   </div>
-                )}
+                  <div className="ml-4">
+                    <p className="text-sm font-medium text-slate-400 mb-1">
+                      Address
+                    </p>
+                    <p className="text-white whitespace-pre-line">
+                      {business.address}
+                    </p>
+                  </div>
+                </div>
 
-                {business.phone && (
-                  <div className="flex items-start">
-                    <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-orange-600 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <Phone className="w-5 h-5 text-white" />
-                    </div>
-                    <div className="ml-4">
-                      <p className="text-sm font-medium text-slate-400 mb-1">
-                        Phone
-                      </p>
-                      <a
-                        href={`tel:${business.phone}`}
-                        className="text-white hover:text-orange-400 transition-colors"
-                      >
-                        {business.phone}
-                      </a>
-                    </div>
+                <div className="flex items-start">
+                  <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-orange-600 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <Phone className="w-5 h-5 text-white" />
                   </div>
-                )}
+                  <div className="ml-4">
+                    <p className="text-sm font-medium text-slate-400 mb-1">
+                      Phone
+                    </p>
+                    <a
+                      href={`tel:${business.phone}`}
+                      className="text-white hover:text-orange-400 transition-colors"
+                    >
+                      {business.phone}
+                    </a>
+                  </div>
+                </div>
 
-                {business.email && (
-                  <div className="flex items-start">
-                    <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-orange-600 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <Mail className="w-5 h-5 text-white" />
-                    </div>
-                    <div className="ml-4">
-                      <p className="text-sm font-medium text-slate-400 mb-1">
-                        Email
-                      </p>
-                      <a
-                        href={`mailto:${business.email}`}
-                        className="text-white hover:text-orange-400 transition-colors"
-                      >
-                        {business.email}
-                      </a>
-                    </div>
+                <div className="flex items-start">
+                  <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-orange-600 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <Mail className="w-5 h-5 text-white" />
                   </div>
-                )}
+                  <div className="ml-4">
+                    <p className="text-sm font-medium text-slate-400 mb-1">
+                      Email
+                    </p>
+                    <a
+                      href={`mailto:${business.email}`}
+                      className="text-white hover:text-orange-400 transition-colors"
+                    >
+                      {business.email}
+                    </a>
+                  </div>
+                </div>
 
                 {business.website && (
                   <div className="flex items-start">
@@ -238,7 +221,7 @@ export default async function BusinessDetailPage({
             </div>
 
             {/* Business Hours */}
-            {business.hours && (
+            {business.hoursJson && (
               <div className="mb-8">
                 <h2 className="text-xl font-semibold text-white mb-4">
                   Business Hours
@@ -249,7 +232,9 @@ export default async function BusinessDetailPage({
                   </div>
                   <div className="ml-4">
                     <p className="text-white whitespace-pre-line leading-relaxed">
-                      {business.hours}
+                      {typeof business.hoursJson === 'string'
+                        ? business.hoursJson
+                        : JSON.stringify(business.hoursJson, null, 2)}
                     </p>
                   </div>
                 </div>

@@ -118,20 +118,17 @@ export async function POST(request: NextRequest) {
       locationId,
       directoryId,
       address,
-      city,
-      state,
-      zipCode,
       phone,
       email,
       website,
-      hours,
+      hoursJson,
       imageUrl,
     } = body
 
     // Validate required fields
-    if (!name || !locationId || !directoryId) {
+    if (!name || !locationId || !directoryId || !description || !address || !phone || !email) {
       return NextResponse.json(
-        { error: 'Missing required fields: name, locationId, directoryId' },
+        { error: 'Missing required fields: name, description, address, phone, email, locationId, directoryId' },
         { status: 400 }
       )
     }
@@ -193,13 +190,10 @@ export async function POST(request: NextRequest) {
         locationId,
         directoryId,
         address,
-        city,
-        state,
-        zipCode,
         phone,
         email,
         website,
-        hours,
+        hoursJson,
         imageUrl,
         status: 'PENDING', // Default status
       },
