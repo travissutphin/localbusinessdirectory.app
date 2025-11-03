@@ -45,9 +45,13 @@ export default function NewBusinessPage() {
 
   useEffect(() => {
     if (formData.locationId) {
-      fetchDirectories(formData.locationId)
+      // Find location slug from ID
+      const location = locations.find(l => l.id === formData.locationId)
+      if (location) {
+        fetchDirectories(location.slug)
+      }
     }
-  }, [formData.locationId])
+  }, [formData.locationId, locations])
 
   async function checkAuth() {
     try {
