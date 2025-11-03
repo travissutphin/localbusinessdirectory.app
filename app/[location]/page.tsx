@@ -29,9 +29,9 @@ type Directory = {
   id: string
   name: string
   slug: string
-  description: string
-  icon: string
-  displayOrder: number
+  description: string | null
+  icon: string | null
+  displayOrder: number | null
 }
 
 type LocationData = {
@@ -158,7 +158,7 @@ export default async function LocationPage({
         {/* Directory Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {directories.map((directory) => {
-            const IconComponent = iconMap[directory.icon] || Home
+            const IconComponent = directory.icon && iconMap[directory.icon] ? iconMap[directory.icon] : Home
 
             return (
               <a
@@ -177,7 +177,7 @@ export default async function LocationPage({
                       {directory.name}
                     </h3>
                     <p className="mt-1 text-sm text-slate-400 line-clamp-2">
-                      {directory.description}
+                      {directory.description || 'Service directory'}
                     </p>
                   </div>
                 </div>
