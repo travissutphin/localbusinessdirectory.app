@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client'
+import bcrypt from 'bcryptjs'
 
 const prisma = new PrismaClient()
 
@@ -159,21 +160,27 @@ async function main() {
   // Create Admin User (for testing)
   console.log('👤 Creating admin user...')
 
+  // Hash password for admin user
+  const adminPassword = await bcrypt.hash('admin123', 10)
+
   const adminUser = await prisma.user.upsert({
     where: { email: 'admin@localbusinessdirectory.app' },
-    update: {},
+    update: {
+      passwordHash: adminPassword,
+    },
     create: {
       email: 'admin@localbusinessdirectory.app',
       name: 'Admin User',
       role: 'ADMIN',
       authProvider: 'email',
+      passwordHash: adminPassword,
       emailVerified: new Date(),
       locationPreference: location.id,
     },
   })
 
   console.log(`✅ Admin user created: ${adminUser.email}`)
-  console.log(`   (Use NextAuth to set password via registration)`)
+  console.log(`   Password: admin123 (for testing only)`)
 
   console.log('\n🎉 Database seed completed successfully!')
   console.log('\n📊 Summary:')
