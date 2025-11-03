@@ -1,4 +1,5 @@
 import { notFound } from 'next/navigation'
+import { prisma } from '@/lib/db'
 import {
   Wrench, Zap, Wind, Trees, Sparkles, Bug, Home,
   Paintbrush, Hammer, Shield, Layers, Truck, Droplets,
@@ -50,22 +51,49 @@ type PageData = {
 
 async function getLocationData(locationSlug: string): Promise<PageData | null> {
   try {
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'
-    const response = await fetch(
-      `${baseUrl}/api/directories?location=${locationSlug}`,
-      {
-        cache: 'no-store',
-        headers: {
-          'Content-Type': 'application/json',
-        }
-      }
-    )
+    // Find location by slug
+    const location = await prisma.location.findUnique({
+      where: {
+        slug: locationSlug,
+        isActive: true,
+      },
+    })
 
-    if (!response.ok) {
+    if (!location) {
       return null
     }
 
-    return await response.json()
+    // Fetch directories for this location
+    const directories = await prisma.directory.findMany({
+      where: {
+        locationId: location.id,
+        isActive: true,
+      },
+      select: {
+        id: true,
+        name: true,
+        slug: true,
+        description: true,
+        icon: true,
+        displayOrder: true,
+      },
+      orderBy: {
+        displayOrder: 'asc',
+      },
+    })
+
+    return {
+      location: {
+        id: location.id,
+        name: location.name,
+        slug: location.slug,
+        zipCode: location.zipCode,
+        region: location.region,
+        description: location.description,
+      },
+      directories,
+      count: directories.length,
+    }
   } catch (error) {
     console.error('Error fetching location data:', error)
     return null
