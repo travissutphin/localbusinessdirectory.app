@@ -418,7 +418,7 @@
                 <div class="column-title">
                     📋 Backlog
                 </div>
-                <div class="column-count">6</div>
+                <div class="column-count">5</div>
             </div>
             <div class="cards-container scrollbar">
                 <div class="card" onclick="openCard(this)">
@@ -495,10 +495,19 @@
                 <div class="column-title">
                     📌 Sprint (Active)
                 </div>
-                <div class="column-count">0</div>
+                <div class="column-count">1</div>
             </div>
             <div class="cards-container scrollbar">
-                <!-- Empty -->
+                <div class="card" onclick="openCard(this)">
+                    <div class="card-id">TASK-014</div>
+                    <div class="card-title">Authentication UI pages (Login/Register)</div>
+                    <div class="card-meta">
+                        <span class="assignee">Aesthetica</span>
+                        <span class="priority p0">P0</span>
+                        <span class="story-points">5</span>
+                    </div>
+                    <span class="tsp-badge">Frontend</span>
+                </div>
             </div>
         </div>
 
@@ -963,6 +972,28 @@
                     'Images responsive without overflow',
                     'Tested on iOS Safari & Chrome',
                     'Tested on actual iOS device'
+                ]
+            },
+            'TASK-014': {
+                title: 'Authentication UI pages (Login/Register)',
+                description: 'Build user-facing login and registration pages to access authentication system. Required to test TASK-009 (Owner Dashboard) and TASK-010 (Admin Panel). Backend authentication already complete in TASK-002.',
+                assignee: 'Aesthetica',
+                priority: 'P0 (Blocker)',
+                points: '5',
+                status: 'Sprint',
+                dod: [
+                    '/login page with email/password form',
+                    '/register page with sign-up form',
+                    'OAuth buttons (Google, Facebook) on both pages',
+                    'Form validation and error handling',
+                    'Success/error messages displayed',
+                    'Redirect to dashboard after login',
+                    'Navigation header shows Login/Register when logged out',
+                    'Navigation header shows user name + Logout when logged in',
+                    'Protected routes redirect to /login if not authenticated',
+                    'Session persistence working',
+                    'Responsive design on mobile/tablet/desktop',
+                    'Integrates with NextAuth API endpoints from TASK-002'
                 ]
             },
             'TASK-015': {
