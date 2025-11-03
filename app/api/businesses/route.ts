@@ -5,6 +5,7 @@ import { prisma } from '@/lib/db'
 // GET /api/businesses - List businesses with filtering and pagination
 export async function GET(request: NextRequest) {
   try {
+    const session = await auth()
     const searchParams = request.nextUrl.searchParams
     const locationSlug = searchParams.get('location')
     const directorySlug = searchParams.get('directory')
@@ -14,8 +15,21 @@ export async function GET(request: NextRequest) {
     const skip = (page - 1) * limit
 
     // Build where clause
-    const where: any = {
-      status: status || 'APPROVED', // Default to showing only approved businesses
+    const where: any = {}
+
+    // If authenticated and not admin, filter by owner
+    if (session?.user && session.user.role !== 'ADMIN') {
+      where.ownerId = session.user.id
+    }
+
+    // If not authenticated or admin viewing, default to approved only
+    if (!session?.user || session.user.role === 'ADMIN') {
+      where.status = status || 'APPROVED'
+    } else {
+      // For owners, show all their businesses regardless of status unless specified
+      if (status) {
+        where.status = status
+      }
     }
 
     // Filter by location if provided

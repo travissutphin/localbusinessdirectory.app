@@ -17,6 +17,7 @@ type Business = {
   imageUrl: string | null
   hoursJson: any | null
   status: string
+  isActive: boolean
   rejectionReason: string | null
   createdAt: string
   location: {
@@ -142,6 +143,30 @@ function AdminBusinessesContent() {
     }
   }
 
+  async function handleToggleActive(businessId: string, currentStatus: boolean) {
+    const action = currentStatus ? 'deactivate' : 'activate'
+    if (!confirm(`Are you sure you want to ${action} this business?`)) {
+      return
+    }
+
+    setActionLoading(true)
+    try {
+      const response = await fetch(`/api/admin/businesses/${businessId}/toggle-active`, {
+        method: 'PUT',
+      })
+
+      if (!response.ok) throw new Error(`Failed to ${action} business`)
+
+      // Refresh list
+      await fetchBusinesses()
+      setSelectedBusiness(null)
+    } catch (err: any) {
+      alert(err.message || `Failed to ${action} business. Please try again.`)
+    } finally {
+      setActionLoading(false)
+    }
+  }
+
   function getStatusBadge(status: string) {
     switch (status) {
       case 'APPROVED':
@@ -255,7 +280,18 @@ function AdminBusinessesContent() {
                       Owner: {business.owner.name || business.owner.email}
                     </p>
                   </div>
-                  {getStatusBadge(business.status)}
+                  <div className="flex flex-col items-end gap-2">
+                    {getStatusBadge(business.status)}
+                    {business.status === 'APPROVED' && (
+                      <span className={`inline-flex items-center px-2 py-1 rounded text-xs font-medium ${
+                        business.isActive
+                          ? 'bg-blue-500/20 text-blue-400 border border-blue-500/30'
+                          : 'bg-gray-500/20 text-gray-400 border border-gray-500/30'
+                      }`}>
+                        {business.isActive ? 'Active' : 'Inactive'}
+                      </span>
+                    )}
+                  </div>
                 </div>
 
                 <p className="text-slate-300 text-sm mb-4">
@@ -301,6 +337,20 @@ function AdminBusinessesContent() {
                       </button>
                     </>
                   )}
+
+                  {business.status === 'APPROVED' && (
+                    <button
+                      onClick={() => handleToggleActive(business.id, business.isActive)}
+                      disabled={actionLoading}
+                      className={`flex-1 inline-flex items-center justify-center px-4 py-2 text-white text-sm font-medium rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${
+                        business.isActive
+                          ? 'bg-gray-600 hover:bg-gray-700'
+                          : 'bg-green-600 hover:bg-green-700'
+                      }`}
+                    >
+                      {business.isActive ? 'Deactivate' : 'Activate'}
+                    </button>
+                  )}
                 </div>
               </div>
             ))}
@@ -317,7 +367,18 @@ function AdminBusinessesContent() {
                 <h2 className="text-2xl font-bold text-white mb-2">
                   {selectedBusiness.name}
                 </h2>
-                {getStatusBadge(selectedBusiness.status)}
+                <div className="flex items-center gap-2">
+                  {getStatusBadge(selectedBusiness.status)}
+                  {selectedBusiness.status === 'APPROVED' && (
+                    <span className={`inline-flex items-center px-2 py-1 rounded text-xs font-medium ${
+                      selectedBusiness.isActive
+                        ? 'bg-blue-500/20 text-blue-400 border border-blue-500/30'
+                        : 'bg-gray-500/20 text-gray-400 border border-gray-500/30'
+                    }`}>
+                      {selectedBusiness.isActive ? 'Active' : 'Inactive'}
+                    </span>
+                  )}
+                </div>
               </div>
               <button
                 onClick={() => setSelectedBusiness(null)}
@@ -434,6 +495,22 @@ function AdminBusinessesContent() {
                 >
                   <XCircle className="w-5 h-5 mr-2" />
                   Reject Business
+                </button>
+              </div>
+            )}
+
+            {selectedBusiness.status === 'APPROVED' && (
+              <div className="mt-6">
+                <button
+                  onClick={() => handleToggleActive(selectedBusiness.id, selectedBusiness.isActive)}
+                  disabled={actionLoading}
+                  className={`w-full inline-flex items-center justify-center px-6 py-3 text-white font-medium rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${
+                    selectedBusiness.isActive
+                      ? 'bg-gray-600 hover:bg-gray-700'
+                      : 'bg-green-600 hover:bg-green-700'
+                  }`}
+                >
+                  {selectedBusiness.isActive ? 'Deactivate Business' : 'Activate Business'}
                 </button>
               </div>
             )}

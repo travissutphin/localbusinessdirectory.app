@@ -132,6 +132,7 @@ model Business {
   pricing                  String?
   imageUrl                 String?   @map("image_url")
   status                   String    @default("PENDING") // 'PENDING', 'APPROVED', 'REJECTED'
+  isActive                 Boolean   @default(true) @map("is_active") // Admin can deactivate approved businesses
   rejectionReason          String?   @map("rejection_reason")
   businessRegistrationNumber String? @map("business_registration_number")
   createdAt                DateTime  @default(now()) @map("created_at")
@@ -150,6 +151,7 @@ model Business {
   @@index([ownerId, status])
   @@index([status, createdAt])
   @@index([approvedAt])
+  @@index([isActive])
   @@map("businesses")
 }
 

@@ -71,8 +71,9 @@ export async function PUT(
       return NextResponse.json({ error: 'Business not found' }, { status: 404 })
     }
 
-    // Only owner can update their business
-    if (existingBusiness.ownerId !== userId) {
+    // Only owner can update their business, or admin can update any business
+    const isAdmin = session.user.role === 'ADMIN'
+    if (!isAdmin && existingBusiness.ownerId !== userId) {
       return NextResponse.json(
         { error: 'Forbidden: You can only update your own businesses' },
         { status: 403 }
@@ -153,8 +154,9 @@ export async function DELETE(
       return NextResponse.json({ error: 'Business not found' }, { status: 404 })
     }
 
-    // Only owner can delete their business
-    if (existingBusiness.ownerId !== userId) {
+    // Only owner can delete their business, or admin can delete any business
+    const isAdmin = session.user.role === 'ADMIN'
+    if (!isAdmin && existingBusiness.ownerId !== userId) {
       return NextResponse.json(
         { error: 'Forbidden: You can only delete your own businesses' },
         { status: 403 }
