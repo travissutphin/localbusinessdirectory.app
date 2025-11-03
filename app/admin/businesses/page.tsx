@@ -369,7 +369,7 @@ function AdminBusinessesContent() {
       {/* Business Detail Modal */}
       {selectedBusiness && !showRejectModal && (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-          <div className="bg-slate-800 border border-slate-700 rounded-lg p-6 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+          <div className="bg-slate-800 border border-slate-700 rounded-lg p-6 max-w-2xl w-full max-h-[90vh] overflow-y-auto mx-4">
             <div className="flex items-start justify-between mb-4">
               <div>
                 <h2 className="text-2xl font-bold text-white mb-2">
@@ -390,7 +390,7 @@ function AdminBusinessesContent() {
               </div>
               <button
                 onClick={() => setSelectedBusiness(null)}
-                className="text-slate-400 hover:text-white"
+                className="text-slate-400 hover:text-white min-w-[44px] min-h-[44px] flex items-center justify-center text-2xl"
               >
                 ✕
               </button>
@@ -529,7 +529,7 @@ function AdminBusinessesContent() {
       {/* Reject Modal */}
       {showRejectModal && selectedBusiness && (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-          <div className="bg-slate-800 border border-slate-700 rounded-lg p-6 max-w-md w-full">
+          <div className="bg-slate-800 border border-slate-700 rounded-lg p-6 max-w-md w-full mx-4">
             <h2 className="text-xl font-bold text-white mb-4">Reject Business</h2>
 
             <p className="text-slate-300 text-sm mb-4">
@@ -541,6 +541,7 @@ function AdminBusinessesContent() {
               onChange={(e) => setRejectionReason(e.target.value)}
               rows={4}
               className="w-full px-4 py-2 bg-slate-900 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent mb-4"
+              style={{ fontSize: '16px' }}
               placeholder="e.g., Business information is incomplete or does not meet our guidelines..."
               required
             />

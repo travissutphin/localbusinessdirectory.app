@@ -143,7 +143,11 @@
 @layer components {
   /* ============ BUTTON COMPONENTS ============ */
   .btn {
-    @apply px-4 py-2 rounded-lg font-medium;
+    @apply px-6 py-3 rounded-lg font-medium;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     transition: all 200ms ease-in-out;
   }
 
@@ -191,6 +195,7 @@
   /* ============ INPUT COMPONENTS ============ */
   .input {
     @apply w-full px-4 py-2 border border-neutral-300 rounded-lg;
+    font-size: 16px; /* Prevent iOS zoom on focus */
   }
 
   .input:focus {
@@ -199,6 +204,7 @@
 
   .input-dark {
     @apply w-full px-4 py-2 bg-neutral-900 border border-neutral-600 rounded-lg text-white;
+    font-size: 16px; /* Prevent iOS zoom on focus */
   }
 
   .input-dark::placeholder {
