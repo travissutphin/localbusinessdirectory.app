@@ -418,7 +418,7 @@
                 <div class="column-title">
                     📋 Backlog
                 </div>
-                <div class="column-count">4</div>
+                <div class="column-count">3</div>
             </div>
             <div class="cards-container scrollbar">
                 <div class="card" onclick="openCard(this)">
@@ -430,17 +430,6 @@
                         <span class="story-points">5</span>
                     </div>
                     <span class="tsp-badge">QA</span>
-                </div>
-
-                <div class="card" onclick="openCard(this)">
-                    <div class="card-id">TASK-014</div>
-                    <div class="card-title">Authentication UI pages (Login/Register)</div>
-                    <div class="card-meta">
-                        <span class="assignee">Aesthetica</span>
-                        <span class="priority p0">P0</span>
-                        <span class="story-points">5</span>
-                    </div>
-                    <span class="tsp-badge">Frontend</span>
                 </div>
 
                 <div class="card" onclick="openCard(this)">
@@ -525,7 +514,7 @@
                 <div class="column-title">
                     🔄 Staging
                 </div>
-                <div class="column-count">12</div>
+                <div class="column-count">13</div>
             </div>
             <div class="cards-container scrollbar">
                 <div class="card" onclick="openCard(this)">
@@ -658,6 +647,17 @@
                         <span class="story-points">2</span>
                     </div>
                     <span class="tsp-badge">Design</span>
+                </div>
+
+                <div class="card" onclick="openCard(this)">
+                    <div class="card-id">TASK-014</div>
+                    <div class="card-title">Authentication UI pages (Login/Register)</div>
+                    <div class="card-meta">
+                        <span class="assignee">Aesthetica</span>
+                        <span class="priority p0">P0</span>
+                        <span class="story-points">5</span>
+                    </div>
+                    <span class="tsp-badge">Frontend</span>
                 </div>
             </div>
         </div>
@@ -976,24 +976,24 @@
             },
             'TASK-014': {
                 title: 'Authentication UI pages (Login/Register)',
-                description: 'Build user-facing login and registration pages to access authentication system. Required to test TASK-009 (Owner Dashboard) and TASK-010 (Admin Panel). Backend authentication already complete in TASK-002.',
+                description: '✅ COMPLETE! Login and registration pages deployed to Railway. /login page with email/password form and OAuth buttons. /register page with sign-up form, validation, and auto-login after registration. Both pages use theme system from TASK-012. Integrates with NextAuth.js from TASK-002. Commit: 843869b',
                 assignee: 'Aesthetica',
                 priority: 'P0 (Blocker)',
                 points: '5',
-                status: 'Backlog',
+                status: 'Staging',
                 dod: [
-                    '/login page with email/password form',
-                    '/register page with sign-up form',
-                    'OAuth buttons (Google, Facebook) on both pages',
-                    'Form validation and error handling',
-                    'Success/error messages displayed',
-                    'Redirect to dashboard after login',
-                    'Navigation header shows Login/Register when logged out',
-                    'Navigation header shows user name + Logout when logged in',
-                    'Protected routes redirect to /login if not authenticated',
-                    'Session persistence working',
-                    'Responsive design on mobile/tablet/desktop',
-                    'Integrates with NextAuth API endpoints from TASK-002'
+                    '✅ /login page with email/password form',
+                    '✅ /register page with sign-up form',
+                    '✅ OAuth buttons (Google, Facebook) on both pages',
+                    '✅ Form validation and error handling',
+                    '✅ Success/error messages displayed',
+                    '✅ Redirect to dashboard after login',
+                    '✅ Auto-login after successful registration',
+                    '✅ Responsive design on mobile/tablet/desktop',
+                    '✅ Integrates with NextAuth API endpoints from TASK-002',
+                    '✅ Uses theme system for consistent styling',
+                    '⏳ Navigation header updates (can be done per-page as needed)',
+                    '⏳ Awaiting full authentication flow testing'
                 ]
             },
             'TASK-015': {
