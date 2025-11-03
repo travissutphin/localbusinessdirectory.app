@@ -1,8 +1,10 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { Building2, CheckCircle, XCircle, Clock, Eye, Mail, Phone, Globe, MapPin } from 'lucide-react'
+
+export const dynamic = 'force-dynamic'
 
 type Business = {
   id: string

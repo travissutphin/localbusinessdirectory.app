@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Building2, Clock, CheckCircle, XCircle, AlertCircle } from 'lucide-react'
 
+export const dynamic = 'force-dynamic'
+
 type Stats = {
   total: number
   pending: number

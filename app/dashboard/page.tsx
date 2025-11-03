@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Building2, Plus, Edit, Trash2, Clock, CheckCircle, XCircle } from 'lucide-react'
 
+export const dynamic = 'force-dynamic'
+
 type Business = {
   id: string
   name: string

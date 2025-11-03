@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { ArrowLeft, Save } from 'lucide-react'
 
+export const dynamic = 'force-dynamic'
+
 type Location = {
   id: string
   name: string
