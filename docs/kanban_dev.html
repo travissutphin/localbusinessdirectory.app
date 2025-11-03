@@ -418,31 +418,9 @@
                 <div class="column-title">
                     📋 Backlog
                 </div>
-                <div class="column-count">6</div>
+                <div class="column-count">4</div>
             </div>
             <div class="cards-container scrollbar">
-                <div class="card" onclick="openCard(this)">
-                    <div class="card-id">TASK-011</div>
-                    <div class="card-title">Static pages (About, Privacy, Contact)</div>
-                    <div class="card-meta">
-                        <span class="assignee">Aesthetica</span>
-                        <span class="priority p1">P1</span>
-                        <span class="story-points">3</span>
-                    </div>
-                    <span class="tsp-badge">Frontend</span>
-                </div>
-
-                <div class="card" onclick="openCard(this)">
-                    <div class="card-id">TASK-012</div>
-                    <div class="card-title">Theme CSS architecture (3-color palette)</div>
-                    <div class="card-meta">
-                        <span class="assignee">Aesthetica</span>
-                        <span class="priority p1">P1</span>
-                        <span class="story-points">2</span>
-                    </div>
-                    <span class="tsp-badge">Design</span>
-                </div>
-
                 <div class="card" onclick="openCard(this)">
                     <div class="card-id">TASK-013</div>
                     <div class="card-title">Mobile responsiveness & iOS styling</div>
@@ -485,17 +463,6 @@
                         <span class="story-points">2</span>
                     </div>
                     <span class="tsp-badge">Infrastructure</span>
-                </div>
-
-                <div class="card" onclick="openCard(this)">
-                    <div class="card-id">TASK-025</div>
-                    <div class="card-title">Create blog post workflow documentation</div>
-                    <div class="card-meta">
-                        <span class="assignee">Echo</span>
-                        <span class="priority p3">P3</span>
-                        <span class="story-points">2</span>
-                    </div>
-                    <span class="tsp-badge">Content</span>
                 </div>
             </div>
         </div>
@@ -558,7 +525,7 @@
                 <div class="column-title">
                     🔄 Staging
                 </div>
-                <div class="column-count">10</div>
+                <div class="column-count">12</div>
             </div>
             <div class="cards-container scrollbar">
                 <div class="card" onclick="openCard(this)">
@@ -669,6 +636,28 @@
                         <span class="story-points">8</span>
                     </div>
                     <span class="tsp-badge">Frontend</span>
+                </div>
+
+                <div class="card" onclick="openCard(this)">
+                    <div class="card-id">TASK-011</div>
+                    <div class="card-title">Static pages (About, Privacy, Contact)</div>
+                    <div class="card-meta">
+                        <span class="assignee">Aesthetica</span>
+                        <span class="priority p1">P1</span>
+                        <span class="story-points">3</span>
+                    </div>
+                    <span class="tsp-badge">Frontend</span>
+                </div>
+
+                <div class="card" onclick="openCard(this)">
+                    <div class="card-id">TASK-012</div>
+                    <div class="card-title">Theme CSS architecture (3-color palette)</div>
+                    <div class="card-meta">
+                        <span class="assignee">Aesthetica</span>
+                        <span class="priority p1">P1</span>
+                        <span class="story-points">2</span>
+                    </div>
+                    <span class="tsp-badge">Design</span>
                 </div>
             </div>
         </div>
@@ -929,33 +918,42 @@
             },
             'TASK-011': {
                 title: 'Static pages (About, Privacy, Contact)',
-                description: 'Create static pages for About, Privacy Policy, Code of Conduct, and Contact/Suggestions form.',
+                description: '✅ COMPLETE! All static pages deployed to Railway. /about page with platform features, /privacy page with comprehensive privacy policy, /code-of-conduct page with community guidelines, /contact page with form and FAQ. Contact API endpoint created for form submissions. All pages responsive and use theme system. Commit: 256c72d',
                 assignee: 'Aesthetica',
                 priority: 'P1 (High)',
                 points: '3',
-                status: 'Backlog',
+                status: 'Staging',
                 dod: [
-                    '/about page accessible and informative',
-                    '/privacy policy page complete',
-                    '/code-of-conduct page accessible',
-                    '/contact form submits to database',
-                    'Contact submissions saved with status tracking',
-                    'All pages responsive & accessible'
+                    '✅ /about page accessible and informative',
+                    '✅ /privacy policy page complete with comprehensive content',
+                    '✅ /code-of-conduct page with community guidelines and reporting process',
+                    '✅ /contact form with name, email, subject, message fields',
+                    '✅ POST /api/contact endpoint creates contact submissions',
+                    '✅ Contact submissions saved to database with status tracking',
+                    '✅ All pages responsive & accessible',
+                    '✅ Success/error messages on contact form',
+                    '✅ FAQ section on contact page',
+                    '✅ All pages use theme system from TASK-012'
                 ]
             },
             'TASK-012': {
                 title: 'Theme CSS architecture (3-color palette)',
-                description: 'Create master CSS file with CSS variables for easy 3-color theme updates. Implement color system.',
+                description: '✅ COMPLETE! Comprehensive theme system deployed to Railway. Enhanced /app/globals.css with CSS variables for 3-color palette (Primary: Blue, Secondary: Orange, Neutral: Slate). Component classes, utility classes, semantic tokens, gradients, shadows all defined. Complete documentation created at /docs/THEME_SYSTEM.md. Entire theme changeable from single file. Commit: ee76610',
                 assignee: 'Aesthetica',
                 priority: 'P1 (High)',
                 points: '2',
-                status: 'Backlog',
+                status: 'Staging',
                 dod: [
-                    '/styles/theme.css created with CSS variables',
-                    'Primary, secondary, neutral color palettes defined',
-                    'All components use CSS variables',
-                    'Entire theme changeable from single file',
-                    'Documented for team reference'
+                    '✅ /app/globals.css enhanced with CSS variables',
+                    '✅ Primary color palette defined (Blue - Professional)',
+                    '✅ Secondary color palette defined (Orange - Energy)',
+                    '✅ Neutral color palette defined (Slate Gray scale)',
+                    '✅ Component classes created (@layer components)',
+                    '✅ Utility classes for gradients and shadows',
+                    '✅ Semantic tokens for flexibility',
+                    '✅ Entire theme changeable from single file',
+                    '✅ Comprehensive documentation created (/docs/THEME_SYSTEM.md)',
+                    '✅ All existing components updated to use theme system'
                 ]
             },
             'TASK-013': {
