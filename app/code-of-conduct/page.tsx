@@ -95,7 +95,7 @@ export default function CodeOfConductPage() {
             <ul className="space-y-3 text-neutral-300">
               <li className="flex gap-3">
                 <span className="text-green-500 flex-shrink-0">✓</span>
-                <span><strong>Be Respectful:</strong> Show consideration for others' time, perspectives, and experiences</span>
+                <span><strong>Be Respectful:</strong> Show consideration for others&apos; time, perspectives, and experiences</span>
               </li>
               <li className="flex gap-3">
                 <span className="text-green-500 flex-shrink-0">✓</span>
@@ -311,7 +311,7 @@ export default function CodeOfConductPage() {
                 <div>
                   <h3 className="text-lg font-bold mb-1">Follow Up</h3>
                   <p className="text-neutral-300 text-sm leading-relaxed">
-                    We'll notify you of the outcome while respecting privacy of all parties involved.
+                    We&apos;ll notify you of the outcome while respecting privacy of all parties involved.
                   </p>
                 </div>
               </div>

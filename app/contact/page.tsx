@@ -63,7 +63,7 @@ export default function ContactPage() {
             Get in Touch
           </h1>
           <p className="text-xl text-neutral-200">
-            Have questions, suggestions, or need support? We'd love to hear from you.
+            Have questions, suggestions, or need support? We&apos;d love to hear from you.
           </p>
         </div>
       </section>
@@ -80,7 +80,7 @@ export default function ContactPage() {
                 <div>
                   <h3 className="text-xl font-bold mb-2 text-green-400">Message Sent Successfully!</h3>
                   <p className="text-neutral-300">
-                    Thank you for reaching out. We'll get back to you as soon as possible.
+                    Thank you for reaching out. We&apos;ll get back to you as soon as possible.
                   </p>
                 </div>
               </div>
@@ -206,7 +206,7 @@ export default function ContactPage() {
               <h3 className="text-xl font-bold mb-3 text-secondary-400">Business Inquiries</h3>
               <p className="text-neutral-300 text-sm leading-relaxed">
                 Interested in listing your business or have questions about our services?
-                We're here to help you connect with your community.
+                We&apos;re here to help you connect with your community.
               </p>
             </div>
 
@@ -214,7 +214,7 @@ export default function ContactPage() {
               <h3 className="text-xl font-bold mb-3 text-secondary-400">Technical Support</h3>
               <p className="text-neutral-300 text-sm leading-relaxed">
                 Experiencing technical issues or need help with your account?
-                Let us know and we'll assist you as quickly as possible.
+                Let us know and we&apos;ll assist you as quickly as possible.
               </p>
             </div>
           </div>

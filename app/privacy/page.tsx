@@ -265,7 +265,7 @@ export default function PrivacyPage() {
 
           {/* Children's Privacy */}
           <div className="card-dark text-white">
-            <h2 className="text-3xl font-bold mb-4">Children's Privacy</h2>
+            <h2 className="text-3xl font-bold mb-4">Children&apos;s Privacy</h2>
             <p className="text-neutral-300 leading-relaxed">
               Our platform is not intended for children under the age of 13. We do not knowingly
               collect personal information from children. If we become aware that we have collected
@@ -289,7 +289,7 @@ export default function PrivacyPage() {
             <p className="text-neutral-300 leading-relaxed">
               We may update this Privacy Policy from time to time to reflect changes in our practices,
               technology, legal requirements, or other factors. We will notify you of any material changes
-              by posting the updated policy on this page with a new "Last Updated" date. Your continued
+              by posting the updated policy on this page with a new &quot;Last Updated&quot; date. Your continued
               use of our platform after changes are posted constitutes acceptance of the updated policy.
             </p>
           </div>

@@ -31,7 +31,7 @@ export default function AboutPage() {
             <p className="text-lg text-neutral-300 leading-relaxed text-center max-w-3xl mx-auto">
               To empower local businesses by providing them with the tools and visibility they need
               to reach their community, while making it effortless for customers to find exactly
-              what they're looking for in their neighborhood.
+              what they&apos;re looking for in their neighborhood.
             </p>
           </div>
         </div>
@@ -184,8 +184,8 @@ export default function AboutPage() {
               Ready to Get Started?
             </h2>
             <p className="text-xl text-neutral-300 mb-8 leading-relaxed">
-              Whether you're looking for local services or want to list your business,
-              we're here to help connect your community.
+              Whether you&apos;re looking for local services or want to list your business,
+              we&apos;re here to help connect your community.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a
