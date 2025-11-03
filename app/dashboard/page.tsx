@@ -127,15 +127,30 @@ export default function OwnerDashboard() {
               {user && (
                 <p className="mt-1 text-sm text-slate-400">
                   Welcome back, {user.name || user.email}
+                  {user.role === 'ADMIN' && (
+                    <span className="ml-2 px-2 py-0.5 bg-orange-500/20 text-orange-400 text-xs font-medium rounded border border-orange-500/30">
+                      ADMIN
+                    </span>
+                  )}
                 </p>
               )}
             </div>
-            <a
-              href="/"
-              className="text-sm text-blue-400 hover:text-blue-300 transition-colors"
-            >
-              ← Back to Home
-            </a>
+            <div className="flex items-center gap-4">
+              {user?.role === 'ADMIN' && (
+                <a
+                  href="/admin"
+                  className="px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white text-sm font-medium rounded-lg transition-colors"
+                >
+                  Admin Panel
+                </a>
+              )}
+              <a
+                href="/"
+                className="text-sm text-blue-400 hover:text-blue-300 transition-colors"
+              >
+                ← Back to Home
+              </a>
+            </div>
           </div>
         </div>
       </header>
