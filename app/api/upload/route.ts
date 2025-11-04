@@ -7,13 +7,10 @@ import { requireAuth } from '@/lib/auth-utils'
  * Upload image to Cloudinary
  * Requires authentication
  */
-export async function POST(req: NextRequest) {
+export async function POST(req: NextRequest): Promise<Response> {
   try {
     // Require authentication
-    const authResult = await requireAuth(req)
-    if ('error' in authResult) {
-      return authResult.error
-    }
+    await requireAuth()
 
     const body = await req.json()
     const { file, folder } = body
@@ -53,6 +50,15 @@ export async function POST(req: NextRequest) {
     })
   } catch (error) {
     console.error('Upload API error:', error)
+
+    // Handle authentication errors
+    if (error instanceof Error && error.message === 'Unauthorized') {
+      return NextResponse.json(
+        { error: 'Unauthorized' },
+        { status: 401 }
+      )
+    }
+
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
