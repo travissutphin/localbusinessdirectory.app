@@ -418,20 +418,9 @@
                 <div class="column-title">
                     📋 Backlog
                 </div>
-                <div class="column-count">3</div>
+                <div class="column-count">2</div>
             </div>
             <div class="cards-container scrollbar">
-                <div class="card" onclick="openCard(this)">
-                    <div class="card-id">TASK-013</div>
-                    <div class="card-title">Mobile responsiveness & iOS styling</div>
-                    <div class="card-meta">
-                        <span class="assignee">Verity</span>
-                        <span class="priority p0">P0</span>
-                        <span class="story-points">5</span>
-                    </div>
-                    <span class="tsp-badge">QA</span>
-                </div>
-
                 <div class="card" onclick="openCard(this)">
                     <div class="card-id">TASK-015</div>
                     <div class="card-title">Implement geolocation detection with flag</div>
@@ -501,10 +490,19 @@
                 <div class="column-title">
                     ✔️ QA Testing
                 </div>
-                <div class="column-count">0</div>
+                <div class="column-count">1</div>
             </div>
             <div class="cards-container scrollbar">
-                <!-- Empty -->
+                <div class="card" onclick="openCard(this)">
+                    <div class="card-id">TASK-013</div>
+                    <div class="card-title">Mobile responsiveness & iOS styling</div>
+                    <div class="card-meta">
+                        <span class="assignee">Verity</span>
+                        <span class="priority p0">P0</span>
+                        <span class="story-points">5</span>
+                    </div>
+                    <span class="tsp-badge">QA</span>
+                </div>
             </div>
         </div>
 
@@ -958,20 +956,20 @@
             },
             'TASK-013': {
                 title: 'Mobile responsiveness & iOS styling',
-                description: 'Comprehensive testing and fixes for mobile-first design, iOS footer nav, touch targets, safe areas. Final QA task that blocks launch.',
+                description: '🔄 IN QA TESTING. Critical and HIGH priority fixes complete! [Verity] identified issues, critical viewport/safe-area fixes deployed (commit 3b0af9c). [Aesthetica] implemented button touch targets (44px), input zoom prevention (16px), modal improvements, close button fixes (commit 65d140d). NEXT: [Verity] comprehensive device testing on actual iOS devices required.',
                 assignee: 'Verity',
                 priority: 'P0 (Blocker)',
                 points: '5',
-                status: 'Backlog',
+                status: 'QA',
                 dod: [
-                    'No horizontal scroll on any viewport',
-                    'Footer nav sticky with iOS styling',
-                    'Touch targets minimum 44×44px',
-                    'Safe area insets respected for notch',
-                    'Form inputs zoom correctly',
-                    'Images responsive without overflow',
-                    'Tested on iOS Safari & Chrome',
-                    'Tested on actual iOS device'
+                    '✅ No horizontal scroll on any viewport (modals fixed)',
+                    '⏳ Footer nav sticky with iOS styling (not required)',
+                    '✅ Touch targets minimum 44×44px (all buttons updated)',
+                    '✅ Safe area insets respected for notch (utilities added)',
+                    '✅ Form inputs zoom correctly (16px font-size)',
+                    '✅ Images responsive without overflow',
+                    '⏳ Tested on iOS Safari & Chrome (needs device testing)',
+                    '⏳ Tested on actual iOS device (FINAL STEP)'
                 ]
             },
             'TASK-014': {
