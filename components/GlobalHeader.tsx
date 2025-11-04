@@ -180,9 +180,10 @@ export default function GlobalHeader() {
 
       {/* Slideout Menu */}
       <nav
-        className={`hidden lg:block fixed top-0 right-0 h-full w-80 bg-white shadow-2xl z-[101] transform transition-transform duration-300 ease-in-out ${
+        className={`hidden lg:block fixed top-0 right-0 h-full bg-white shadow-2xl z-[101] transform transition-transform duration-300 ease-in-out ${
           isOpen ? 'translate-x-0' : 'translate-x-full'
         }`}
+        style={{ width: '35%' }}
         role="navigation"
         aria-label="Main navigation"
       >
