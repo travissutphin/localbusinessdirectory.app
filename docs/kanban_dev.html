@@ -492,9 +492,20 @@
                 <div class="column-title">
                     🔄 Staging
                 </div>
-                <div class="column-count">18</div>
+                <div class="column-count">19</div>
             </div>
             <div class="cards-container scrollbar">
+                <div class="card" onclick="openCard(this)">
+                    <div class="card-id">TASK-019</div>
+                    <div class="card-title">Global desktop header with logo and navigation</div>
+                    <div class="card-meta">
+                        <span class="assignee">Aesthetica</span>
+                        <span class="priority p1">P1</span>
+                        <span class="story-points">5</span>
+                    </div>
+                    <span class="tsp-badge">UI/UX</span>
+                </div>
+
                 <div class="card" onclick="openCard(this)">
                     <div class="card-id">TASK-016</div>
                     <div class="card-title">Remove "Change Location" link from header</div>
@@ -1107,6 +1118,32 @@
                     '✅ Maintain iOS safe area support (safe-area-bottom)',
                     '⏳ Test on actual iOS and Android devices (production verification)',
                     '✅ Ensure 44x44px minimum touch targets'
+                ]
+            },
+            'TASK-019': {
+                title: 'Global desktop header with logo and navigation',
+                description: '✅ COMPLETE! Created GlobalHeader component with professional horizontal navigation bar for desktop. Features text-based logo with Building2 icon on left, navigation links aligned to right. Sticky/fixed positioning at top, desktop-only (lg: and above). Includes dynamic auth-based links, user dropdown menu with logout, active page highlighting, smooth hover effects using theme CSS variables. Integrated into app/layout.tsx with proper body padding. Works alongside existing DesktopNav hamburger menu for additional navigation options.',
+                assignee: 'Aesthetica',
+                priority: 'P1 (High)',
+                points: '5',
+                status: 'Staging',
+                dod: [
+                    '✅ Create GlobalHeader component',
+                    '✅ Desktop-only visibility (hidden on mobile/tablet, visible lg: and above)',
+                    '✅ Logo positioned on the left side (text logo "Local Business Directory" with Building2 icon)',
+                    '✅ Navigation links aligned to the right in horizontal layout',
+                    '✅ Navigation includes: Home, About, Privacy, Contact, Code of Conduct',
+                    '✅ Dynamic auth-based links: Login/Create Account (guests), Dashboard (owners), Admin Panel (admins)',
+                    '✅ User menu dropdown for authenticated users with Logout option',
+                    '✅ Sticky/fixed positioning at top of viewport (z-index: 50)',
+                    '✅ Active page highlighting for current route',
+                    '✅ Smooth hover effects and transitions using theme CSS variables',
+                    '✅ Proper z-index layering (above page content)',
+                    '✅ Integrates with app/layout.tsx as global component',
+                    '✅ Responsive behavior - body padding-top only on lg: breakpoint',
+                    '✅ ARIA labels and accessibility support (aria-expanded, aria-haspopup)',
+                    '✅ Kept existing DesktopNav hamburger menu for additional navigation',
+                    '⏳ Tested across all desktop browsers (production verification needed)'
                 ]
             },
             'TASK-020': {

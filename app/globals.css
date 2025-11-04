@@ -129,6 +129,14 @@
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   }
 
+  /* ============ GLOBAL HEADER SPACING ============ */
+  /* Add padding for fixed desktop header - only on desktop (lg and above) */
+  @media (min-width: 1024px) {
+    body {
+      padding-top: 4rem; /* 64px - height of GlobalHeader */
+    }
+  }
+
   /* ============ iOS SAFE AREA SUPPORT ============ */
   /* Supports iPhone notches, Dynamic Island, and home indicator */
   html {
