@@ -418,20 +418,9 @@
                 <div class="column-title">
                     📋 Backlog
                 </div>
-                <div class="column-count">2</div>
+                <div class="column-count">1</div>
             </div>
             <div class="cards-container scrollbar">
-                <div class="card" onclick="openCard(this)">
-                    <div class="card-id">TASK-015</div>
-                    <div class="card-title">Implement geolocation detection with flag</div>
-                    <div class="card-meta">
-                        <span class="assignee">Syntax</span>
-                        <span class="priority p1">P1</span>
-                        <span class="story-points">3</span>
-                    </div>
-                    <span class="tsp-badge">Backend</span>
-                </div>
-
                 <div class="card" onclick="openCard(this)">
                     <div class="card-id">TASK-020</div>
                     <div class="card-title">Setup Cloudinary for image uploads</div>
@@ -503,7 +492,7 @@
                 <div class="column-title">
                     🔄 Staging
                 </div>
-                <div class="column-count">14</div>
+                <div class="column-count">15</div>
             </div>
             <div class="cards-container scrollbar">
                 <div class="card" onclick="openCard(this)">
@@ -516,6 +505,18 @@
                     </div>
                     <span class="tsp-badge">UI/UX</span>
                 </div>
+
+                <div class="card" onclick="openCard(this)">
+                    <div class="card-id">TASK-015</div>
+                    <div class="card-title">Implement geolocation detection with flag</div>
+                    <div class="card-meta">
+                        <span class="assignee">Syntax</span>
+                        <span class="priority p1">P1</span>
+                        <span class="story-points">3</span>
+                    </div>
+                    <span class="tsp-badge">Backend</span>
+                </div>
+
                 <div class="card" onclick="openCard(this)">
                     <div class="card-id">TASK-001</div>
                     <div class="card-title">Setup Railway deployment & PostgreSQL</div>
@@ -999,18 +1000,21 @@
             },
             'TASK-015': {
                 title: 'Implement geolocation detection with flag',
-                description: 'Setup IP geolocation API integration with geolocation_flag to minimize API calls. Store user preference.',
+                description: '✅ COMPLETE! IP geolocation detection deployed to Railway with smart location flow. Created /api/geolocation/detect endpoint using ip-api.com (45 req/min free tier). Exact zip code matching + approximate city/region matching. Created /api/user/location-preference for saving preferences. Updated home page with 4-step detection flow: localStorage → user DB preference → geolocation attempt → manual selector. Geolocation flag prevents re-detection. Visual feedback with loading spinner and detected location card. Auto-redirect after 2s. Commit: 4e25a82',
                 assignee: 'Syntax',
                 priority: 'P1 (High)',
                 points: '3',
-                status: 'Backlog',
+                status: 'Staging',
                 dod: [
-                    'ip-api.com free tier integrated',
-                    'Geolocation flag prevents re-detection',
-                    'Closest location matched to zip codes',
-                    'User preference persisted in DB',
-                    'Fallback to manual selection if no match',
-                    'Rate limiting respected'
+                    '✅ ip-api.com free tier integrated (45 req/min limit)',
+                    '✅ Geolocation flag prevents re-detection for authenticated users',
+                    '✅ Closest location matched to zip codes (exact + approximate)',
+                    '✅ User preference persisted in DB via /api/user/location-preference',
+                    '✅ Fallback to manual selection if no match',
+                    '✅ Rate limiting respected (localStorage for non-auth users)',
+                    '✅ Smart 4-step detection flow implemented',
+                    '✅ Visual feedback with loading states and detected location card',
+                    '⏳ Production testing on Railway with real IP geolocation'
                 ]
             },
             'TASK-020': {
