@@ -129,7 +129,7 @@ export default function DesktopNav() {
   return (
     <>
       {/* Desktop Only - Hidden on mobile/tablet */}
-      <div className="hidden lg:block fixed top-6 left-6 z-50">
+      <div className="hidden lg:block fixed top-6 right-6 z-50">
         {/* Hamburger Menu Button */}
         <button
           onClick={() => setIsOpen(true)}
@@ -137,7 +137,7 @@ export default function DesktopNav() {
           aria-label="Open navigation menu"
           aria-expanded={isOpen}
         >
-          <Menu className="w-6 h-6 text-neutral-800" />
+          <Menu className="w-6 h-6" style={{ color: 'var(--color-secondary-500)' }} />
         </button>
       </div>
 
@@ -152,8 +152,8 @@ export default function DesktopNav() {
 
       {/* Slideout Menu */}
       <nav
-        className={`hidden lg:block fixed top-0 left-0 h-full w-80 bg-white shadow-2xl z-[101] transform transition-transform duration-300 ease-in-out ${
-          isOpen ? 'translate-x-0' : '-translate-x-full'
+        className={`hidden lg:block fixed top-0 right-0 h-full w-80 bg-white shadow-2xl z-[101] transform transition-transform duration-300 ease-in-out ${
+          isOpen ? 'translate-x-0' : 'translate-x-full'
         }`}
         role="navigation"
         aria-label="Main navigation"
