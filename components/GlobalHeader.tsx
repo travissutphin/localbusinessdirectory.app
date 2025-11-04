@@ -128,6 +128,7 @@ export default function GlobalHeader() {
 
   return (
     <>
+      {/* Desktop Header */}
       <header className="hidden lg:block fixed top-0 left-0 right-0 bg-white/95 backdrop-blur-md border-b border-neutral-200 z-50">
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex items-center justify-between h-16">
@@ -151,6 +152,20 @@ export default function GlobalHeader() {
               <Menu className="w-6 h-6" style={{ color: 'var(--color-secondary-500)' }} />
             </button>
           </div>
+        </div>
+      </header>
+
+      {/* Mobile Header */}
+      <header className="lg:hidden fixed top-0 left-0 right-0 bg-white/95 backdrop-blur-md border-b border-neutral-200 z-50 safe-top">
+        <div className="flex items-center justify-center h-14 px-4">
+          <a
+            href="/"
+            className="flex items-center gap-2 text-lg font-bold transition-colors"
+            style={{ color: 'var(--color-primary-600)' }}
+          >
+            <Building2 className="w-6 h-6" style={{ color: 'var(--color-secondary-500)' }} />
+            <span>Local Business Directory</span>
+          </a>
         </div>
       </header>
 
