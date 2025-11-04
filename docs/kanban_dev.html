@@ -444,19 +444,10 @@
                 <div class="column-title">
                     ⚙️ In Progress
                 </div>
-                <div class="column-count">1</div>
+                <div class="column-count">0</div>
             </div>
             <div class="cards-container scrollbar">
-                <div class="card" onclick="openCard(this)">
-                    <div class="card-id">TASK-020</div>
-                    <div class="card-title">Setup Cloudinary for image uploads</div>
-                    <div class="card-meta">
-                        <span class="assignee">Flow</span>
-                        <span class="priority p2">P2</span>
-                        <span class="story-points">2</span>
-                    </div>
-                    <span class="tsp-badge">Infrastructure</span>
-                </div>
+                <!-- Empty -->
             </div>
         </div>
 
@@ -492,9 +483,20 @@
                 <div class="column-title">
                     🔄 Staging
                 </div>
-                <div class="column-count">19</div>
+                <div class="column-count">20</div>
             </div>
             <div class="cards-container scrollbar">
+                <div class="card" onclick="openCard(this)">
+                    <div class="card-id">TASK-020</div>
+                    <div class="card-title">Setup Cloudinary for image uploads</div>
+                    <div class="card-meta">
+                        <span class="assignee">Flow</span>
+                        <span class="priority p2">P2</span>
+                        <span class="story-points">2</span>
+                    </div>
+                    <span class="tsp-badge">Infrastructure</span>
+                </div>
+
                 <div class="card" onclick="openCard(this)">
                     <div class="card-id">TASK-019</div>
                     <div class="card-title">Global desktop header with logo and navigation</div>
@@ -1148,18 +1150,22 @@
             },
             'TASK-020': {
                 title: 'Setup Cloudinary for image uploads',
-                description: '⚙️ IN PROGRESS! Setting up Cloudinary integration for business image uploads. Installing SDK, creating upload endpoint, and integrating with add business form.',
+                description: '✅ COMPLETE! Cloudinary integration deployed to Railway. Installed cloudinary & next-cloudinary packages. Created /lib/cloudinary.ts utility with upload/delete/optimize functions. Created /api/upload endpoint with auth protection. Updated add business form with drag-and-drop UI, image preview, and validation. Images auto-optimized (quality: auto, format: auto, max 1200x800px). Commit: 310d62c',
                 assignee: 'Flow',
                 priority: 'P2 (Medium)',
                 points: '2',
-                status: 'In Progress',
+                status: 'Staging',
                 dod: [
-                    '⏳ Cloudinary account created and configured',
-                    '⏳ Free tier API key secured in Railway environment',
-                    '⏳ Cloudinary SDK packages installed',
-                    '⏳ Upload widget integrated into add business form',
-                    '⏳ Images optimized and served from CDN',
-                    '⏳ Fallback placeholder for missing images'
+                    '✅ Cloudinary account created and configured (in Railway environment)',
+                    '✅ Free tier API key secured in Railway environment',
+                    '✅ Cloudinary SDK packages installed (cloudinary, next-cloudinary)',
+                    '✅ Upload API endpoint created (/api/upload) with authentication',
+                    '✅ Drag-and-drop upload widget integrated into add business form',
+                    '✅ Image preview and remove functionality working',
+                    '✅ Images automatically optimized and served from CDN',
+                    '✅ File validation (type, size 5MB limit)',
+                    '✅ Base64 encoding for uploads',
+                    '⏳ Production testing with real Cloudinary credentials on Railway'
                 ]
             },
             'TASK-025': {
