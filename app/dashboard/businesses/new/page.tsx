@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { ArrowLeft, Save } from 'lucide-react'
+import { ArrowLeft, Save, Upload, X, Image as ImageIcon } from 'lucide-react'
 
 export const dynamic = 'force-dynamic'
 
@@ -24,6 +24,8 @@ export default function NewBusinessPage() {
   const [directories, setDirectories] = useState<Directory[]>([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  const [uploading, setUploading] = useState(false)
+  const [imagePreview, setImagePreview] = useState<string>('')
 
   const [formData, setFormData] = useState({
     name: '',
@@ -115,6 +117,67 @@ export default function NewBusinessPage() {
   function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) {
     const { name, value } = e.target
     setFormData(prev => ({ ...prev, [name]: value }))
+  }
+
+  async function handleImageUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0]
+    if (!file) return
+
+    // Validate file type
+    if (!file.type.startsWith('image/')) {
+      setError('Please upload an image file (JPG, PNG, etc.)')
+      return
+    }
+
+    // Validate file size (max 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      setError('Image size must be less than 5MB')
+      return
+    }
+
+    setUploading(true)
+    setError('')
+
+    try {
+      // Convert to base64
+      const reader = new FileReader()
+      reader.readAsDataURL(file)
+
+      reader.onload = async () => {
+        const base64 = reader.result as string
+        setImagePreview(base64)
+
+        // Upload to Cloudinary
+        const response = await fetch('/api/upload', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ file: base64, folder: 'businesses' }),
+        })
+
+        const data = await response.json()
+
+        if (!response.ok) {
+          throw new Error(data.error || 'Upload failed')
+        }
+
+        // Update form data with Cloudinary URL
+        setFormData(prev => ({ ...prev, imageUrl: data.url }))
+        setUploading(false)
+      }
+
+      reader.onerror = () => {
+        setError('Failed to read image file')
+        setUploading(false)
+      }
+    } catch (err: any) {
+      setError(err.message || 'Failed to upload image')
+      setUploading(false)
+    }
+  }
+
+  function removeImage() {
+    setFormData(prev => ({ ...prev, imageUrl: '' }))
+    setImagePreview('')
   }
 
   // Find location slug from ID
@@ -316,21 +379,83 @@ export default function NewBusinessPage() {
             <p className="mt-1 text-xs text-slate-400">Enter your business hours in plain text format</p>
           </div>
 
-          {/* Image URL */}
+          {/* Image Upload */}
           <div className="mb-8">
-            <label htmlFor="imageUrl" className="block text-sm font-medium text-slate-300 mb-2">
-              Business Image URL (Optional)
+            <label className="block text-sm font-medium text-slate-300 mb-2">
+              Business Image (Optional)
             </label>
-            <input
-              type="url"
-              id="imageUrl"
-              name="imageUrl"
-              value={formData.imageUrl}
-              onChange={handleChange}
-              className="w-full px-4 py-2 bg-slate-900 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
-              placeholder="https://example.com/image.jpg"
-            />
-            <p className="mt-1 text-xs text-slate-400">Enter a direct image URL (JPG, PNG)</p>
+
+            {!formData.imageUrl && !imagePreview ? (
+              <div className="border-2 border-dashed border-slate-600 rounded-lg p-8 text-center">
+                <input
+                  type="file"
+                  id="imageUpload"
+                  accept="image/*"
+                  onChange={handleImageUpload}
+                  disabled={uploading}
+                  className="hidden"
+                />
+                <label
+                  htmlFor="imageUpload"
+                  className={`cursor-pointer ${uploading ? 'opacity-50 cursor-not-allowed' : ''}`}
+                >
+                  <div className="flex flex-col items-center">
+                    {uploading ? (
+                      <>
+                        <div className="w-12 h-12 border-4 border-orange-500 border-t-transparent rounded-full animate-spin mb-4"></div>
+                        <p className="text-slate-400 text-sm">Uploading image...</p>
+                      </>
+                    ) : (
+                      <>
+                        <Upload className="w-12 h-12 text-slate-400 mb-4" />
+                        <p className="text-slate-300 font-medium mb-2">
+                          Click to upload or drag and drop
+                        </p>
+                        <p className="text-slate-400 text-sm">
+                          PNG, JPG up to 5MB
+                        </p>
+                      </>
+                    )}
+                  </div>
+                </label>
+              </div>
+            ) : (
+              <div className="relative border border-slate-600 rounded-lg p-4">
+                <div className="flex items-start gap-4">
+                  <div className="flex-shrink-0 w-32 h-32 bg-slate-900 rounded-lg overflow-hidden">
+                    {imagePreview || formData.imageUrl ? (
+                      <img
+                        src={imagePreview || formData.imageUrl}
+                        alt="Business preview"
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center">
+                        <ImageIcon className="w-8 h-8 text-slate-600" />
+                      </div>
+                    )}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-slate-300 font-medium mb-1">Image uploaded successfully</p>
+                    <p className="text-slate-400 text-sm break-all">
+                      {formData.imageUrl}
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={removeImage}
+                    className="flex-shrink-0 p-2 text-slate-400 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-colors"
+                    aria-label="Remove image"
+                  >
+                    <X className="w-5 h-5" />
+                  </button>
+                </div>
+              </div>
+            )}
+
+            <p className="mt-2 text-xs text-slate-400">
+              Image will be automatically optimized and delivered via CDN
+            </p>
           </div>
 
           {/* Submit Button */}

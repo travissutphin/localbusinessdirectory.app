@@ -418,19 +418,10 @@
                 <div class="column-title">
                     📋 Backlog
                 </div>
-                <div class="column-count">1</div>
+                <div class="column-count">0</div>
             </div>
             <div class="cards-container scrollbar">
-                <div class="card" onclick="openCard(this)">
-                    <div class="card-id">TASK-020</div>
-                    <div class="card-title">Setup Cloudinary for image uploads</div>
-                    <div class="card-meta">
-                        <span class="assignee">Flow</span>
-                        <span class="priority p2">P2</span>
-                        <span class="story-points">2</span>
-                    </div>
-                    <span class="tsp-badge">Infrastructure</span>
-                </div>
+                <!-- Empty -->
             </div>
         </div>
 
@@ -453,10 +444,19 @@
                 <div class="column-title">
                     ⚙️ In Progress
                 </div>
-                <div class="column-count">0</div>
+                <div class="column-count">1</div>
             </div>
             <div class="cards-container scrollbar">
-                <!-- Empty -->
+                <div class="card" onclick="openCard(this)">
+                    <div class="card-id">TASK-020</div>
+                    <div class="card-title">Setup Cloudinary for image uploads</div>
+                    <div class="card-meta">
+                        <span class="assignee">Flow</span>
+                        <span class="priority p2">P2</span>
+                        <span class="story-points">2</span>
+                    </div>
+                    <span class="tsp-badge">Infrastructure</span>
+                </div>
             </div>
         </div>
 
@@ -1148,17 +1148,18 @@
             },
             'TASK-020': {
                 title: 'Setup Cloudinary for image uploads',
-                description: 'Configure Cloudinary for business image uploads. Implement image optimization and CDN delivery.',
+                description: '⚙️ IN PROGRESS! Setting up Cloudinary integration for business image uploads. Installing SDK, creating upload endpoint, and integrating with add business form.',
                 assignee: 'Flow',
                 priority: 'P2 (Medium)',
                 points: '2',
-                status: 'Backlog',
+                status: 'In Progress',
                 dod: [
-                    'Cloudinary account created and configured',
-                    'Free tier API key secured',
-                    'Upload widget integrated into add business form',
-                    'Images optimized and served from CDN',
-                    'Fallback placeholder for missing images'
+                    '⏳ Cloudinary account created and configured',
+                    '⏳ Free tier API key secured in Railway environment',
+                    '⏳ Cloudinary SDK packages installed',
+                    '⏳ Upload widget integrated into add business form',
+                    '⏳ Images optimized and served from CDN',
+                    '⏳ Fallback placeholder for missing images'
                 ]
             },
             'TASK-025': {
