@@ -1,7 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import MobileNav from "@/components/MobileNav";
-import DesktopNav from "@/components/DesktopNav";
 import GlobalHeader from "@/components/GlobalHeader";
 
 export const metadata: Metadata = {
@@ -26,7 +25,6 @@ export default function RootLayout({
         <GlobalHeader />
         {children}
         <MobileNav />
-        <DesktopNav />
       </body>
     </html>
   );
