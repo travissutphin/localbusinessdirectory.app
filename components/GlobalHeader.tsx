@@ -129,21 +129,9 @@ export default function GlobalHeader() {
   return (
     <>
       <header className="hidden lg:block fixed top-0 left-0 right-0 bg-white/95 backdrop-blur-md border-b border-neutral-200 z-50">
-        <div className="flex items-center h-16">
-          {/* Hamburger Menu Button - Left of Container */}
-          <div className="flex items-center justify-center w-20">
-            <button
-              onClick={() => setIsOpen(true)}
-              className="p-3 bg-white/90 backdrop-blur-md rounded-lg shadow-lg hover:bg-white transition-colors"
-              aria-label="Open navigation menu"
-              aria-expanded={isOpen}
-            >
-              <Menu className="w-6 h-6" style={{ color: 'var(--color-secondary-500)' }} />
-            </button>
-          </div>
-
-          {/* Logo Container */}
-          <div className="max-w-7xl mx-auto px-6 flex-1">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="flex items-center justify-between h-16">
+            {/* Logo */}
             <a
               href="/"
               className="flex items-center gap-2 text-xl font-bold transition-colors"
@@ -152,6 +140,16 @@ export default function GlobalHeader() {
               <Building2 className="w-7 h-7" style={{ color: 'var(--color-secondary-500)' }} />
               <span>Local Business Directory</span>
             </a>
+
+            {/* Hamburger Menu Button */}
+            <button
+              onClick={() => setIsOpen(true)}
+              className="p-3 bg-white/90 backdrop-blur-md rounded-lg shadow-lg hover:bg-white transition-colors"
+              aria-label="Open navigation menu"
+              aria-expanded={isOpen}
+            >
+              <Menu className="w-6 h-6" style={{ color: 'var(--color-secondary-500)' }} />
+            </button>
           </div>
         </div>
       </header>
