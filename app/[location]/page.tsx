@@ -134,12 +134,6 @@ export default async function LocationPage({
                 </p>
               )}
             </div>
-            <a
-              href="/"
-              className="text-sm text-blue-400 hover:text-blue-300 transition-colors"
-            >
-              Change Location
-            </a>
           </div>
         </div>
       </header>

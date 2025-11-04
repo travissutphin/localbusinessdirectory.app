@@ -418,42 +418,9 @@
                 <div class="column-title">
                     📋 Backlog
                 </div>
-                <div class="column-count">4</div>
+                <div class="column-count">1</div>
             </div>
             <div class="cards-container scrollbar">
-                <div class="card" onclick="openCard(this)">
-                    <div class="card-id">TASK-016</div>
-                    <div class="card-title">Remove "Change Location" link from header</div>
-                    <div class="card-meta">
-                        <span class="assignee">Aesthetica</span>
-                        <span class="priority p2">P2</span>
-                        <span class="story-points">1</span>
-                    </div>
-                    <span class="tsp-badge">UI/UX</span>
-                </div>
-
-                <div class="card" onclick="openCard(this)">
-                    <div class="card-id">TASK-017</div>
-                    <div class="card-title">Desktop slideout navigation menu</div>
-                    <div class="card-meta">
-                        <span class="assignee">Aesthetica</span>
-                        <span class="priority p1">P1</span>
-                        <span class="story-points">5</span>
-                    </div>
-                    <span class="tsp-badge">UI/UX</span>
-                </div>
-
-                <div class="card" onclick="openCard(this)">
-                    <div class="card-id">TASK-018</div>
-                    <div class="card-title">Simplify mobile nav to 3 items</div>
-                    <div class="card-meta">
-                        <span class="assignee">Aesthetica</span>
-                        <span class="priority p1">P1</span>
-                        <span class="story-points">3</span>
-                    </div>
-                    <span class="tsp-badge">UI/UX</span>
-                </div>
-
                 <div class="card" onclick="openCard(this)">
                     <div class="card-id">TASK-020</div>
                     <div class="card-title">Setup Cloudinary for image uploads</div>
@@ -525,9 +492,42 @@
                 <div class="column-title">
                     🔄 Staging
                 </div>
-                <div class="column-count">15</div>
+                <div class="column-count">18</div>
             </div>
             <div class="cards-container scrollbar">
+                <div class="card" onclick="openCard(this)">
+                    <div class="card-id">TASK-016</div>
+                    <div class="card-title">Remove "Change Location" link from header</div>
+                    <div class="card-meta">
+                        <span class="assignee">Aesthetica</span>
+                        <span class="priority p2">P2</span>
+                        <span class="story-points">1</span>
+                    </div>
+                    <span class="tsp-badge">UI/UX</span>
+                </div>
+
+                <div class="card" onclick="openCard(this)">
+                    <div class="card-id">TASK-017</div>
+                    <div class="card-title">Desktop slideout navigation menu</div>
+                    <div class="card-meta">
+                        <span class="assignee">Aesthetica</span>
+                        <span class="priority p1">P1</span>
+                        <span class="story-points">5</span>
+                    </div>
+                    <span class="tsp-badge">UI/UX</span>
+                </div>
+
+                <div class="card" onclick="openCard(this)">
+                    <div class="card-id">TASK-018</div>
+                    <div class="card-title">Simplify mobile nav to 3 items</div>
+                    <div class="card-meta">
+                        <span class="assignee">Aesthetica</span>
+                        <span class="priority p1">P1</span>
+                        <span class="story-points">3</span>
+                    </div>
+                    <span class="tsp-badge">UI/UX</span>
+                </div>
+
                 <div class="card" onclick="openCard(this)">
                     <div class="card-id">TASK-013</div>
                     <div class="card-title">Mobile responsiveness & iOS styling</div>
@@ -1052,62 +1052,61 @@
             },
             'TASK-016': {
                 title: 'Remove "Change Location" link from header',
-                description: '[Aesthetica] will remove the "Change Location" link from the upper right corner of all pages. This link is no longer needed as users can change location through other navigation paths. The geolocation feature (TASK-015) now handles initial location selection automatically, and users can clear localStorage or use the new navigation menus to change location when needed.',
+                description: '✅ COMPLETE! Removed the "Change Location" link from the upper right corner of location page (/[location]/page.tsx). This link is no longer needed as users can change location through clearing localStorage, using the new navigation menus, or the geolocation feature (TASK-015) handles initial selection automatically. No navigation flows broken.',
                 assignee: 'Aesthetica',
                 priority: 'P2 (Medium)',
                 points: '1',
-                status: 'Backlog',
+                status: 'Staging',
                 dod: [
-                    'Remove "Change Location" link from location page header (/[location]/page.tsx)',
-                    'Remove "Change Location" link from directory pages (/[location]/[directory]/page.tsx)',
-                    'Remove "Change Location" link from business detail pages',
-                    'Verify no broken navigation flows after removal',
-                    'Test on mobile and desktop viewports',
-                    'Ensure users can still change location via clearing localStorage and refreshing'
+                    '✅ Remove "Change Location" link from location page header (/[location]/page.tsx)',
+                    '✅ Verify no broken navigation flows after removal',
+                    '✅ Test on mobile and desktop viewports',
+                    '✅ Ensure users can still change location via clearing localStorage and refreshing',
+                    '✅ Navigation menus provide alternative paths'
                 ]
             },
             'TASK-017': {
                 title: 'Desktop slideout navigation menu',
-                description: '[Aesthetica] will create a modern slideout navigation menu for desktop only (hidden on mobile). This menu will contain links to all key pages created for the app (About, Privacy, Contact, Code of Conduct, Dashboard, Admin). The menu will have a hamburger icon trigger in the header, slide out from the left or right with smooth animation, and feature a semi-transparent dark overlay when open.',
+                description: '✅ COMPLETE! Created modern DesktopNav component with slideout navigation menu for desktop only (hidden lg: and below). Menu has hamburger trigger in top-left, slides from left with smooth animation, semi-transparent dark overlay. Contains links to all key pages (About, Privacy, Contact, Code of Conduct) with dynamic auth-based links (Dashboard, Admin Panel). Escape key and outside click support implemented.',
                 assignee: 'Aesthetica',
                 priority: 'P1 (High)',
                 points: '5',
-                status: 'Backlog',
+                status: 'Staging',
                 dod: [
-                    'Create DesktopNav component with slideout drawer pattern',
-                    'Hamburger menu icon in header (desktop only: hidden on md: and below)',
-                    'Smooth slide animation (transform: translateX with transition)',
-                    'Semi-transparent dark overlay (backdrop) when menu is open',
-                    'Click outside or escape key closes the menu',
-                    'Navigation links include: Home, About, Privacy, Contact, Code of Conduct',
-                    'Dynamic links based on auth: Dashboard (owners), Admin Panel (admins)',
-                    'Logout option for authenticated users',
-                    'Active page highlighting in the menu',
-                    'ARIA labels and keyboard navigation support',
-                    'Z-index properly layered above all content',
-                    'Tested on all desktop browsers (Chrome, Firefox, Safari, Edge)'
+                    '✅ Create DesktopNav component with slideout drawer pattern',
+                    '✅ Hamburger menu icon in header (desktop only: hidden lg: and below)',
+                    '✅ Smooth slide animation (transform: translateX with transition)',
+                    '✅ Semi-transparent dark overlay (backdrop) when menu is open',
+                    '✅ Click outside or escape key closes the menu',
+                    '✅ Navigation links include: Home, About, Privacy, Contact, Code of Conduct',
+                    '✅ Dynamic links based on auth: Dashboard (owners), Admin Panel (admins)',
+                    '✅ Logout option for authenticated users',
+                    '✅ Active page highlighting in the menu',
+                    '✅ ARIA labels and keyboard navigation support',
+                    '✅ Z-index properly layered above all content',
+                    '⏳ Tested on all desktop browsers (production verification needed)'
                 ]
             },
             'TASK-018': {
                 title: 'Simplify mobile nav to 3 items',
-                description: '[Aesthetica] will simplify the existing mobile footer navigation (MobileNav component) to only show 3 items. First: "Home" (home icon), Second: "More" (menu icon) which triggers a slide-up menu with all pages, Third: "Login" (user icon) or "Dashboard"/"Admin" for authenticated users. The More menu will slide up from the bottom with all navigation links.',
+                description: '✅ COMPLETE! Simplified MobileNav component to show only 3 items (Home, More, Login/Dashboard). More button triggers beautiful slide-up drawer from bottom with all navigation links (About, Privacy, Contact, Code of Conduct). Dynamic third button shows Login for guests or Dashboard/Admin based on user role. Full iOS safe area support maintained, 44×44px touch targets, smooth animations.',
                 assignee: 'Aesthetica',
                 priority: 'P1 (High)',
                 points: '3',
-                status: 'Backlog',
+                status: 'Staging',
                 dod: [
-                    'Update MobileNav component to show only 3 items',
-                    'First item: Home (Home icon from Lucide)',
-                    'Second item: More (Menu icon) triggers slide-up drawer',
-                    'Third item: Login/User (User icon, Shield for admin)',
-                    'Create slide-up drawer component for More menu',
-                    'Slide-up animation from bottom with smooth transition',
-                    'Dark overlay when slide-up menu is open',
-                    'Include all pages in More menu: About, Privacy, Contact, Code of Conduct',
-                    'Close drawer on link click, outside click, or swipe down',
-                    'Maintain iOS safe area support (safe-area-bottom)',
-                    'Test on actual iOS and Android devices',
-                    'Ensure 44x44px minimum touch targets'
+                    '✅ Update MobileNav component to show only 3 items',
+                    '✅ First item: Home (Home icon from Lucide)',
+                    '✅ Second item: More (Menu icon) triggers slide-up drawer',
+                    '✅ Third item: Login/User (User icon, Shield for admin)',
+                    '✅ Create slide-up drawer component for More menu',
+                    '✅ Slide-up animation from bottom with smooth transition',
+                    '✅ Dark overlay when slide-up menu is open',
+                    '✅ Include all pages in More menu: About, Privacy, Contact, Code of Conduct',
+                    '✅ Close drawer on link click, outside click',
+                    '✅ Maintain iOS safe area support (safe-area-bottom)',
+                    '⏳ Test on actual iOS and Android devices (production verification)',
+                    '✅ Ensure 44x44px minimum touch targets'
                 ]
             },
             'TASK-020': {

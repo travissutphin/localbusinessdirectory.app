@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import MobileNav from "@/components/MobileNav";
+import DesktopNav from "@/components/DesktopNav";
 
 export const metadata: Metadata = {
   title: "Local Business Directory",
@@ -23,6 +24,7 @@ export default function RootLayout({
       <body className="antialiased">
         {children}
         <MobileNav />
+        <DesktopNav />
       </body>
     </html>
   );
