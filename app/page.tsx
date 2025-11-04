@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { MapPin, Search } from 'lucide-react'
+import { MapPin, Search, Loader2 } from 'lucide-react'
 
 interface Location {
   id: string
@@ -17,20 +17,111 @@ export default function Home() {
   const [selectedLocation, setSelectedLocation] = useState<string>('')
   const [loading, setLoading] = useState(true)
   const [showModal, setShowModal] = useState(false)
+  const [geolocationStatus, setGeolocationStatus] = useState<string>('')
+  const [detectedLocation, setDetectedLocation] = useState<Location | null>(null)
 
   useEffect(() => {
-    // Check for saved location preference
-    const savedLocation = localStorage.getItem('selectedLocation')
+    initializeLocation()
+  }, [router])
 
-    if (savedLocation) {
-      // Redirect to saved location
-      router.push(`/${savedLocation}`)
-    } else {
-      // Show location selector modal
+  async function initializeLocation() {
+    try {
+      // Step 1: Check localStorage first (fastest)
+      const savedLocation = localStorage.getItem('selectedLocation')
+      if (savedLocation) {
+        router.push(`/${savedLocation}`)
+        return
+      }
+
+      // Step 2: Check if user is authenticated and has preference
+      const authResponse = await fetch('/api/auth/me')
+      if (authResponse.ok) {
+        const { user } = await authResponse.json()
+
+        // If user has location preference, use it
+        if (user.location?.slug) {
+          localStorage.setItem('selectedLocation', user.location.slug)
+          router.push(`/${user.location.slug}`)
+          return
+        }
+
+        // If geolocation hasn't been attempted yet, try it
+        if (!user.geolocationFlag) {
+          await attemptGeolocation(user.id)
+          return
+        }
+      }
+
+      // Step 3: For non-authenticated users, try geolocation once
+      const geoAttempted = localStorage.getItem('geoLocationAttempted')
+      if (!geoAttempted) {
+        await attemptGeolocation(null)
+        return
+      }
+
+      // Step 4: Show manual selector if all else fails
+      setShowModal(true)
+      fetchLocations()
+    } catch (error) {
+      console.error('Location initialization error:', error)
       setShowModal(true)
       fetchLocations()
     }
-  }, [router])
+  }
+
+  async function attemptGeolocation(userId: string | null) {
+    try {
+      setGeolocationStatus('Detecting your location...')
+      setShowModal(true)
+      fetchLocations()
+
+      const geoResponse = await fetch('/api/geolocation/detect')
+      const geoData = await geoResponse.json()
+
+      if (geoData.matched && geoData.location) {
+        setDetectedLocation(geoData.location)
+        setGeolocationStatus(
+          geoData.approximate
+            ? `We found a nearby location: ${geoData.location.name}`
+            : `Location detected: ${geoData.location.name}`
+        )
+
+        // Save for authenticated users
+        if (userId) {
+          await fetch('/api/user/location-preference', {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              locationId: geoData.location.id,
+              setGeolocationFlag: true,
+            }),
+          })
+        } else {
+          // Mark geolocation as attempted for non-authenticated users
+          localStorage.setItem('geoLocationAttempted', 'true')
+        }
+
+        // Auto-redirect after 2 seconds
+        setTimeout(() => {
+          handleLocationSelect(geoData.location.slug)
+        }, 2000)
+      } else {
+        // No match found
+        setGeolocationStatus(geoData.message || 'Could not match your location. Please select manually.')
+        if (!userId) {
+          localStorage.setItem('geoLocationAttempted', 'true')
+        }
+        setLoading(false)
+      }
+    } catch (error) {
+      console.error('Geolocation error:', error)
+      setGeolocationStatus('Location detection unavailable. Please select manually.')
+      if (!userId) {
+        localStorage.setItem('geoLocationAttempted', 'true')
+      }
+      setLoading(false)
+    }
+  }
 
   const fetchLocations = async () => {
     try {
@@ -81,15 +172,40 @@ export default function Home() {
         {/* Header */}
         <div className="text-center mb-8">
           <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10 mb-4">
-            <MapPin className="w-8 h-8 text-primary" />
+            {geolocationStatus && detectedLocation ? (
+              <Loader2 className="w-8 h-8 text-primary animate-spin" />
+            ) : (
+              <MapPin className="w-8 h-8 text-primary" />
+            )}
           </div>
           <h1 className="text-3xl md:text-4xl font-bold text-neutral-900 mb-2">
             Welcome to Local Business Directory
           </h1>
           <p className="text-lg text-neutral-600">
-            Select your location to discover local businesses and services
+            {geolocationStatus || 'Select your location to discover local businesses and services'}
           </p>
         </div>
+
+        {/* Geolocation Detected Location Card */}
+        {detectedLocation && (
+          <div className="mb-6 p-4 bg-green-50 border-2 border-green-200 rounded-lg">
+            <div className="flex items-center gap-3">
+              <div className="flex-shrink-0">
+                <div className="w-10 h-10 rounded-full bg-green-500/20 flex items-center justify-center">
+                  <MapPin className="w-5 h-5 text-green-600" />
+                </div>
+              </div>
+              <div className="flex-1">
+                <h3 className="text-sm font-semibold text-green-900">
+                  {detectedLocation.name}
+                </h3>
+                <p className="text-xs text-green-700">
+                  ZIP: {detectedLocation.zipCode} • Redirecting...
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Loading State */}
         {loading && (
