@@ -16,7 +16,11 @@
       "Bash(curl:*)",
       "Bash(python -m json.tool:*)",
       "Bash(npm run db:seed:*)",
-      "WebFetch(domain:stunning-perfection-production-1cd6.up.railway.app)"
+      "WebFetch(domain:stunning-perfection-production-1cd6.up.railway.app)",
+      "Bash(npm run build:*)",
+      "Bash(npx prisma migrate:*)",
+      "Bash(cat:*)",
+      "Bash(git restore:*)"
     ],
     "deny": [],
     "ask": []

@@ -8,6 +8,8 @@ import { requireAuth } from '@/lib/auth-utils'
  * Requires authentication
  */
 export async function POST(req: NextRequest): Promise<Response> {
+  let response: Response;
+
   try {
     // Require authentication
     await requireAuth()
@@ -16,31 +18,34 @@ export async function POST(req: NextRequest): Promise<Response> {
     const { file, folder } = body
 
     if (!file) {
-      return NextResponse.json(
+      response = NextResponse.json(
         { error: 'No file provided' },
         { status: 400 }
       )
+      return response
     }
 
     // Validate file is base64 encoded image
     if (!file.startsWith('data:image/')) {
-      return NextResponse.json(
+      response = NextResponse.json(
         { error: 'Invalid file format. Must be an image.' },
         { status: 400 }
       )
+      return response
     }
 
     // Upload to Cloudinary
     const result = await uploadImage(file, folder || 'businesses')
 
     if (!result.success) {
-      return NextResponse.json(
+      response = NextResponse.json(
         { error: result.error || 'Upload failed' },
         { status: 500 }
       )
+      return response
     }
 
-    return NextResponse.json({
+    response = NextResponse.json({
       success: true,
       url: result.url,
       publicId: result.publicId,
@@ -48,20 +53,23 @@ export async function POST(req: NextRequest): Promise<Response> {
       height: result.height,
       format: result.format,
     })
+    return response
   } catch (error) {
     console.error('Upload API error:', error)
 
     // Handle authentication errors
     if (error instanceof Error && error.message === 'Unauthorized') {
-      return NextResponse.json(
+      response = NextResponse.json(
         { error: 'Unauthorized' },
         { status: 401 }
       )
+      return response
     }
 
-    return NextResponse.json(
+    response = NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
     )
+    return response
   }
 }
