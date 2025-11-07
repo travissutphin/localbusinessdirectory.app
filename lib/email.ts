@@ -16,8 +16,11 @@ export async function sendVerificationEmail(
   const verificationUrl = `${process.env.NEXT_PUBLIC_APP_URL}/verify-email?token=${token}`
 
   try {
-    await resend.emails.send({
-      from: 'Local Business Directory <noreply@localbusinessdirectory.app>',
+    console.log('🔄 Attempting to send email to:', email)
+    console.log('🔑 Using Resend API Key:', process.env.RESEND_API_KEY ? 'Present' : 'MISSING')
+
+    const response = await resend.emails.send({
+      from: 'Local Business Directory <onboarding@resend.dev>',
       to: email,
       subject: 'Verify your email address',
       html: `
@@ -103,8 +106,17 @@ This verification link expires in 24 hours. If you didn't create this account, y
 Saint Augustine, FL • Connecting Local Communities
       `.trim()
     })
+
+    // Check if Resend returned an error
+    if (response.error) {
+      console.error('❌ Resend API returned an error:', response.error)
+      throw new Error(`Resend API error: ${response.error.message || JSON.stringify(response.error)}`)
+    }
+
+    console.log('✅ Email sent successfully via Resend. Email ID:', response.data?.id)
   } catch (error) {
-    console.error('Failed to send verification email:', error)
+    console.error('❌ Failed to send verification email:', error)
+    console.error('❌ Error details:', JSON.stringify(error, null, 2))
     throw new Error('Failed to send verification email')
   }
 }

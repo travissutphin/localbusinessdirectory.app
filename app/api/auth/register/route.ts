@@ -71,10 +71,14 @@ export async function POST(req: Request) {
 
     // Generate verification token and send email
     try {
+      console.log('📧 Generating verification token for:', email)
       const token = await generateVerificationToken(email)
+      console.log('📧 Token generated, attempting to send email...')
       await sendVerificationEmail(email, name || email, token)
+      console.log('📧 Email sending completed')
     } catch (emailError) {
-      console.error("Failed to send verification email:", emailError)
+      console.error("❌ Failed to send verification email:", emailError)
+      console.error("❌ Full error details:", JSON.stringify(emailError, null, 2))
       // User is created, but email failed - log error but don't fail registration
     }
 
