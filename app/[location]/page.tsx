@@ -1,28 +1,28 @@
 import { notFound } from 'next/navigation'
 import { prisma } from '@/lib/db'
 import {
-  Wrench, Zap, Wind, Trees, Sparkles, Bug, Home,
-  Paintbrush, Hammer, Shield, Layers, Truck, Droplets,
-  Square, DoorOpen, LucideIcon
+  Palette, Code2, Briefcase, Megaphone, Scissors, Heart,
+  GraduationCap, Home, Sparkles, ChefHat, Scale, Building2,
+  Baby, Store, Star, LucideIcon
 } from 'lucide-react'
 
-// Icon mapping for directories
+// Icon mapping for home-based business directories
 const iconMap: Record<string, LucideIcon> = {
-  Wrench,
-  Zap,
-  Wind,
-  Trees,
-  Sparkles,
-  Bug,
-  Home,
-  Paintbrush,
-  Hammer,
-  Shield,
-  Layers,
-  Truck,
-  Droplets,
-  Square,
-  DoorOpen,
+  Palette,        // Creative & Design Services
+  Code2,          // Digital & Tech Services
+  Briefcase,      // Business & Professional Services
+  Megaphone,      // Marketing & Communications
+  Scissors,       // Creative Arts & Crafts
+  Heart,          // Health & Wellness
+  GraduationCap,  // Education & Tutoring
+  Home,           // Home & Lifestyle Services
+  Sparkles,       // Beauty & Personal Care
+  ChefHat,        // Food & Beverage
+  Scale,          // Legal & Financial
+  Building2,      // Real Estate & Property
+  Baby,           // Children & Family Services
+  Store,          // E-commerce & Retail
+  Star,           // Specialized Services
 }
 
 type Directory = {

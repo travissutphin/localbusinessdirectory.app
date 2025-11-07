@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { usePathname } from 'next/navigation'
+import { signOut } from 'next-auth/react'
 import { Home, Menu, User, Shield, X, Info, FileText, Phone, Building2, LogOut } from 'lucide-react'
 
 type UserType = {
@@ -55,8 +56,10 @@ export default function MobileNav() {
 
   async function handleLogout() {
     try {
-      await fetch('/api/auth/signout', { method: 'POST' })
-      window.location.href = '/'
+      await signOut({
+        redirect: true,
+        callbackUrl: '/'
+      })
     } catch (err) {
       console.error('Logout failed:', err)
     }

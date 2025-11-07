@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { usePathname } from 'next/navigation'
+import { signOut } from 'next-auth/react'
 import { Building2, Menu, X, Home, Info, Shield, Phone, FileText, LogOut, User, Building2 as Building } from 'lucide-react'
 
 type User = {
@@ -64,8 +65,10 @@ export default function GlobalHeader() {
 
   async function handleLogout() {
     try {
-      await fetch('/api/auth/signout', { method: 'POST' })
-      window.location.href = '/'
+      await signOut({
+        redirect: true,
+        callbackUrl: '/'
+      })
     } catch (err) {
       console.error('Logout failed:', err)
     }

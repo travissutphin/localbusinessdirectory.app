@@ -418,10 +418,19 @@
                 <div class="column-title">
                     📋 Backlog
                 </div>
-                <div class="column-count">0</div>
+                <div class="column-count">1</div>
             </div>
             <div class="cards-container scrollbar">
-                <!-- Empty -->
+                <div class="card" onclick="openCard(this)">
+                    <div class="card-id">TASK-021</div>
+                    <div class="card-title">Cloudflare Access Rules - US-only geo-blocking</div>
+                    <div class="card-meta">
+                        <span class="assignee">Flow</span>
+                        <span class="priority p2">P2</span>
+                        <span class="story-points">3</span>
+                    </div>
+                    <span class="tsp-badge">Infrastructure</span>
+                </div>
             </div>
         </div>
 
@@ -1166,6 +1175,28 @@
                     '✅ File validation (type, size 5MB limit)',
                     '✅ Base64 encoding for uploads',
                     '⏳ Production testing with real Cloudinary credentials on Railway'
+                ]
+            },
+            'TASK-021': {
+                title: 'Cloudflare Access Rules - US-only geo-blocking',
+                description: 'Implement enterprise-grade geo-restriction using Cloudflare to allow access only from United States IP addresses. This is Option 2 from the geo-restriction plan: using Cloudflare Workers + Firewall Rules for robust, zero-cost geo-blocking with 99.9% accuracy, DDoS protection, and bot detection. Cloudflare sits in front of Railway deployment providing edge-level security.',
+                assignee: 'Flow',
+                priority: 'P2 (Medium)',
+                points: '3',
+                status: 'Backlog',
+                dod: [
+                    'Add domain to Cloudflare (free plan)',
+                    'Configure DNS to proxy through Cloudflare',
+                    'Update Railway custom domain to work with Cloudflare',
+                    'Create firewall rule: (ip.geoip.country ne "US") and (cf.client.bot eq false)',
+                    'Configure bot detection to allow search engine crawlers (Googlebot, Bingbot)',
+                    'Create /geo-blocked page for blocked visitors',
+                    'Test with VPN from multiple countries (US = allowed, others = blocked)',
+                    'Verify Googlebot/Bingbot can still access all pages',
+                    'Verify US users have no latency impact (<10ms)',
+                    'Monitor Cloudflare analytics for blocked requests',
+                    'Document Cloudflare setup in /docs/CLOUDFLARE_SETUP.md',
+                    'Provide instructions for disabling geo-blocking if needed'
                 ]
             },
             'TASK-025': {
