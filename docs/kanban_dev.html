@@ -440,10 +440,19 @@
                 <div class="column-title">
                     📌 Sprint (Active)
                 </div>
-                <div class="column-count">0</div>
+                <div class="column-count">1</div>
             </div>
             <div class="cards-container scrollbar">
-                <!-- Empty -->
+                <div class="card" onclick="openCard(this)">
+                    <div class="card-id">TASK-022</div>
+                    <div class="card-title">Email verification system with Resend</div>
+                    <div class="card-meta">
+                        <span class="assignee">Codey</span>
+                        <span class="priority p0">P0</span>
+                        <span class="story-points">5</span>
+                    </div>
+                    <span class="tsp-badge">Auth</span>
+                </div>
             </div>
         </div>
 
@@ -1197,6 +1206,30 @@
                     'Monitor Cloudflare analytics for blocked requests',
                     'Document Cloudflare setup in /docs/CLOUDFLARE_SETUP.md',
                     'Provide instructions for disabling geo-blocking if needed'
+                ]
+            },
+            'TASK-022': {
+                title: 'Email verification system with Resend',
+                description: 'Implement email verification for new user registrations using Resend.com. Upon registration, users receive a welcome email with verification link. Email must be verified before creating business listings. Infrastructure already exists (VerificationToken model, emailVerified field). Custom implementation with full control over verification flow.',
+                assignee: 'Codey',
+                priority: 'P0 (Blocker)',
+                points: '5',
+                status: 'In Progress',
+                dod: [
+                    'Resend package installed (npm install resend)',
+                    'RESEND_API_KEY configured in .env',
+                    'Verification token generation utility created (/lib/verification.ts)',
+                    'Email template created for verification (/emails/verify-email.tsx)',
+                    'Email sending utility created (/lib/email.ts)',
+                    'Verification endpoint created (/api/auth/verify-email)',
+                    'Verification page UI created (/app/verify-email/page.tsx)',
+                    'Registration endpoint updated to send verification email',
+                    'Tokens expire after 24 hours',
+                    'Used tokens deleted after successful verification',
+                    'Email deliverability tested (Gmail, Outlook, Yahoo)',
+                    'Security review completed (Sentinal)',
+                    'QA testing passed (happy path + edge cases)',
+                    'Deployed to staging and production'
                 ]
             },
             'TASK-025': {
