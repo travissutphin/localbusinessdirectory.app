@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/db'
 import { verifyToken, deleteVerificationToken } from '@/lib/verification'
+import { sendWelcomeEmail } from '@/lib/email'
 
 export async function GET(request: Request) {
   try {
@@ -56,6 +57,14 @@ export async function GET(request: Request) {
 
     // Delete the used token
     await deleteVerificationToken(token)
+
+    // Send welcome email (non-blocking - don't fail verification if welcome email fails)
+    try {
+      await sendWelcomeEmail(email, user.name || email)
+    } catch (welcomeEmailError) {
+      console.error('⚠️ Failed to send welcome email (non-critical):', welcomeEmailError)
+      // Continue - email verification was successful
+    }
 
     return NextResponse.json(
       {

@@ -58,7 +58,7 @@ Keep it simple, efficient, robust, best practice and scalable. No overengineerin
 	1) [Flow](Lead),[Sentinal](Support) : git status and verify best steps including pull 
 	2) [Flow](Lead),[Sentinal](Support) : verify current working branch and report back the [Travis] before proceeding
 	3) [Codey](Lead) : review and report to [Travis] on current active task in Sprint and current status on /docs/kanban_dev.html als report any blockers
-	4) [Flow](Lead),[Sentinal](Support) : ensure local server is up and running through XAMPP and provide [Travis] the url including port
+	4) [Flow](Lead),[Sentinal](Support) : ensure local server is up and running through XAMPP and Docker started and provide [Travis] the url including port
 - [ProcessTaskStart] :
 - [ProcessTaskQA] : [Codey], provide current task report outome to [Verity] to QA
 - [ProgressTaskStage] : 
