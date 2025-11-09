@@ -1,6 +1,16 @@
-import { createEmailService } from './email-factory'
+import { createEmailService, EmailService } from './email-factory'
 
-const emailService = createEmailService()
+let emailService: EmailService | null = null
+
+/**
+ * Get or create email service instance (lazy initialization)
+ */
+function getEmailService(): EmailService {
+  if (!emailService) {
+    emailService = createEmailService()
+  }
+  return emailService
+}
 
 /**
  * Send a verification email to a new user
@@ -18,7 +28,7 @@ export async function sendVerificationEmail(
   try {
     console.log('🔄 Attempting to send email to:', email)
 
-    const response = await emailService.send({
+    const response = await getEmailService().send({
       from: 'Local Business Directory <onboarding@resend.dev>',
       to: email,
       subject: 'Verify your email address',
@@ -132,7 +142,7 @@ export async function sendWelcomeEmail(
   try {
     console.log('🔄 Sending welcome email to:', email)
 
-    const response = await emailService.send({
+    const response = await getEmailService().send({
       from: 'Local Business Directory <onboarding@resend.dev>',
       to: email,
       subject: 'Welcome to Local Business Directory!',
@@ -250,7 +260,7 @@ export async function sendPasswordResetEmail(
   try {
     console.log('🔄 Sending password reset email to:', email)
 
-    const response = await emailService.send({
+    const response = await getEmailService().send({
       from: 'Local Business Directory <onboarding@resend.dev>',
       to: email,
       subject: 'Reset Your Password',

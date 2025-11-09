@@ -12,10 +12,21 @@ export interface EmailService {
 }
 
 class ResendEmailService implements EmailService {
-  private resend: Resend
+  private resend: Resend | null = null
+  private apiKey: string
 
   constructor(apiKey: string) {
-    this.resend = new Resend(apiKey)
+    this.apiKey = apiKey
+  }
+
+  private getResendClient(): Resend {
+    if (!this.resend) {
+      if (!this.apiKey) {
+        throw new Error('RESEND_API_KEY is required for sending emails in production')
+      }
+      this.resend = new Resend(this.apiKey)
+    }
+    return this.resend
   }
 
   async send(params: {
@@ -26,7 +37,8 @@ class ResendEmailService implements EmailService {
     text: string
   }): Promise<{ id: string | null; error: any | null }> {
     try {
-      const response = await this.resend.emails.send({
+      const resend = this.getResendClient()
+      const response = await resend.emails.send({
         from: params.from,
         to: params.to,
         subject: params.subject,
