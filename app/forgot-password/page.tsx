@@ -141,7 +141,7 @@ export default function ForgotPasswordPage() {
         {/* Additional Info */}
         <div className="mt-6 text-center">
           <p className="text-neutral-400 text-sm">
-            Don't have an account?{' '}
+            Don&apos;t have an account?{' '}
             <a href="/register" className="text-secondary-400 hover:text-secondary-500 font-medium">
               Sign up
             </a>
