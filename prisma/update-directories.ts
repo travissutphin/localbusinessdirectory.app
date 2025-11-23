@@ -1,34 +1,45 @@
 import { PrismaClient } from '@prisma/client'
-import bcrypt from 'bcryptjs'
 
 const prisma = new PrismaClient()
 
 async function main() {
-  console.log('🌱 Starting database seed...')
+  console.log('🔄 Updating directories to new Home Business categories...')
 
-  // Seed Locations
-  console.log('📍 Seeding locations...')
-
-  const location = await prisma.location.upsert({
-    where: { zipCode: '32080' },
-    update: {},
-    create: {
-      name: 'Saint Augustine, FL',
-      zipCode: '32080',
-      slug: 'saint-augustine-fl',
-      region: 'Northeast Florida',
-      description: 'America\'s oldest city, known for historic charm and coastal beauty',
-      isActive: true,
-    },
+  // Get the location
+  const location = await prisma.location.findFirst({
+    where: { slug: 'saint-augustine-fl' }
   })
 
-  console.log(`✅ Location created: ${location.name}`)
+  if (!location) {
+    throw new Error('Location not found. Please run the initial seed first.')
+  }
 
-  // Seed Directories (Service Categories)
-  console.log('📂 Seeding service directories...')
+  console.log(`📍 Found location: ${location.name}`)
 
-  // Home Business Directory Categories
-  const directories = [
+  // Delete existing directories (this will fail if businesses are linked)
+  console.log('🗑️  Removing existing directories...')
+
+  // Check for linked businesses first
+  const linkedBusinesses = await prisma.business.count({
+    where: { locationId: location.id }
+  })
+
+  if (linkedBusinesses > 0) {
+    console.log(`⚠️  Found ${linkedBusinesses} businesses linked to directories.`)
+    console.log('   Deleting businesses first...')
+    await prisma.business.deleteMany({
+      where: { locationId: location.id }
+    })
+    console.log('   ✓ Businesses deleted')
+  }
+
+  await prisma.directory.deleteMany({
+    where: { locationId: location.id }
+  })
+  console.log('   ✓ Existing directories removed')
+
+  // New Home Business Directory categories with appropriate Lucide icons
+  const newDirectories = [
     {
       name: 'Creative & Design Services',
       slug: 'creative-design-services',
@@ -136,64 +147,28 @@ async function main() {
     },
   ]
 
+  console.log('📂 Creating new directories...')
+
   let createdCount = 0
-  for (const dir of directories) {
-    const directory = await prisma.directory.upsert({
-      where: {
-        locationId_slug: {
-          locationId: location.id,
-          slug: dir.slug,
-        },
-      },
-      update: {},
-      create: {
+  for (const dir of newDirectories) {
+    const directory = await prisma.directory.create({
+      data: {
         ...dir,
         locationId: location.id,
         isActive: true,
       },
     })
     createdCount++
-    console.log(`  ✓ ${directory.name}`)
+    console.log(`  ✓ ${directory.name} (${directory.icon})`)
   }
 
-  console.log(`✅ Created ${createdCount} service directories`)
-
-  // Create Admin User (for testing)
-  console.log('👤 Creating admin user...')
-
-  // Hash password for admin user
-  const adminPassword = await bcrypt.hash('admin123', 10)
-
-  const adminUser = await prisma.user.upsert({
-    where: { email: 'admin@localbusinessdirectory.app' },
-    update: {
-      passwordHash: adminPassword,
-    },
-    create: {
-      email: 'admin@localbusinessdirectory.app',
-      name: 'Admin User',
-      role: 'ADMIN',
-      authProvider: 'email',
-      passwordHash: adminPassword,
-      emailVerified: new Date(),
-      locationPreference: location.id,
-    },
-  })
-
-  console.log(`✅ Admin user created: ${adminUser.email}`)
-  console.log(`   Password: admin123 (for testing only)`)
-
-  console.log('\n🎉 Database seed completed successfully!')
-  console.log('\n📊 Summary:')
-  console.log(`   - Locations: 1`)
-  console.log(`   - Directories: ${createdCount}`)
-  console.log(`   - Users: 1 (admin)`)
-  console.log('\n🚀 Your database is ready!')
+  console.log(`\n✅ Created ${createdCount} new directories`)
+  console.log('\n🎉 Directory update completed successfully!')
 }
 
 main()
   .catch((e) => {
-    console.error('❌ Seed failed:', e)
+    console.error('❌ Update failed:', e)
     process.exit(1)
   })
   .finally(async () => {
