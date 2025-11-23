@@ -29,7 +29,7 @@ export async function sendVerificationEmail(
     console.log('🔄 Attempting to send email to:', email)
 
     const response = await getEmailService().send({
-      from: 'Local Business Directory <onboarding@resend.dev>',
+      from: 'Local Business Directory <info@myhbb.app>',
       to: email,
       subject: 'Verify your email address',
       html: `
@@ -143,7 +143,7 @@ export async function sendWelcomeEmail(
     console.log('🔄 Sending welcome email to:', email)
 
     const response = await getEmailService().send({
-      from: 'Local Business Directory <onboarding@resend.dev>',
+      from: 'Local Business Directory <info@myhbb.app>',
       to: email,
       subject: 'Welcome to Local Business Directory!',
       html: `
@@ -261,7 +261,7 @@ export async function sendPasswordResetEmail(
     console.log('🔄 Sending password reset email to:', email)
 
     const response = await getEmailService().send({
-      from: 'Local Business Directory <onboarding@resend.dev>',
+      from: 'Local Business Directory <info@myhbb.app>',
       to: email,
       subject: 'Reset Your Password',
       html: `
