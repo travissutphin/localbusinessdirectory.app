@@ -3,7 +3,8 @@
 import { useState, useEffect } from 'react'
 import { usePathname } from 'next/navigation'
 import { signOut } from 'next-auth/react'
-import { Building2, Menu, X, Home, Info, Shield, Phone, FileText, LogOut, User, Building2 as Building } from 'lucide-react'
+import Image from 'next/image'
+import { Menu, X, Home, Info, Shield, Phone, FileText, LogOut, User, Building2 as Building } from 'lucide-react'
 
 type User = {
   id: string
@@ -138,11 +139,16 @@ export default function GlobalHeader() {
             {/* Logo */}
             <a
               href="/"
-              className="flex items-center gap-2 text-xl font-bold transition-colors"
-              style={{ color: 'var(--color-primary-600)' }}
+              className="flex items-center transition-opacity hover:opacity-80"
             >
-              <Building2 className="w-7 h-7" style={{ color: 'var(--color-secondary-500)' }} />
-              <span>Local Business Directory</span>
+              <Image
+                src="/images/logo-myhbb.png"
+                alt="MyHBB - Home Business Directory"
+                width={180}
+                height={48}
+                priority
+                className="h-10 w-auto"
+              />
             </a>
 
             {/* Hamburger Menu Button */}
@@ -163,11 +169,16 @@ export default function GlobalHeader() {
         <div className="flex items-center justify-center h-14 px-4">
           <a
             href="/"
-            className="flex items-center gap-2 text-lg font-bold transition-colors"
-            style={{ color: 'var(--color-primary-600)' }}
+            className="flex items-center transition-opacity active:opacity-70"
           >
-            <Building2 className="w-6 h-6" style={{ color: 'var(--color-secondary-500)' }} />
-            <span>Local Business Directory</span>
+            <Image
+              src="/images/logo-myhbb.png"
+              alt="MyHBB - Home Business Directory"
+              width={140}
+              height={37}
+              priority
+              className="h-8 w-auto"
+            />
           </a>
         </div>
       </header>
