@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { ArrowLeft, Save, Upload, X, Image as ImageIcon } from 'lucide-react'
+import { ArrowLeft, Save, Upload, X, Image as ImageIcon, Facebook, Instagram, Linkedin, Twitter, Youtube } from 'lucide-react'
 
 export const dynamic = 'force-dynamic'
 
@@ -36,6 +36,11 @@ export default function NewBusinessPage() {
     phone: '',
     email: '',
     website: '',
+    facebookUrl: '',
+    instagramUrl: '',
+    linkedinUrl: '',
+    twitterUrl: '',
+    youtubeUrl: '',
     hoursJson: '',
     imageUrl: '',
   })
@@ -360,6 +365,94 @@ export default function NewBusinessPage() {
               className="w-full px-4 py-2 bg-slate-900 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
               placeholder="https://www.yourbusiness.com"
             />
+          </div>
+
+          {/* Social Media URLs */}
+          <div className="mb-6">
+            <label className="block text-sm font-medium text-slate-300 mb-3">
+              Social Media (Optional)
+            </label>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {/* Facebook */}
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <Facebook className="w-5 h-5 text-blue-500" />
+                </div>
+                <input
+                  type="url"
+                  id="facebookUrl"
+                  name="facebookUrl"
+                  value={formData.facebookUrl}
+                  onChange={handleChange}
+                  className="w-full pl-11 pr-4 py-2 bg-slate-900 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                  placeholder="Facebook URL"
+                />
+              </div>
+
+              {/* Instagram */}
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <Instagram className="w-5 h-5 text-pink-500" />
+                </div>
+                <input
+                  type="url"
+                  id="instagramUrl"
+                  name="instagramUrl"
+                  value={formData.instagramUrl}
+                  onChange={handleChange}
+                  className="w-full pl-11 pr-4 py-2 bg-slate-900 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                  placeholder="Instagram URL"
+                />
+              </div>
+
+              {/* LinkedIn */}
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <Linkedin className="w-5 h-5 text-blue-600" />
+                </div>
+                <input
+                  type="url"
+                  id="linkedinUrl"
+                  name="linkedinUrl"
+                  value={formData.linkedinUrl}
+                  onChange={handleChange}
+                  className="w-full pl-11 pr-4 py-2 bg-slate-900 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                  placeholder="LinkedIn URL"
+                />
+              </div>
+
+              {/* Twitter/X */}
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <Twitter className="w-5 h-5 text-sky-500" />
+                </div>
+                <input
+                  type="url"
+                  id="twitterUrl"
+                  name="twitterUrl"
+                  value={formData.twitterUrl}
+                  onChange={handleChange}
+                  className="w-full pl-11 pr-4 py-2 bg-slate-900 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                  placeholder="Twitter/X URL"
+                />
+              </div>
+
+              {/* YouTube */}
+              <div className="relative md:col-span-2">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <Youtube className="w-5 h-5 text-red-500" />
+                </div>
+                <input
+                  type="url"
+                  id="youtubeUrl"
+                  name="youtubeUrl"
+                  value={formData.youtubeUrl}
+                  onChange={handleChange}
+                  className="w-full pl-11 pr-4 py-2 bg-slate-900 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                  placeholder="YouTube Channel URL"
+                />
+              </div>
+            </div>
           </div>
 
           {/* Business Hours */}

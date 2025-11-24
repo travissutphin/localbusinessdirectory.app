@@ -87,6 +87,11 @@ export async function PUT(
       phone,
       email,
       website,
+      facebookUrl,
+      instagramUrl,
+      linkedinUrl,
+      twitterUrl,
+      youtubeUrl,
       hoursJson,
       imageUrl,
     } = body
@@ -101,6 +106,11 @@ export async function PUT(
         phone,
         email,
         website,
+        facebookUrl,
+        instagramUrl,
+        linkedinUrl,
+        twitterUrl,
+        youtubeUrl,
         hoursJson,
         imageUrl,
         status: 'PENDING', // Reset to pending on edit

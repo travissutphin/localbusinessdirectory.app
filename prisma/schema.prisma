@@ -131,6 +131,11 @@ model Business {
   hoursJson                Json?     @map("hours_json")
   pricing                  String?
   imageUrl                 String?   @map("image_url")
+  facebookUrl              String?   @map("facebook_url")
+  instagramUrl             String?   @map("instagram_url")
+  linkedinUrl              String?   @map("linkedin_url")
+  twitterUrl               String?   @map("twitter_url")
+  youtubeUrl               String?   @map("youtube_url")
   status                   String    @default("PENDING") // 'PENDING', 'APPROVED', 'REJECTED'
   isActive                 Boolean   @default(true) @map("is_active") // Admin can deactivate approved businesses
   rejectionReason          String?   @map("rejection_reason")

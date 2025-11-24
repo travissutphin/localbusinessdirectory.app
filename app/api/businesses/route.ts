@@ -135,6 +135,11 @@ export async function POST(request: NextRequest) {
       phone,
       email,
       website,
+      facebookUrl,
+      instagramUrl,
+      linkedinUrl,
+      twitterUrl,
+      youtubeUrl,
       hoursJson,
       imageUrl,
     } = body
@@ -207,6 +212,11 @@ export async function POST(request: NextRequest) {
         phone,
         email,
         website,
+        facebookUrl,
+        instagramUrl,
+        linkedinUrl,
+        twitterUrl,
+        youtubeUrl,
         hoursJson,
         imageUrl,
         status: 'PENDING', // Default status
