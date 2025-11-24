@@ -136,6 +136,8 @@ model Business {
   linkedinUrl              String?   @map("linkedin_url")
   twitterUrl               String?   @map("twitter_url")
   youtubeUrl               String?   @map("youtube_url")
+  googleBusinessUrl        String?   @map("google_business_url")
+  tiktokUrl                String?   @map("tiktok_url")
   status                   String    @default("PENDING") // 'PENDING', 'APPROVED', 'REJECTED'
   isActive                 Boolean   @default(true) @map("is_active") // Admin can deactivate approved businesses
   rejectionReason          String?   @map("rejection_reason")

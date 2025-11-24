@@ -140,6 +140,8 @@ export async function POST(request: NextRequest) {
       linkedinUrl,
       twitterUrl,
       youtubeUrl,
+      googleBusinessUrl,
+      tiktokUrl,
       hoursJson,
       imageUrl,
     } = body
@@ -217,6 +219,8 @@ export async function POST(request: NextRequest) {
         linkedinUrl,
         twitterUrl,
         youtubeUrl,
+        googleBusinessUrl,
+        tiktokUrl,
         hoursJson,
         imageUrl,
         status: 'PENDING', // Default status

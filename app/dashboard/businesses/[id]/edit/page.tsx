@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { ArrowLeft, Save, Upload, X, Image as ImageIcon, Facebook, Instagram, Linkedin, Twitter, Youtube } from 'lucide-react'
+import { ArrowLeft, Save, Upload, X, Image as ImageIcon, Facebook, Instagram, Linkedin, Twitter, Youtube, MapPin } from 'lucide-react'
 
 export const dynamic = 'force-dynamic'
 
@@ -26,6 +26,8 @@ export default function EditBusinessPage({ params }: { params: { id: string } })
     linkedinUrl: '',
     twitterUrl: '',
     youtubeUrl: '',
+    googleBusinessUrl: '',
+    tiktokUrl: '',
     hoursJson: '',
     imageUrl: '',
   })
@@ -66,6 +68,8 @@ export default function EditBusinessPage({ params }: { params: { id: string } })
         linkedinUrl: business.linkedinUrl || '',
         twitterUrl: business.twitterUrl || '',
         youtubeUrl: business.youtubeUrl || '',
+        googleBusinessUrl: business.googleBusinessUrl || '',
+        tiktokUrl: business.tiktokUrl || '',
         hoursJson: typeof business.hoursJson === 'string' ? business.hoursJson : JSON.stringify(business.hoursJson, null, 2) || '',
         imageUrl: business.imageUrl || '',
       })
@@ -381,7 +385,7 @@ export default function EditBusinessPage({ params }: { params: { id: string } })
               </div>
 
               {/* YouTube */}
-              <div className="relative md:col-span-2">
+              <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                   <Youtube className="w-5 h-5 text-red-500" />
                 </div>
@@ -393,6 +397,40 @@ export default function EditBusinessPage({ params }: { params: { id: string } })
                   onChange={handleChange}
                   className="w-full pl-11 pr-4 py-2 bg-slate-900 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
                   placeholder="YouTube Channel URL"
+                />
+              </div>
+
+              {/* TikTok */}
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <div className="w-5 h-5 flex items-center justify-center text-slate-300 font-bold text-sm">
+                    TT
+                  </div>
+                </div>
+                <input
+                  type="url"
+                  id="tiktokUrl"
+                  name="tiktokUrl"
+                  value={formData.tiktokUrl}
+                  onChange={handleChange}
+                  className="w-full pl-11 pr-4 py-2 bg-slate-900 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                  placeholder="TikTok URL"
+                />
+              </div>
+
+              {/* Google Business Profile */}
+              <div className="relative md:col-span-2">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <MapPin className="w-5 h-5 text-green-500" />
+                </div>
+                <input
+                  type="url"
+                  id="googleBusinessUrl"
+                  name="googleBusinessUrl"
+                  value={formData.googleBusinessUrl}
+                  onChange={handleChange}
+                  className="w-full pl-11 pr-4 py-2 bg-slate-900 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                  placeholder="Google Business Profile URL"
                 />
               </div>
             </div>
