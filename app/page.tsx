@@ -179,7 +179,7 @@ export default function Home() {
             )}
           </div>
           <h1 className="text-3xl md:text-4xl font-bold text-neutral-900 mb-2">
-            Welcome to Local Business Directory
+            Welcome to My Home Based Business
           </h1>
           <p className="text-lg text-neutral-600">
             {geolocationStatus || 'Select your location to discover local businesses and services'}

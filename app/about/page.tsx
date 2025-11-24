@@ -2,7 +2,7 @@ import { Metadata } from 'next'
 import { Building2, MapPin, Users, Star, Shield, Zap } from 'lucide-react'
 
 export const metadata: Metadata = {
-  title: 'About Us | Local Business Directory',
+  title: 'About Us | My Home Based Business - myhbb.app',
   description: 'Learn about our mission to connect local businesses with their communities through a comprehensive, easy-to-use directory platform.',
 }
 

@@ -143,11 +143,11 @@ export default function GlobalHeader() {
             >
               <Image
                 src="/images/logo-myhbb.png"
-                alt="MyHBB - Home Business Directory"
-                width={180}
-                height={48}
+                alt="My Home Based Business - myhbb.app"
+                width={216}
+                height={58}
                 priority
-                className="h-10 w-auto"
+                className="h-12 w-auto"
               />
             </a>
 
@@ -173,11 +173,11 @@ export default function GlobalHeader() {
           >
             <Image
               src="/images/logo-myhbb.png"
-              alt="MyHBB - Home Business Directory"
-              width={140}
-              height={37}
+              alt="My Home Based Business - myhbb.app"
+              width={168}
+              height={44}
               priority
-              className="h-8 w-auto"
+              className="h-10 w-auto"
             />
           </a>
         </div>

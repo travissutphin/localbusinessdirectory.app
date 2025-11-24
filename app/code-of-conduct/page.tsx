@@ -2,8 +2,8 @@ import { Metadata } from 'next'
 import { Heart, Users, Shield, AlertTriangle, CheckCircle, XCircle } from 'lucide-react'
 
 export const metadata: Metadata = {
-  title: 'Code of Conduct | Local Business Directory',
-  description: 'Our community guidelines and code of conduct for business owners, users, and all members of the Local Business Directory platform.',
+  title: 'Code of Conduct | My Home Based Business - myhbb.app',
+  description: 'Our community guidelines and code of conduct for business owners, users, and all members of the My Home Based Business - myhbb.app platform.',
 }
 
 export default function CodeOfConductPage() {
@@ -32,7 +32,7 @@ export default function CodeOfConductPage() {
           <div className="card-dark text-white">
             <h2 className="text-3xl font-bold mb-4">Our Commitment</h2>
             <p className="text-neutral-300 leading-relaxed">
-              Local Business Directory is committed to providing a welcoming, safe, and inclusive
+              My Home Based Business - myhbb.app is committed to providing a welcoming, safe, and inclusive
               platform for all members of our community. This Code of Conduct outlines our expectations
               for behavior and the consequences for unacceptable conduct. By using our platform, you
               agree to abide by these guidelines.

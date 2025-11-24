@@ -2,7 +2,7 @@ import { Metadata } from 'next'
 import { Shield, Eye, Lock, Database, UserCheck, FileText } from 'lucide-react'
 
 export const metadata: Metadata = {
-  title: 'Privacy Policy | Local Business Directory',
+  title: 'Privacy Policy | My Home Based Business - myhbb.app',
   description: 'Learn how we collect, use, and protect your personal information when you use our local business directory platform.',
 }
 
@@ -32,7 +32,7 @@ export default function PrivacyPage() {
           <div className="card-dark text-white">
             <h2 className="text-3xl font-bold mb-4">Introduction</h2>
             <p className="text-neutral-300 leading-relaxed">
-              At Local Business Directory, we are committed to protecting your privacy and ensuring
+              At My Home Based Business - myhbb.app, we are committed to protecting your privacy and ensuring
               the security of your personal information. This Privacy Policy explains how we collect,
               use, disclose, and safeguard your information when you use our platform.
             </p>

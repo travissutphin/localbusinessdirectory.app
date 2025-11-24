@@ -20,7 +20,19 @@
       "Bash(npm run build:*)",
       "Bash(npx prisma migrate:*)",
       "Bash(cat:*)",
-      "Bash(git restore:*)"
+      "Bash(git restore:*)",
+      "Bash(docker run:*)",
+      "Bash(docker exec:*)",
+      "Bash(docker inspect:*)",
+      "Bash(findstr:*)",
+      "Bash(dir:*)",
+      "Bash(npx prisma db push:*)",
+      "Bash(npx tsx:*)",
+      "WebSearch",
+      "Bash(netstat:*)",
+      "Bash(timeout /t 5 /nobreak)",
+      "Bash(npm run kill-port:*)",
+      "Bash(git tag:*)"
     ],
     "deny": [],
     "ask": []

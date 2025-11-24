@@ -4,8 +4,8 @@ import MobileNav from "@/components/MobileNav";
 import GlobalHeader from "@/components/GlobalHeader";
 
 export const metadata: Metadata = {
-  title: "Local Business Directory",
-  description: "Find local businesses and services in your area",
+  title: "My Home Based Business - myhbb.app",
+  description: "Find local home-based businesses and services in your area",
 };
 
 export const viewport: Viewport = {
