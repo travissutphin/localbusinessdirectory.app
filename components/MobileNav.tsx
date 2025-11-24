@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import { usePathname } from 'next/navigation'
 import { signOut } from 'next-auth/react'
-import { Home, Menu, User, Shield, X, Info, FileText, Phone, Building2, LogOut } from 'lucide-react'
+import { Home, Menu, User, Shield, X, Info, FileText, Phone, Building2, LogOut, LogIn } from 'lucide-react'
 
 type UserType = {
   id: string
@@ -88,9 +88,9 @@ export default function MobileNav() {
       }
     },
     {
-      icon: user?.role === 'ADMIN' ? Shield : User,
-      label: user ? (user.role === 'ADMIN' ? 'Admin' : 'Dashboard') : 'Login',
-      href: user ? (user.role === 'ADMIN' ? '/admin' : '/dashboard') : '/login',
+      icon: user?.role === 'ADMIN' ? Shield : LogIn,
+      label: user ? (user.role === 'ADMIN' ? 'Admin' : 'Sign In') : 'Sign In',
+      href: user ? (user.role === 'ADMIN' ? '/admin' : '/login') : '/login',
     },
   ]
 

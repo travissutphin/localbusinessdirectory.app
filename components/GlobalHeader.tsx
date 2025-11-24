@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { usePathname } from 'next/navigation'
 import { signOut } from 'next-auth/react'
 import Image from 'next/image'
-import { Menu, X, Home, Info, Shield, Phone, FileText, LogOut, User, Building2 as Building } from 'lucide-react'
+import { Menu, X, Home, Info, Shield, Phone, FileText, LogOut, User, Building2 as Building, UserPlus, LogIn } from 'lucide-react'
 
 type User = {
   id: string
@@ -151,15 +151,60 @@ export default function GlobalHeader() {
               />
             </a>
 
-            {/* Hamburger Menu Button */}
-            <button
-              onClick={() => setIsOpen(true)}
-              className="p-3 bg-white/90 backdrop-blur-md rounded-lg shadow-lg hover:bg-white transition-colors"
-              aria-label="Open navigation menu"
-              aria-expanded={isOpen}
-            >
-              <Menu className="w-6 h-6" style={{ color: 'var(--color-secondary-500)' }} />
-            </button>
+            {/* Auth Buttons + Hamburger Menu */}
+            <div className="flex items-center gap-3">
+              {!user ? (
+                <>
+                  {/* Register Button */}
+                  <a
+                    href="/register"
+                    className="flex items-center gap-2 px-4 py-2 rounded-lg transition-colors font-medium"
+                    style={{
+                      backgroundColor: 'var(--color-primary-600)',
+                      color: 'white'
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.backgroundColor = 'var(--color-primary-700)'
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.backgroundColor = 'var(--color-primary-600)'
+                    }}
+                  >
+                    <UserPlus className="w-4 h-4" />
+                    <span>Register</span>
+                  </a>
+
+                  {/* Log In Button */}
+                  <a
+                    href="/login"
+                    className="flex items-center gap-2 px-4 py-2 rounded-lg transition-colors font-medium"
+                    style={{
+                      backgroundColor: 'var(--color-neutral-100)',
+                      color: 'var(--color-neutral-700)'
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.backgroundColor = 'var(--color-neutral-200)'
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.backgroundColor = 'var(--color-neutral-100)'
+                    }}
+                  >
+                    <LogIn className="w-4 h-4" />
+                    <span>Log In</span>
+                  </a>
+                </>
+              ) : null}
+
+              {/* Hamburger Menu Button */}
+              <button
+                onClick={() => setIsOpen(true)}
+                className="p-3 bg-white/90 backdrop-blur-md rounded-lg shadow-lg hover:bg-white transition-colors"
+                aria-label="Open navigation menu"
+                aria-expanded={isOpen}
+              >
+                <Menu className="w-6 h-6" style={{ color: 'var(--color-secondary-500)' }} />
+              </button>
+            </div>
           </div>
         </div>
       </header>
