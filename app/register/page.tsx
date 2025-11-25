@@ -17,6 +17,7 @@ export default function RegisterPage() {
   const [error, setError] = useState('')
   const [success, setSuccess] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [comingSoon, setComingSoon] = useState<string | null>(null)
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
@@ -88,13 +89,10 @@ export default function RegisterPage() {
     }
   }
 
-  const handleOAuth = async (provider: 'google' | 'facebook') => {
-    setError('')
-    try {
-      await signIn(provider, { callbackUrl: '/dashboard' })
-    } catch (error) {
-      setError(`Failed to sign in with ${provider}`)
-    }
+  const handleOAuth = (provider: 'google' | 'facebook') => {
+    const providerName = provider === 'google' ? 'Google' : 'Facebook'
+    setComingSoon(providerName)
+    setTimeout(() => setComingSoon(null), 3000)
   }
 
   return (
@@ -127,13 +125,22 @@ export default function RegisterPage() {
             </div>
           )}
 
+          {/* Coming Soon Notification */}
+          {comingSoon && (
+            <div className="mb-6 p-4 bg-amber-900/20 border border-amber-500/30 rounded-lg flex items-center gap-3">
+              <svg className="w-5 h-5 text-amber-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <p className="text-amber-300 text-sm">{comingSoon} sign-up coming soon!</p>
+            </div>
+          )}
+
           {/* OAuth Buttons */}
           <div className="space-y-3 mb-6">
             <button
               type="button"
               onClick={() => handleOAuth('google')}
-              disabled={loading || success}
-              className="w-full btn btn-outline flex items-center justify-center gap-3 py-3 disabled:opacity-50"
+              className="w-full btn btn-outline flex items-center justify-center gap-3 py-3 opacity-50 cursor-not-allowed"
             >
               <svg className="w-5 h-5" viewBox="0 0 24 24">
                 <path
@@ -154,18 +161,19 @@ export default function RegisterPage() {
                 />
               </svg>
               Sign up with Google
+              <span className="text-xs text-neutral-500">(Coming Soon)</span>
             </button>
 
             <button
               type="button"
               onClick={() => handleOAuth('facebook')}
-              disabled={loading || success}
-              className="w-full btn btn-outline flex items-center justify-center gap-3 py-3 disabled:opacity-50"
+              className="w-full btn btn-outline flex items-center justify-center gap-3 py-3 opacity-50 cursor-not-allowed"
             >
               <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
               </svg>
               Sign up with Facebook
+              <span className="text-xs text-neutral-500">(Coming Soon)</span>
             </button>
           </div>
 
