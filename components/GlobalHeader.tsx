@@ -89,24 +89,9 @@ export default function GlobalHeader() {
       href: '/',
     },
     {
-      icon: Info,
-      label: 'About',
-      href: '/about',
-    },
-    {
-      icon: FileText,
-      label: 'Privacy Policy',
-      href: '/privacy',
-    },
-    {
       icon: Phone,
       label: 'Contact',
       href: '/contact',
-    },
-    {
-      icon: FileText,
-      label: 'Code of Conduct',
-      href: '/code-of-conduct',
     },
   ]
 

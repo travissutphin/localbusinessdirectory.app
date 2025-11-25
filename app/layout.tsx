@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import MobileNav from "@/components/MobileNav";
 import GlobalHeader from "@/components/GlobalHeader";
+import GlobalFooter from "@/components/GlobalFooter";
 
 export const metadata: Metadata = {
   title: "My Home Based Business - Get Found by Local Customers | myhbb.app",
@@ -30,6 +31,7 @@ export default function RootLayout({
       <body className="antialiased">
         <GlobalHeader />
         {children}
+        <GlobalFooter />
         <MobileNav />
       </body>
     </html>
