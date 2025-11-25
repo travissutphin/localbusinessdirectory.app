@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import { usePathname } from 'next/navigation'
 import { signOut } from 'next-auth/react'
-import { Home, Menu, User, Shield, X, Info, FileText, Phone, Building2, LogOut, LogIn } from 'lucide-react'
+import { Home, Menu, User, Shield, X, Info, FileText, Phone, Building2, LogOut, LogIn, MapPin } from 'lucide-react'
 
 type UserType = {
   id: string
@@ -12,24 +12,35 @@ type UserType = {
   role: string
 }
 
+type Location = {
+  id: string
+  name: string
+  slug: string
+  zipCode: string
+}
+
 export default function MobileNav() {
   const pathname = usePathname()
   const [user, setUser] = useState<UserType | null>(null)
   const [loading, setLoading] = useState(true)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [isDirectoriesOpen, setIsDirectoriesOpen] = useState(false)
+  const [locations, setLocations] = useState<Location[]>([])
 
   useEffect(() => {
     checkAuth()
+    fetchLocations()
   }, [])
 
   useEffect(() => {
-    // Close menu on route change
+    // Close menus on route change
     setIsMenuOpen(false)
+    setIsDirectoriesOpen(false)
   }, [pathname])
 
   useEffect(() => {
     // Prevent body scroll when menu is open
-    if (isMenuOpen) {
+    if (isMenuOpen || isDirectoriesOpen) {
       document.body.style.overflow = 'hidden'
     } else {
       document.body.style.overflow = ''
@@ -38,7 +49,7 @@ export default function MobileNav() {
     return () => {
       document.body.style.overflow = ''
     }
-  }, [isMenuOpen])
+  }, [isMenuOpen, isDirectoriesOpen])
 
   async function checkAuth() {
     try {
@@ -51,6 +62,18 @@ export default function MobileNav() {
       // User not authenticated
     } finally {
       setLoading(false)
+    }
+  }
+
+  async function fetchLocations() {
+    try {
+      const response = await fetch('/api/locations')
+      if (response.ok) {
+        const data = await response.json()
+        setLocations(data.locations || [])
+      }
+    } catch (err) {
+      // Failed to fetch locations
     }
   }
 
@@ -72,27 +95,57 @@ export default function MobileNav() {
     return pathname.startsWith(path)
   }
 
-  const navItems = [
-    {
-      icon: Home,
-      label: 'Home',
-      href: '/',
-    },
-    {
-      icon: Menu,
-      label: 'More',
-      href: '#',
-      onClick: (e: React.MouseEvent) => {
-        e.preventDefault()
-        setIsMenuOpen(true)
-      }
-    },
-    {
-      icon: user?.role === 'ADMIN' ? Shield : LogIn,
-      label: user ? (user.role === 'ADMIN' ? 'Admin' : 'Sign In') : 'Sign In',
-      href: user ? (user.role === 'ADMIN' ? '/admin' : '/login') : '/login',
-    },
-  ]
+  const navItems = user
+    ? [
+        {
+          icon: MapPin,
+          label: 'Directories',
+          href: '#',
+          onClick: (e: React.MouseEvent) => {
+            e.preventDefault()
+            setIsDirectoriesOpen(true)
+          }
+        },
+        {
+          icon: User,
+          label: 'My Profile',
+          href: '/profile',
+        },
+        {
+          icon: Menu,
+          label: 'More',
+          href: '#',
+          onClick: (e: React.MouseEvent) => {
+            e.preventDefault()
+            setIsMenuOpen(true)
+          }
+        },
+      ]
+    : [
+        {
+          icon: MapPin,
+          label: 'Directories',
+          href: '#',
+          onClick: (e: React.MouseEvent) => {
+            e.preventDefault()
+            setIsDirectoriesOpen(true)
+          }
+        },
+        {
+          icon: Building2,
+          label: 'Business Owners',
+          href: '/login',
+        },
+        {
+          icon: Menu,
+          label: 'More',
+          href: '#',
+          onClick: (e: React.MouseEvent) => {
+            e.preventDefault()
+            setIsMenuOpen(true)
+          }
+        },
+      ]
 
   const menuItems = [
     {
@@ -179,6 +232,61 @@ export default function MobileNav() {
           })}
         </div>
       </nav>
+
+      {/* Directories Overlay */}
+      {isDirectoriesOpen && (
+        <div
+          className="md:hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-[60] transition-opacity duration-300"
+          onClick={() => setIsDirectoriesOpen(false)}
+        />
+      )}
+
+      {/* Directories Slide-up Menu */}
+      <div
+        className={`md:hidden fixed bottom-0 left-0 right-0 bg-white rounded-t-2xl shadow-2xl z-[61] transform transition-transform duration-300 ease-out ${
+          isDirectoriesOpen ? 'translate-y-0' : 'translate-y-full'
+        }`}
+      >
+        <div className="flex justify-center py-2">
+          <div className="w-12 h-1 bg-neutral-300 rounded-full" />
+        </div>
+
+        <div className="flex items-center justify-between px-6 pb-4 border-b border-neutral-200">
+          <h2 className="text-lg font-semibold text-neutral-900">Select Location</h2>
+          <button
+            onClick={() => setIsDirectoriesOpen(false)}
+            className="p-2 hover:bg-neutral-100 rounded-lg transition-colors"
+            aria-label="Close directories"
+          >
+            <X className="w-5 h-5 text-neutral-600" />
+          </button>
+        </div>
+
+        <div className="max-h-[60vh] overflow-y-auto pb-safe">
+          {locations.length === 0 ? (
+            <div className="px-6 py-8 text-center text-neutral-500">
+              No locations available
+            </div>
+          ) : (
+            <ul className="py-2">
+              {locations.map((loc) => (
+                <li key={loc.id}>
+                  <a
+                    href={`/${loc.slug}`}
+                    className="flex items-center gap-4 px-6 py-3 text-neutral-700 hover:bg-neutral-50 transition-colors"
+                  >
+                    <MapPin className="w-5 h-5 text-primary-500" />
+                    <div>
+                      <span className="block font-medium">{loc.name}</span>
+                      <span className="text-xs text-neutral-400">ZIP: {loc.zipCode}</span>
+                    </div>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      </div>
 
       {/* Slide-up Menu Overlay */}
       {isMenuOpen && (
