@@ -1,283 +1,280 @@
 'use client'
 
-import { useEffect, useState } from 'react'
-import { useRouter } from 'next/navigation'
-import { MapPin, Search, Loader2 } from 'lucide-react'
-
-interface Location {
-  id: string
-  name: string
-  slug: string
-  zipCode: string
-}
+import { CheckCircle2, ArrowRight, Users, Search, TrendingUp } from 'lucide-react'
 
 export default function Home() {
-  const router = useRouter()
-  const [locations, setLocations] = useState<Location[]>([])
-  const [selectedLocation, setSelectedLocation] = useState<string>('')
-  const [loading, setLoading] = useState(true)
-  const [showModal, setShowModal] = useState(false)
-  const [geolocationStatus, setGeolocationStatus] = useState<string>('')
-  const [detectedLocation, setDetectedLocation] = useState<Location | null>(null)
-
-  useEffect(() => {
-    initializeLocation()
-  }, [router])
-
-  async function initializeLocation() {
-    try {
-      // Step 1: Check localStorage first (fastest)
-      const savedLocation = localStorage.getItem('selectedLocation')
-      if (savedLocation) {
-        router.push(`/${savedLocation}`)
-        return
-      }
-
-      // Step 2: Check if user is authenticated and has preference
-      const authResponse = await fetch('/api/auth/me')
-      if (authResponse.ok) {
-        const { user } = await authResponse.json()
-
-        // If user has location preference, use it
-        if (user.location?.slug) {
-          localStorage.setItem('selectedLocation', user.location.slug)
-          router.push(`/${user.location.slug}`)
-          return
-        }
-
-        // If geolocation hasn't been attempted yet, try it
-        if (!user.geolocationFlag) {
-          await attemptGeolocation(user.id)
-          return
-        }
-      }
-
-      // Step 3: For non-authenticated users, try geolocation once
-      const geoAttempted = localStorage.getItem('geoLocationAttempted')
-      if (!geoAttempted) {
-        await attemptGeolocation(null)
-        return
-      }
-
-      // Step 4: Show manual selector if all else fails
-      setShowModal(true)
-      fetchLocations()
-    } catch (error) {
-      console.error('Location initialization error:', error)
-      setShowModal(true)
-      fetchLocations()
-    }
-  }
-
-  async function attemptGeolocation(userId: string | null) {
-    try {
-      setGeolocationStatus('Detecting your location...')
-      setShowModal(true)
-      fetchLocations()
-
-      const geoResponse = await fetch('/api/geolocation/detect')
-      const geoData = await geoResponse.json()
-
-      if (geoData.matched && geoData.location) {
-        setDetectedLocation(geoData.location)
-        setGeolocationStatus(
-          geoData.approximate
-            ? `We found a nearby location: ${geoData.location.name}`
-            : `Location detected: ${geoData.location.name}`
-        )
-
-        // Save for authenticated users
-        if (userId) {
-          await fetch('/api/user/location-preference', {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              locationId: geoData.location.id,
-              setGeolocationFlag: true,
-            }),
-          })
-        } else {
-          // Mark geolocation as attempted for non-authenticated users
-          localStorage.setItem('geoLocationAttempted', 'true')
-        }
-
-        // Auto-redirect after 2 seconds
-        setTimeout(() => {
-          handleLocationSelect(geoData.location.slug)
-        }, 2000)
-      } else {
-        // No match found
-        setGeolocationStatus(geoData.message || 'Could not match your location. Please select manually.')
-        if (!userId) {
-          localStorage.setItem('geoLocationAttempted', 'true')
-        }
-        setLoading(false)
-      }
-    } catch (error) {
-      console.error('Geolocation error:', error)
-      setGeolocationStatus('Location detection unavailable. Please select manually.')
-      if (!userId) {
-        localStorage.setItem('geoLocationAttempted', 'true')
-      }
-      setLoading(false)
-    }
-  }
-
-  const fetchLocations = async () => {
-    try {
-      const response = await fetch('/api/locations')
-      if (response.ok) {
-        const data = await response.json()
-        setLocations(data.locations || [])
-      }
-    } catch (error) {
-      console.error('Failed to fetch locations:', error)
-      // Set default location for development
-      setLocations([
-        {
-          id: '1',
-          name: 'Saint Augustine, FL',
-          slug: 'saint-augustine-fl',
-          zipCode: '32080'
-        }
-      ])
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  const handleLocationSelect = (slug: string) => {
-    // Save to localStorage
-    localStorage.setItem('selectedLocation', slug)
-
-    // Redirect to location page
-    router.push(`/${slug}`)
-  }
-
-  if (!showModal) {
-    return (
-      <main className="flex min-h-screen items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
-          <p className="mt-4 text-neutral-600">Loading...</p>
-        </div>
-      </main>
-    )
-  }
-
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center p-4 md:p-24 bg-gradient-to-br from-neutral-50 to-neutral-100">
-      {/* Location Selector Modal */}
-      <div className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full p-8 md:p-12">
-        {/* Header */}
-        <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10 mb-4">
-            {geolocationStatus && detectedLocation ? (
-              <Loader2 className="w-8 h-8 text-primary animate-spin" />
-            ) : (
-              <MapPin className="w-8 h-8 text-primary" />
-            )}
-          </div>
-          <h1 className="text-3xl md:text-4xl font-bold text-neutral-900 mb-2">
-            Welcome to My Home Based Business
-          </h1>
-          <p className="text-lg text-neutral-600">
-            {geolocationStatus || 'Select your location to discover local businesses and services'}
-          </p>
-        </div>
+    <div className="min-h-screen bg-white">
+      {/* Hero Section - Above the Fold */}
+      <section className="relative bg-gradient-to-br from-primary-50 via-white to-secondary-50 pt-20 pb-24 md:pt-32 md:pb-40">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            {/* Left Column - Headline & CTA */}
+            <div className="text-center lg:text-left">
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-neutral-900 mb-6 leading-tight">
+                Get Your Home Business Found by Local Customers
+              </h1>
+              <p className="text-xl md:text-2xl text-neutral-700 mb-8 leading-relaxed">
+                Join the free directory built for home-based businesses. Get discovered by people searching for exactly what you offer.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+                <a
+                  href="/register"
+                  className="inline-flex items-center justify-center px-8 py-4 text-lg font-semibold text-white bg-primary-600 rounded-lg hover:bg-primary-700 transition-all shadow-lg hover:shadow-xl"
+                >
+                  List Your Business Free
+                  <ArrowRight className="ml-2 w-5 h-5" />
+                </a>
+                <a
+                  href="/about"
+                  className="inline-flex items-center justify-center px-8 py-4 text-lg font-semibold text-neutral-700 bg-white border-2 border-neutral-300 rounded-lg hover:border-primary-500 hover:text-primary-600 transition-all"
+                >
+                  Learn More
+                </a>
+              </div>
+              <p className="mt-6 text-sm text-neutral-600">
+                ✓ Free forever &nbsp;&nbsp; ✓ Set up in 3 minutes &nbsp;&nbsp; ✓ No credit card required
+              </p>
+            </div>
 
-        {/* Geolocation Detected Location Card */}
-        {detectedLocation && (
-          <div className="mb-6 p-4 bg-green-50 border-2 border-green-200 rounded-lg">
-            <div className="flex items-center gap-3">
-              <div className="flex-shrink-0">
-                <div className="w-10 h-10 rounded-full bg-green-500/20 flex items-center justify-center">
-                  <MapPin className="w-5 h-5 text-green-600" />
+            {/* Right Column - Hero Image Placeholder */}
+            <div className="hidden lg:block">
+              <div className="relative bg-gradient-to-br from-primary-100 to-secondary-100 rounded-2xl p-8 shadow-2xl">
+                <div className="bg-white rounded-xl p-6 shadow-lg">
+                  <div className="flex items-center gap-4 mb-4">
+                    <div className="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center">
+                      <CheckCircle2 className="w-7 h-7 text-white" />
+                    </div>
+                    <div>
+                      <div className="h-4 bg-neutral-200 rounded w-32 mb-2"></div>
+                      <div className="h-3 bg-neutral-100 rounded w-24"></div>
+                    </div>
+                  </div>
+                  <div className="space-y-3">
+                    <div className="h-3 bg-neutral-100 rounded w-full"></div>
+                    <div className="h-3 bg-neutral-100 rounded w-5/6"></div>
+                    <div className="h-3 bg-neutral-100 rounded w-4/6"></div>
+                  </div>
                 </div>
               </div>
-              <div className="flex-1">
-                <h3 className="text-sm font-semibold text-green-900">
-                  {detectedLocation.name}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Stakes Section - The Problem */}
+      <section className="py-16 md:py-24 bg-neutral-900 text-white">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6">
+            Stop Being the Best-Kept Secret in Your Neighborhood
+          </h2>
+          <p className="text-xl md:text-2xl text-neutral-300 leading-relaxed">
+            You&apos;ve built something great. But when potential customers search for services like yours, they find your competitors instead. Every day you stay invisible, you&apos;re missing out on people who need exactly what you offer. <span className="text-primary-400 font-semibold">It doesn&apos;t have to be this way.</span>
+          </p>
+        </div>
+      </section>
+
+      {/* Value Proposition - Guide with Empathy */}
+      <section className="py-16 md:py-24 bg-gradient-to-br from-white to-primary-50">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-neutral-900 mb-6">
+              We Help Home Businesses Get the Attention They Deserve
+            </h2>
+            <p className="text-xl text-neutral-700 max-w-4xl mx-auto leading-relaxed">
+              We know how hard it is to compete with big brands and their big budgets. That&apos;s why we built a free directory specifically for home-based businesses like yours. When local customers search for services, your business shows up.
+            </p>
+          </div>
+
+          {/* Features Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
+            <div className="bg-white rounded-xl p-8 shadow-lg hover:shadow-xl transition-shadow">
+              <div className="w-14 h-14 bg-primary-100 rounded-lg flex items-center justify-center mb-6">
+                <Search className="w-8 h-8 text-primary-600" />
+              </div>
+              <h3 className="text-xl font-bold text-neutral-900 mb-3">
+                Get Discovered
+              </h3>
+              <p className="text-neutral-600 leading-relaxed">
+                Appear in search results when local customers look for services like yours. No expensive ads required.
+              </p>
+            </div>
+
+            <div className="bg-white rounded-xl p-8 shadow-lg hover:shadow-xl transition-shadow">
+              <div className="w-14 h-14 bg-secondary-100 rounded-lg flex items-center justify-center mb-6">
+                <Users className="w-8 h-8 text-secondary-600" />
+              </div>
+              <h3 className="text-xl font-bold text-neutral-900 mb-3">
+                Connect with Customers
+              </h3>
+              <p className="text-neutral-600 leading-relaxed">
+                Reach people who are actively searching for what you offer. They&apos;re ready to buy, not just browsing.
+              </p>
+            </div>
+
+            <div className="bg-white rounded-xl p-8 shadow-lg hover:shadow-xl transition-shadow">
+              <div className="w-14 h-14 bg-green-100 rounded-lg flex items-center justify-center mb-6">
+                <TrendingUp className="w-8 h-8 text-green-600" />
+              </div>
+              <h3 className="text-xl font-bold text-neutral-900 mb-3">
+                Grow Your Business
+              </h3>
+              <p className="text-neutral-600 leading-relaxed">
+                Build a steady stream of customer inquiries without spending on expensive marketing campaigns.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* The Plan - 3 Steps */}
+      <section className="py-16 md:py-24 bg-white">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-neutral-900 mb-6">
+              Getting Found Is Simple
+            </h2>
+            <p className="text-xl text-neutral-700">
+              Three easy steps to start connecting with customers who need what you offer
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {/* Step 1 */}
+            <div className="relative">
+              <div className="bg-gradient-to-br from-primary-50 to-primary-100 rounded-2xl p-8 h-full">
+                <div className="flex items-center justify-center w-16 h-16 bg-primary-600 text-white text-2xl font-bold rounded-full mb-6">
+                  1
+                </div>
+                <h3 className="text-2xl font-bold text-neutral-900 mb-4">
+                  Create Your Free Listing
                 </h3>
-                <p className="text-xs text-green-700">
-                  ZIP: {detectedLocation.zipCode} • Redirecting...
+                <p className="text-neutral-700 leading-relaxed">
+                  Add your business details in just 3 minutes. Include your services, contact info, and what makes you special.
+                </p>
+              </div>
+            </div>
+
+            {/* Step 2 */}
+            <div className="relative">
+              <div className="bg-gradient-to-br from-secondary-50 to-secondary-100 rounded-2xl p-8 h-full">
+                <div className="flex items-center justify-center w-16 h-16 bg-secondary-600 text-white text-2xl font-bold rounded-full mb-6">
+                  2
+                </div>
+                <h3 className="text-2xl font-bold text-neutral-900 mb-4">
+                  Get Discovered
+                </h3>
+                <p className="text-neutral-700 leading-relaxed">
+                  Appear when customers search for your services. Your listing is optimized for local search and discovery.
+                </p>
+              </div>
+            </div>
+
+            {/* Step 3 */}
+            <div className="relative">
+              <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-2xl p-8 h-full">
+                <div className="flex items-center justify-center w-16 h-16 bg-green-600 text-white text-2xl font-bold rounded-full mb-6">
+                  3
+                </div>
+                <h3 className="text-2xl font-bold text-neutral-900 mb-4">
+                  Grow Your Business
+                </h3>
+                <p className="text-neutral-700 leading-relaxed">
+                  Connect with customers who need what you offer. Watch your calendar fill up with genuine inquiries.
                 </p>
               </div>
             </div>
           </div>
-        )}
+        </div>
+      </section>
 
-        {/* Loading State */}
-        {loading && (
-          <div className="text-center py-12">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
-            <p className="mt-4 text-neutral-600">Loading locations...</p>
-          </div>
-        )}
-
-        {/* Location Selection */}
-        {!loading && locations.length > 0 && (
-          <div className="space-y-4">
-            <label className="block text-sm font-medium text-neutral-700 mb-2">
-              Choose Your Location
-            </label>
-
-            <div className="grid gap-3 md:gap-4">
-              {locations.map((location) => (
-                <button
-                  key={location.id}
-                  onClick={() => handleLocationSelect(location.slug)}
-                  className="group relative flex items-center gap-4 p-4 md:p-6 rounded-xl border-2 border-neutral-200 hover:border-primary hover:bg-primary/5 transition-all duration-200 text-left"
-                >
-                  <div className="flex-shrink-0">
-                    <div className="w-12 h-12 rounded-full bg-primary/10 group-hover:bg-primary/20 flex items-center justify-center transition-colors">
-                      <MapPin className="w-6 h-6 text-primary" />
-                    </div>
-                  </div>
-
-                  <div className="flex-1">
-                    <h3 className="text-lg font-semibold text-neutral-900 group-hover:text-primary transition-colors">
-                      {location.name}
-                    </h3>
-                    <p className="text-sm text-neutral-600">
-                      ZIP: {location.zipCode}
-                    </p>
-                  </div>
-
-                  <div className="flex-shrink-0">
-                    <Search className="w-5 h-5 text-neutral-400 group-hover:text-primary transition-colors" />
-                  </div>
-                </button>
-              ))}
-            </div>
-
-            {/* Info Text */}
-            <p className="text-center text-sm text-neutral-500 mt-6">
-              Your location preference will be saved for future visits
+      {/* Explanatory Paragraph */}
+      <section className="py-16 md:py-24 bg-gradient-to-br from-neutral-50 to-neutral-100">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="bg-white rounded-2xl p-8 md:p-12 shadow-xl">
+            <h2 className="text-3xl md:text-4xl font-bold text-neutral-900 mb-6 text-center">
+              Built for Home-Based Businesses
+            </h2>
+            <p className="text-xl text-neutral-700 leading-relaxed text-center">
+              Unlike crowded marketplaces where you compete with everyone, our directory is designed specifically for home-based businesses. We understand that you&apos;re offering personalized service, local expertise, and the kind of care that big companies can&apos;t match. Our platform connects you with customers who value exactly that.
             </p>
           </div>
-        )}
+        </div>
+      </section>
 
-        {/* No Locations State */}
-        {!loading && locations.length === 0 && (
-          <div className="text-center py-12">
-            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-neutral-100 mb-4">
-              <MapPin className="w-8 h-8 text-neutral-400" />
+      {/* Testimonial Section Placeholder */}
+      <section className="py-16 md:py-24 bg-white">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-neutral-900 mb-12 text-center">
+            Home Businesses Like Yours Are Getting Found
+          </h2>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {/* Testimonial Placeholder 1 */}
+            <div className="bg-primary-50 rounded-2xl p-8 border-2 border-primary-200">
+              <div className="flex items-center gap-4 mb-4">
+                <div className="w-16 h-16 bg-primary-300 rounded-full"></div>
+                <div>
+                  <div className="h-5 bg-primary-200 rounded w-32 mb-2"></div>
+                  <div className="h-4 bg-primary-100 rounded w-24"></div>
+                </div>
+              </div>
+              <p className="text-neutral-700 italic leading-relaxed mb-4">
+                &quot;Success story coming soon from home-based business owners who have listed their businesses and started getting more customer inquiries.&quot;
+              </p>
+              <div className="flex gap-1">
+                {[...Array(5)].map((_, i) => (
+                  <div key={i} className="w-5 h-5 bg-primary-400 rounded"></div>
+                ))}
+              </div>
             </div>
-            <h3 className="text-xl font-semibold text-neutral-900 mb-2">
-              No Locations Available
-            </h3>
-            <p className="text-neutral-600">
-              We&apos;re currently setting up service areas. Please check back soon!
-            </p>
-          </div>
-        )}
-      </div>
 
-      {/* Footer Note */}
-      <p className="mt-8 text-sm text-neutral-500 text-center max-w-md">
-        Find trusted local businesses, read reviews, and connect with services in your community
-      </p>
-    </main>
+            {/* Testimonial Placeholder 2 */}
+            <div className="bg-secondary-50 rounded-2xl p-8 border-2 border-secondary-200">
+              <div className="flex items-center gap-4 mb-4">
+                <div className="w-16 h-16 bg-secondary-300 rounded-full"></div>
+                <div>
+                  <div className="h-5 bg-secondary-200 rounded w-32 mb-2"></div>
+                  <div className="h-4 bg-secondary-100 rounded w-24"></div>
+                </div>
+              </div>
+              <p className="text-neutral-700 italic leading-relaxed mb-4">
+                &quot;Join other home-based businesses who are building their customer base through our free directory platform.&quot;
+              </p>
+              <div className="flex gap-1">
+                {[...Array(5)].map((_, i) => (
+                  <div key={i} className="w-5 h-5 bg-secondary-400 rounded"></div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Final CTA Section */}
+      <section className="py-20 md:py-32 bg-gradient-to-br from-primary-600 to-primary-800 text-white">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
+            Your Next Customer Is Searching Right Now
+          </h2>
+          <p className="text-xl md:text-2xl text-primary-100 mb-10 leading-relaxed">
+            Don&apos;t let them find someone else. Get your business listed in minutes—completely free.
+          </p>
+          <a
+            href="/register"
+            className="inline-flex items-center justify-center px-10 py-5 text-xl font-bold text-primary-600 bg-white rounded-lg hover:bg-neutral-100 transition-all shadow-2xl hover:shadow-3xl transform hover:scale-105"
+          >
+            Claim Your Free Listing
+            <ArrowRight className="ml-3 w-6 h-6" />
+          </a>
+          <p className="mt-8 text-primary-200">
+            Join hundreds of home-based businesses already getting found by local customers
+          </p>
+        </div>
+      </section>
+
+      {/* Footer Spacer for Mobile Nav */}
+      <div className="h-20 md:h-0"></div>
+    </div>
   )
 }
