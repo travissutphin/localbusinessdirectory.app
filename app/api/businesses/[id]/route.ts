@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { auth } from '@/lib/auth'
 import { prisma } from '@/lib/db'
+import { generateUniqueSlug } from '@/lib/slug'
 
 // GET /api/businesses/[id] - Get single business
 export async function GET(
@@ -98,11 +99,24 @@ export async function PUT(
       imageUrl,
     } = body
 
+    // Regenerate slug if name or address changed
+    let newSlug = existingBusiness.slug
+    if (name !== existingBusiness.name || address !== existingBusiness.address) {
+      newSlug = await generateUniqueSlug(
+        name,
+        address,
+        existingBusiness.locationId,
+        existingBusiness.directoryId,
+        existingBusiness.id
+      )
+    }
+
     // Update business (status resets to PENDING if content changed)
     const business = await prisma.business.update({
       where: { id: params.id },
       data: {
         name,
+        slug: newSlug,
         description,
         address,
         phone,

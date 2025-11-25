@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { auth } from '@/lib/auth'
 import { prisma } from '@/lib/db'
+import { generateUniqueSlug } from '@/lib/slug'
 
 // GET /api/businesses - List businesses with filtering and pagination
 export async function GET(request: NextRequest) {
@@ -202,10 +203,14 @@ export async function POST(request: NextRequest) {
       )
     }
 
+    // Generate SEO-friendly slug
+    const slug = await generateUniqueSlug(name, address, locationId, directoryId)
+
     // Create business
     const business = await prisma.business.create({
       data: {
         name,
+        slug,
         description,
         ownerId: userId,
         locationId,

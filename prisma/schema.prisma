@@ -125,6 +125,7 @@ model Business {
   locationId               String    @map("location_id")
   directoryId              String    @map("directory_id")
   name                     String
+  slug                     String?
   description              String
   phone                    String
   website                  String?
@@ -156,11 +157,13 @@ model Business {
   businessDirectories BusinessDirectory[]
 
   @@unique([ownerId, name, locationId])
+  @@unique([locationId, directoryId, slug])
   @@index([locationId, directoryId, status])
   @@index([ownerId, status])
   @@index([status, createdAt])
   @@index([approvedAt])
   @@index([isActive])
+  @@index([slug])
   @@map("businesses")
 }
 

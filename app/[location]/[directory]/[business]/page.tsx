@@ -1,9 +1,10 @@
-import { notFound } from 'next/navigation'
+import { notFound, redirect } from 'next/navigation'
 import { prisma } from '@/lib/db'
 import { MapPin, Phone, Mail, Globe, Clock, ArrowLeft, MessageSquare } from 'lucide-react'
 
 type Business = {
   id: string
+  slug: string | null
   name: string
   description: string
   address: string
@@ -23,15 +24,86 @@ type Business = {
   }
 }
 
-async function getBusinessData(businessId: string): Promise<Business | null> {
+function isUUID(str: string): boolean {
+  const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
+  return uuidRegex.test(str)
+}
+
+async function getBusinessData(
+  businessParam: string,
+  locationSlug: string,
+  directorySlug: string
+): Promise<{ business: Business | null; shouldRedirect: boolean; redirectSlug: string | null }> {
   try {
-    const business = await prisma.business.findUnique({
+    // First, get location and directory IDs
+    const location = await prisma.location.findUnique({
+      where: { slug: locationSlug },
+      select: { id: true },
+    })
+
+    if (!location) {
+      return { business: null, shouldRedirect: false, redirectSlug: null }
+    }
+
+    const directory = await prisma.directory.findFirst({
+      where: { locationId: location.id, slug: directorySlug },
+      select: { id: true },
+    })
+
+    if (!directory) {
+      return { business: null, shouldRedirect: false, redirectSlug: null }
+    }
+
+    let business: Business | null = null
+
+    // Try to find by slug first (preferred)
+    if (!isUUID(businessParam)) {
+      business = await prisma.business.findFirst({
+        where: {
+          slug: businessParam,
+          locationId: location.id,
+          directoryId: directory.id,
+          status: 'APPROVED',
+        },
+        select: {
+          id: true,
+          slug: true,
+          name: true,
+          description: true,
+          address: true,
+          phone: true,
+          email: true,
+          website: true,
+          imageUrl: true,
+          hoursJson: true,
+          status: true,
+          location: {
+            select: {
+              name: true,
+              slug: true,
+            },
+          },
+          directory: {
+            select: {
+              name: true,
+              slug: true,
+            },
+          },
+        },
+      })
+
+      return { business, shouldRedirect: false, redirectSlug: null }
+    }
+
+    // If it's a UUID, find by ID and check if we should redirect to slug
+    business = await prisma.business.findUnique({
       where: {
-        id: businessId,
-        status: 'APPROVED', // Only show approved businesses
+        id: businessParam,
+        status: 'APPROVED',
       },
       select: {
         id: true,
+        slug: true,
         name: true,
         description: true,
         address: true,
@@ -56,10 +128,15 @@ async function getBusinessData(businessId: string): Promise<Business | null> {
       },
     })
 
-    return business
+    // If business has a slug, redirect to SEO-friendly URL
+    if (business && business.slug) {
+      return { business, shouldRedirect: true, redirectSlug: business.slug }
+    }
+
+    return { business, shouldRedirect: false, redirectSlug: null }
   } catch (error) {
     console.error('Error fetching business:', error)
-    return null
+    return { business: null, shouldRedirect: false, redirectSlug: null }
   }
 }
 
@@ -68,7 +145,16 @@ export default async function BusinessDetailPage({
 }: {
   params: { location: string; directory: string; business: string }
 }) {
-  const business = await getBusinessData(params.business)
+  const { business, shouldRedirect, redirectSlug } = await getBusinessData(
+    params.business,
+    params.location,
+    params.directory
+  )
+
+  // 301 redirect from UUID to SEO-friendly slug URL
+  if (shouldRedirect && redirectSlug) {
+    redirect(`/${params.location}/${params.directory}/${redirectSlug}`)
+  }
 
   if (!business) {
     notFound()
