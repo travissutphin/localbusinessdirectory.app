@@ -63,10 +63,24 @@ Keep it simple, efficient, robust, best practice and scalable. No overengineerin
 - [ProcessTaskQA] : [Codey], provide current task report outome to [Verity] to QA
 - [ProgressTaskStage] : 
 - [ProcessTaskLive] : 
-- [ProcessTaskComplete] : [Codey](Lead) : 
-	1) assign tasks to Team Member Role as needed. 
-	2) review the /docs/kanban_dev.html and determine and take action on if a card eeds moved, or created based on the completed task. 
+- [ProcessTaskComplete] : [Codey](Lead) :
+	1) assign tasks to Team Member Role as needed.
+	2) review the /docs/kanban_dev.html and determine and take action on if a card eeds moved, or created based on the completed task.
 	3) If a new blog post, ensure /public/sitemap.xml is updated to reflect new post.
+- [PushToProduction] : [Flow](Lead), [Sentinal](Support)
+	Pre-push checklist:
+	1) Run `git diff` - review all changes being committed
+	2) Security scan - grep for exposed secrets:
+	   - API keys, tokens, passwords in code (not .env)
+	   - Hardcoded database connection strings
+	   - Private keys or certificates
+	   - Pattern: `(api[_-]?key|secret|password|token).*=.*["'][^"']{8,}` in source files
+	3) Verify .env files are in .gitignore and NOT staged
+	4) Run build: `npm run build` - ensure no errors
+	5) Pull latest: `git pull --rebase origin main`
+	6) Push: `git push origin main`
+	7) Post-push: Verify deployment succeeded on Railway
+	If secrets found: STOP, rotate credentials, remove from code, then proceed.
 - [ProcessEndDay] : 
 
 ##Blog Creation

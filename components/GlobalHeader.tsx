@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { signOut } from 'next-auth/react'
 import Image from 'next/image'
 import { Menu, X, Home, Shield, Phone, LogOut, Building2 as Building, UserPlus, LogIn, ChevronDown, MapPin } from 'lucide-react'
@@ -13,15 +13,27 @@ type User = {
   role: string
 }
 
+type Location = {
+  id: string
+  name: string
+  slug: string
+  zipCode: string
+}
+
 export default function GlobalHeader() {
   const pathname = usePathname()
+  const router = useRouter()
   const [user, setUser] = useState<User | null>(null)
   const [loading, setLoading] = useState(true)
   const [isOpen, setIsOpen] = useState(false)
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
+  const [isLocationDropdownOpen, setIsLocationDropdownOpen] = useState(false)
+  const [locations, setLocations] = useState<Location[]>([])
+  const [locationsLoaded, setLocationsLoaded] = useState(false)
 
   useEffect(() => {
     checkAuth()
+    fetchLocations()
   }, [])
 
   useEffect(() => {
@@ -62,6 +74,28 @@ export default function GlobalHeader() {
       // User not authenticated
     } finally {
       setLoading(false)
+    }
+  }
+
+  async function fetchLocations() {
+    try {
+      const response = await fetch('/api/locations')
+      if (response.ok) {
+        const data = await response.json()
+        setLocations(data.locations || [])
+      }
+    } catch (err) {
+      // Failed to fetch locations
+    } finally {
+      setLocationsLoaded(true)
+    }
+  }
+
+  function handleViewDirectory() {
+    if (locations.length === 1) {
+      router.push(`/${locations[0].slug}`)
+    } else if (locations.length > 1) {
+      setIsLocationDropdownOpen(!isLocationDropdownOpen)
     }
   }
 
@@ -141,14 +175,43 @@ export default function GlobalHeader() {
             <div className="flex items-center gap-3">
               {!user ? (
                 <>
-                  {/* View Local Directory Button */}
-                  <a
-                    href="/"
-                    className="flex items-center gap-2 px-4 py-2 rounded-lg transition-colors font-medium border-2 border-primary-600 text-primary-600 hover:bg-primary-50"
-                  >
-                    <MapPin className="w-4 h-4" />
-                    <span>View Local Directory</span>
-                  </a>
+                  {/* View Local Directory Button/Dropdown */}
+                  <div className="relative">
+                    <button
+                      onClick={handleViewDirectory}
+                      onBlur={() => setTimeout(() => setIsLocationDropdownOpen(false), 200)}
+                      disabled={!locationsLoaded || locations.length === 0}
+                      className="flex items-center gap-2 px-4 py-2 rounded-lg transition-colors font-medium border-2 border-primary-600 text-primary-600 hover:bg-primary-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      <MapPin className="w-4 h-4" />
+                      <span>View Local Directory</span>
+                      {locations.length > 1 && (
+                        <ChevronDown className={`w-4 h-4 transition-transform ${isLocationDropdownOpen ? 'rotate-180' : ''}`} />
+                      )}
+                    </button>
+
+                    {/* Location Dropdown Menu */}
+                    {isLocationDropdownOpen && locations.length > 1 && (
+                      <div className="absolute left-0 mt-2 w-64 bg-white rounded-lg shadow-xl border border-neutral-200 py-2 z-50">
+                        <div className="px-4 py-2 border-b border-neutral-100">
+                          <p className="text-xs text-neutral-500 font-medium uppercase">Select Location</p>
+                        </div>
+                        {locations.map((loc) => (
+                          <a
+                            key={loc.id}
+                            href={`/${loc.slug}`}
+                            className="flex items-center gap-3 px-4 py-2 text-neutral-700 hover:bg-neutral-100 transition-colors"
+                          >
+                            <MapPin className="w-4 h-4 text-primary-500" />
+                            <div>
+                              <span className="block">{loc.name}</span>
+                              <span className="text-xs text-neutral-400">ZIP: {loc.zipCode}</span>
+                            </div>
+                          </a>
+                        ))}
+                      </div>
+                    )}
+                  </div>
 
                   {/* Business Owner Dropdown */}
                   <div className="relative">
