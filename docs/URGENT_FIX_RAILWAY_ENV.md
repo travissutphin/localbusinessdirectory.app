@@ -57,7 +57,7 @@ This references the PostgreSQL service automatically.
 **OR Variable Value (OPTION B - Manual):**
 If Option A doesn't work, use the connection string from the PostgreSQL service:
 ```
-postgresql://postgres:uTKfxjZRqHQhJLLGkiZwJQeIABDxCopV@postgres.railway.internal:5432/railway
+postgresql://postgres:[YOUR_PASSWORD]@postgres.railway.internal:5432/railway
 ```
 
 ### Step 4: Save and Redeploy

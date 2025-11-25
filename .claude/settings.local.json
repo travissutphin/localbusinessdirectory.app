@@ -32,7 +32,9 @@
       "Bash(netstat:*)",
       "Bash(timeout /t 5 /nobreak)",
       "Bash(npm run kill-port:*)",
-      "Bash(git tag:*)"
+      "Bash(git tag:*)",
+      "Bash(git rebase:*)",
+      "Bash(GIT_EDITOR=true git rebase:*)"
     ],
     "deny": [],
     "ask": []

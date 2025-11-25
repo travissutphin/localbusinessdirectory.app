@@ -1,15 +1,13 @@
 import { PrismaClient } from '@prisma/client'
 
-// Direct connection to Railway production database
-const DATABASE_URL = ""
+// Use DATABASE_URL from environment variables - NEVER hardcode credentials
+const DATABASE_URL = process.env.DATABASE_URL
 
-const prisma = new PrismaClient({
-  datasources: {
-    db: {
-      url: DATABASE_URL
-    }
-  }
-})
+if (!DATABASE_URL) {
+  throw new Error('DATABASE_URL environment variable is required')
+}
+
+const prisma = new PrismaClient()
 
 async function main() {
   console.log('🔗 Connecting to Railway PostgreSQL...')
