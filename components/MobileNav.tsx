@@ -112,6 +112,11 @@ export default function MobileNav() {
           href: '/profile',
         },
         {
+          icon: Building2,
+          label: 'My Dashboard',
+          href: '/dashboard',
+        },
+        {
           icon: Menu,
           label: 'More',
           href: '#',
@@ -175,19 +180,12 @@ export default function MobileNav() {
     },
   ]
 
-  // Add user-specific menu items
-  if (user) {
-    if (user.role === 'ADMIN') {
-      menuItems.push({
-        icon: Shield,
-        label: 'Admin Panel',
-        href: '/admin',
-      })
-    }
+  // Add admin-specific menu items
+  if (user && user.role === 'ADMIN') {
     menuItems.push({
-      icon: Building2,
-      label: 'Dashboard',
-      href: '/dashboard',
+      icon: Shield,
+      label: 'Admin Panel',
+      href: '/admin',
     })
   }
 
@@ -199,7 +197,7 @@ export default function MobileNav() {
     <>
       {/* Mobile Navigation - Fixed Bottom with iOS Safe Area */}
       <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-neutral-200 z-50 safe-area-bottom">
-        <div className="grid grid-cols-3 gap-1 px-2 pt-2">
+        <div className={`grid gap-1 px-2 pt-2 ${user ? 'grid-cols-4' : 'grid-cols-3'}`}>
           {navItems.map((item) => {
             const Icon = item.icon
             const active = item.href !== '#' && isActive(item.href)
