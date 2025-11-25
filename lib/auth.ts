@@ -15,14 +15,7 @@ export const authConfig = {
   providers: [
     // Magic Link Email Provider
     EmailProvider({
-      server: {
-        host: process.env.EMAIL_SERVER_HOST || "smtp.resend.com",
-        port: parseInt(process.env.EMAIL_SERVER_PORT || "587"),
-        auth: {
-          user: process.env.EMAIL_SERVER_USER || "resend",
-          pass: process.env.RESEND_API_KEY || "",
-        },
-      },
+      server: process.env.EMAIL_SERVER || "smtp://resend:placeholder@smtp.resend.com:587",
       from: process.env.EMAIL_FROM || "My Home Based Business <noreply@myhbb.app>",
       sendVerificationRequest: async ({ identifier: email, url }) => {
         const emailService = createEmailService()
