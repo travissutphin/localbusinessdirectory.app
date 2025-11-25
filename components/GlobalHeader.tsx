@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { usePathname } from 'next/navigation'
 import { signOut } from 'next-auth/react'
 import Image from 'next/image'
-import { Menu, X, Home, Info, Shield, Phone, FileText, LogOut, User, Building2 as Building, UserPlus, LogIn } from 'lucide-react'
+import { Menu, X, Home, Shield, Phone, LogOut, Building2 as Building, UserPlus, LogIn, ChevronDown, MapPin } from 'lucide-react'
 
 type User = {
   id: string
@@ -18,6 +18,7 @@ export default function GlobalHeader() {
   const [user, setUser] = useState<User | null>(null)
   const [loading, setLoading] = useState(true)
   const [isOpen, setIsOpen] = useState(false)
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false)
 
   useEffect(() => {
     checkAuth()
@@ -136,47 +137,51 @@ export default function GlobalHeader() {
               />
             </a>
 
-            {/* Auth Buttons + Hamburger Menu */}
+            {/* Navigation Buttons + Hamburger Menu */}
             <div className="flex items-center gap-3">
               {!user ? (
                 <>
-                  {/* Register Button */}
+                  {/* View Local Directory Button */}
                   <a
-                    href="/register"
-                    className="flex items-center gap-2 px-4 py-2 rounded-lg transition-colors font-medium"
-                    style={{
-                      backgroundColor: 'var(--color-primary-600)',
-                      color: 'white'
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.backgroundColor = 'var(--color-primary-700)'
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.backgroundColor = 'var(--color-primary-600)'
-                    }}
+                    href="/"
+                    className="flex items-center gap-2 px-4 py-2 rounded-lg transition-colors font-medium border-2 border-primary-600 text-primary-600 hover:bg-primary-50"
                   >
-                    <UserPlus className="w-4 h-4" />
-                    <span>Register</span>
+                    <MapPin className="w-4 h-4" />
+                    <span>View Local Directory</span>
                   </a>
 
-                  {/* Log In Button */}
-                  <a
-                    href="/login"
-                    className="flex items-center gap-2 px-4 py-2 rounded-lg transition-colors font-medium"
-                    style={{
-                      backgroundColor: 'var(--color-neutral-100)',
-                      color: 'var(--color-neutral-700)'
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.backgroundColor = 'var(--color-neutral-200)'
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.backgroundColor = 'var(--color-neutral-100)'
-                    }}
-                  >
-                    <LogIn className="w-4 h-4" />
-                    <span>Log In</span>
-                  </a>
+                  {/* Business Owner Dropdown */}
+                  <div className="relative">
+                    <button
+                      onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                      onBlur={() => setTimeout(() => setIsDropdownOpen(false), 200)}
+                      className="flex items-center gap-2 px-4 py-2 rounded-lg transition-colors font-medium bg-primary-600 text-white hover:bg-primary-700"
+                    >
+                      <Building className="w-4 h-4" />
+                      <span>Business Owner</span>
+                      <ChevronDown className={`w-4 h-4 transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`} />
+                    </button>
+
+                    {/* Dropdown Menu */}
+                    {isDropdownOpen && (
+                      <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl border border-neutral-200 py-2 z-50">
+                        <a
+                          href="/login"
+                          className="flex items-center gap-3 px-4 py-2 text-neutral-700 hover:bg-neutral-100 transition-colors"
+                        >
+                          <LogIn className="w-4 h-4" />
+                          <span>Log In</span>
+                        </a>
+                        <a
+                          href="/register"
+                          className="flex items-center gap-3 px-4 py-2 text-neutral-700 hover:bg-neutral-100 transition-colors"
+                        >
+                          <UserPlus className="w-4 h-4" />
+                          <span>Register</span>
+                        </a>
+                      </div>
+                    )}
+                  </div>
                 </>
               ) : null}
 
