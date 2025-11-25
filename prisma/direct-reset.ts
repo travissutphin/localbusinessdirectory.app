@@ -1,7 +1,7 @@
 import { PrismaClient } from '@prisma/client'
 
 // Direct connection to Railway production database
-const DATABASE_URL = "postgresql://postgres:uTKfxjZRqHQhJLLGkiZwJQeIABDxCopV@ballast.proxy.rlwy.net:46928/railway"
+const DATABASE_URL = ""
 
 const prisma = new PrismaClient({
   datasources: {
