@@ -1,68 +1,46 @@
 import { PrismaAdapter } from "@auth/prisma-adapter"
-import GoogleProvider from "next-auth/providers/google"
-import FacebookProvider from "next-auth/providers/facebook"
-import CredentialsProvider from "next-auth/providers/credentials"
-import bcrypt from "bcryptjs"
+import EmailProvider from "next-auth/providers/email"
 import { prisma } from "./db"
 import NextAuth from "next-auth"
 import type { NextAuthConfig } from "next-auth"
 import type { AdapterUser } from "next-auth/adapters"
 import type { JWT } from "next-auth/jwt"
 import type { Session } from "next-auth"
+import { createEmailService } from "./email-factory"
+import { getMagicLinkEmailHtml, getMagicLinkEmailText } from "./email-templates"
 
 export const authConfig = {
   adapter: PrismaAdapter(prisma),
 
   providers: [
-    // Google OAuth Provider
-    GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID!,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
-    }),
-
-    // Facebook OAuth Provider
-    FacebookProvider({
-      clientId: process.env.FACEBOOK_APP_ID!,
-      clientSecret: process.env.FACEBOOK_APP_SECRET!,
-    }),
-
-    // Email/Password Credentials Provider
-    CredentialsProvider({
-      name: "credentials",
-      credentials: {
-        email: { label: "Email", type: "email" },
-        password: { label: "Password", type: "password" }
+    // Magic Link Email Provider
+    EmailProvider({
+      server: {
+        host: process.env.EMAIL_SERVER_HOST || "smtp.resend.com",
+        port: parseInt(process.env.EMAIL_SERVER_PORT || "587"),
+        auth: {
+          user: process.env.EMAIL_SERVER_USER || "resend",
+          pass: process.env.RESEND_API_KEY || "",
+        },
       },
-      async authorize(credentials) {
-        if (!credentials?.email || !credentials?.password) {
-          return null
-        }
-
-        const user = await prisma.user.findUnique({
-          where: { email: credentials.email as string }
+      from: process.env.EMAIL_FROM || "My Home Based Business <noreply@myhbb.app>",
+      sendVerificationRequest: async ({ identifier: email, url }) => {
+        const emailService = createEmailService()
+        const result = await emailService.send({
+          from: process.env.EMAIL_FROM || "My Home Based Business <noreply@myhbb.app>",
+          to: email,
+          subject: "Sign in to My Home Based Business",
+          html: getMagicLinkEmailHtml(url),
+          text: getMagicLinkEmailText(url),
         })
 
-        if (!user || !user.passwordHash) {
-          return null
+        if (result.error) {
+          console.error("Failed to send magic link email:", result.error)
+          throw new Error("Failed to send verification email")
         }
 
-        const isPasswordValid = await bcrypt.compare(
-          credentials.password as string,
-          user.passwordHash
-        )
-
-        if (!isPasswordValid) {
-          return null
-        }
-
-        return {
-          id: user.id,
-          email: user.email!,
-          name: user.name,
-          image: user.image,
-          role: user.role,
-        }
-      }
+        console.log(`Magic link email sent to ${email}`)
+      },
     }),
   ],
 
@@ -89,8 +67,8 @@ export const authConfig = {
     },
 
     async signIn({ user, account }: { user: AdapterUser; account: any }) {
-      // For OAuth providers, ensure user has correct defaults
-      if (account?.provider === "google" || account?.provider === "facebook") {
+      // For email provider, set authProvider
+      if (account?.provider === "email") {
         try {
           const existingUser = await prisma.user.findUnique({
             where: { email: user.email! }
@@ -100,8 +78,8 @@ export const authConfig = {
             await prisma.user.update({
               where: { id: existingUser.id },
               data: {
-                authProvider: account.provider,
-                providerId: account.providerAccountId,
+                authProvider: "email",
+                emailVerified: new Date(),
               }
             })
           }
