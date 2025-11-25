@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { usePathname, useRouter } from 'next/navigation'
 import { signOut } from 'next-auth/react'
 import Image from 'next/image'
-import { Menu, X, Home, Shield, Phone, LogOut, Building2 as Building, UserPlus, LogIn, ChevronDown, MapPin } from 'lucide-react'
+import { Menu, X, Home, Shield, Phone, LogOut, Building2 as Building, UserPlus, LogIn, ChevronDown, MapPin, User as UserIcon } from 'lucide-react'
 
 type User = {
   id: string
@@ -173,80 +173,89 @@ export default function GlobalHeader() {
 
             {/* Navigation Buttons + Hamburger Menu */}
             <div className="flex items-center gap-3">
-              {!user ? (
-                <>
-                  {/* View Local Directory Button/Dropdown */}
-                  <div className="relative">
-                    <button
-                      onClick={handleViewDirectory}
-                      onBlur={() => setTimeout(() => setIsLocationDropdownOpen(false), 200)}
-                      disabled={!locationsLoaded || locations.length === 0}
-                      className="flex items-center gap-2 px-4 py-2 rounded-lg transition-colors font-medium border-2 border-primary-600 text-primary-600 hover:bg-primary-50 disabled:opacity-50 disabled:cursor-not-allowed"
-                    >
-                      <MapPin className="w-4 h-4" />
-                      <span>View Local Directory</span>
-                      {locations.length > 1 && (
-                        <ChevronDown className={`w-4 h-4 transition-transform ${isLocationDropdownOpen ? 'rotate-180' : ''}`} />
-                      )}
-                    </button>
+              {/* View Local Directory Button/Dropdown - Always visible */}
+              <div className="relative">
+                <button
+                  onClick={handleViewDirectory}
+                  onBlur={() => setTimeout(() => setIsLocationDropdownOpen(false), 200)}
+                  disabled={!locationsLoaded || locations.length === 0}
+                  className="flex items-center gap-2 px-4 py-2 rounded-lg transition-colors font-medium border-2 border-primary-600 text-primary-600 hover:bg-primary-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  <MapPin className="w-4 h-4" />
+                  <span>View Local Directory</span>
+                  {locations.length > 1 && (
+                    <ChevronDown className={`w-4 h-4 transition-transform ${isLocationDropdownOpen ? 'rotate-180' : ''}`} />
+                  )}
+                </button>
 
-                    {/* Location Dropdown Menu */}
-                    {isLocationDropdownOpen && locations.length > 1 && (
-                      <div className="absolute left-0 mt-2 w-64 bg-white rounded-lg shadow-xl border border-neutral-200 py-2 z-50">
-                        <div className="px-4 py-2 border-b border-neutral-100">
-                          <p className="text-xs text-neutral-500 font-medium uppercase">Select Location</p>
+                {/* Location Dropdown Menu */}
+                {isLocationDropdownOpen && locations.length > 1 && (
+                  <div className="absolute left-0 mt-2 w-64 bg-white rounded-lg shadow-xl border border-neutral-200 py-2 z-50">
+                    <div className="px-4 py-2 border-b border-neutral-100">
+                      <p className="text-xs text-neutral-500 font-medium uppercase">Select Location</p>
+                    </div>
+                    {locations.map((loc) => (
+                      <a
+                        key={loc.id}
+                        href={`/${loc.slug}`}
+                        className="flex items-center gap-3 px-4 py-2 text-neutral-700 hover:bg-neutral-100 transition-colors"
+                      >
+                        <MapPin className="w-4 h-4 text-primary-500" />
+                        <div>
+                          <span className="block">{loc.name}</span>
+                          <span className="text-xs text-neutral-400">ZIP: {loc.zipCode}</span>
                         </div>
-                        {locations.map((loc) => (
-                          <a
-                            key={loc.id}
-                            href={`/${loc.slug}`}
-                            className="flex items-center gap-3 px-4 py-2 text-neutral-700 hover:bg-neutral-100 transition-colors"
-                          >
-                            <MapPin className="w-4 h-4 text-primary-500" />
-                            <div>
-                              <span className="block">{loc.name}</span>
-                              <span className="text-xs text-neutral-400">ZIP: {loc.zipCode}</span>
-                            </div>
-                          </a>
-                        ))}
-                      </div>
-                    )}
+                      </a>
+                    ))}
                   </div>
+                )}
+              </div>
 
-                  {/* Business Owner Dropdown */}
-                  <div className="relative">
-                    <button
-                      onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                      onBlur={() => setTimeout(() => setIsDropdownOpen(false), 200)}
-                      className="flex items-center gap-2 px-4 py-2 rounded-lg transition-colors font-medium bg-primary-600 text-white hover:bg-primary-700"
-                    >
-                      <Building className="w-4 h-4" />
-                      <span>Business Owner</span>
-                      <ChevronDown className={`w-4 h-4 transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`} />
-                    </button>
+              {/* My Profile Button - Only for logged-in users */}
+              {user && (
+                <a
+                  href="/profile"
+                  className="flex items-center gap-2 px-4 py-2 rounded-lg transition-colors font-medium bg-primary-600 text-white hover:bg-primary-700"
+                >
+                  <UserIcon className="w-4 h-4" />
+                  <span>My Profile</span>
+                </a>
+              )}
 
-                    {/* Dropdown Menu */}
-                    {isDropdownOpen && (
-                      <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl border border-neutral-200 py-2 z-50">
-                        <a
-                          href="/login"
-                          className="flex items-center gap-3 px-4 py-2 text-neutral-700 hover:bg-neutral-100 transition-colors"
-                        >
-                          <LogIn className="w-4 h-4" />
-                          <span>Log In</span>
-                        </a>
-                        <a
-                          href="/register"
-                          className="flex items-center gap-3 px-4 py-2 text-neutral-700 hover:bg-neutral-100 transition-colors"
-                        >
-                          <UserPlus className="w-4 h-4" />
-                          <span>Register</span>
-                        </a>
-                      </div>
-                    )}
-                  </div>
-                </>
-              ) : null}
+              {/* Business Owner Dropdown - Only for non-logged-in users */}
+              {!user && (
+                <div className="relative">
+                  <button
+                    onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                    onBlur={() => setTimeout(() => setIsDropdownOpen(false), 200)}
+                    className="flex items-center gap-2 px-4 py-2 rounded-lg transition-colors font-medium bg-primary-600 text-white hover:bg-primary-700"
+                  >
+                    <Building className="w-4 h-4" />
+                    <span>Business Owner</span>
+                    <ChevronDown className={`w-4 h-4 transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`} />
+                  </button>
+
+                  {/* Dropdown Menu */}
+                  {isDropdownOpen && (
+                    <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl border border-neutral-200 py-2 z-50">
+                      <a
+                        href="/login"
+                        className="flex items-center gap-3 px-4 py-2 text-neutral-700 hover:bg-neutral-100 transition-colors"
+                      >
+                        <LogIn className="w-4 h-4" />
+                        <span>Log In</span>
+                      </a>
+                      <a
+                        href="/register"
+                        className="flex items-center gap-3 px-4 py-2 text-neutral-700 hover:bg-neutral-100 transition-colors"
+                      >
+                        <UserPlus className="w-4 h-4" />
+                        <span>Register</span>
+                      </a>
+                    </div>
+                  )}
+                </div>
+              )}
 
               {/* Hamburger Menu Button */}
               <button

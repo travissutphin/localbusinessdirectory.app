@@ -56,6 +56,8 @@ model User {
   id                 String    @id @default(uuid())
   email              String    @unique
   name               String?
+  firstName          String?   @map("first_name")
+  lastName           String?   @map("last_name")
   passwordHash       String?   @map("password_hash")
   role               String    @default("OWNER") // 'OWNER' or 'ADMIN'
   authProvider       String?   @map("auth_provider") // 'email', 'google', 'facebook'
