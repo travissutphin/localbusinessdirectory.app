@@ -135,22 +135,6 @@ export default function OwnerDashboard() {
                 </p>
               )}
             </div>
-            <div className="flex items-center gap-4">
-              {user?.role === 'ADMIN' && (
-                <a
-                  href="/admin"
-                  className="px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white text-sm font-medium rounded-lg transition-colors"
-                >
-                  Admin Panel
-                </a>
-              )}
-              <a
-                href="/"
-                className="text-sm text-blue-400 hover:text-blue-300 transition-colors"
-              >
-                ← Back to Home
-              </a>
-            </div>
           </div>
         </div>
       </header>

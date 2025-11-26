@@ -180,14 +180,6 @@ export default function MobileNav() {
     },
   ]
 
-  // Add admin-specific menu items
-  if (user && user.role === 'ADMIN') {
-    menuItems.push({
-      icon: Shield,
-      label: 'Admin Panel',
-      href: '/admin',
-    })
-  }
 
   if (loading) {
     return null
@@ -348,8 +340,8 @@ export default function MobileNav() {
 
           {/* User Section */}
           {user && (
-            <div className="border-t border-neutral-200 py-4 px-6">
-              <div className="mb-3">
+            <div className="border-t border-neutral-200 py-4 px-6 space-y-3">
+              <div>
                 <p className="text-sm text-neutral-600">Signed in as</p>
                 <p className="font-medium text-neutral-900 truncate">
                   {user.name || user.email}
@@ -360,6 +352,15 @@ export default function MobileNav() {
                   </span>
                 )}
               </div>
+              {user.role === 'ADMIN' && (
+                <a
+                  href="/admin"
+                  className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-lg transition-colors"
+                >
+                  <Shield className="w-4 h-4" />
+                  <span className="text-sm">Admin Panel</span>
+                </a>
+              )}
               <button
                 onClick={handleLogout}
                 className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-neutral-100 hover:bg-neutral-200 text-neutral-700 rounded-lg transition-colors"
