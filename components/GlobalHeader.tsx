@@ -132,13 +132,6 @@ export default function GlobalHeader() {
 
   // Add user-specific menu items
   if (user) {
-    if (user.role === 'ADMIN') {
-      navigationItems.push({
-        icon: Shield,
-        label: 'Admin Panel',
-        href: '/admin',
-      })
-    }
     navigationItems.push({
       icon: Building,
       label: 'Dashboard',
@@ -366,6 +359,15 @@ export default function GlobalHeader() {
                     </span>
                   )}
                 </div>
+                {user.role === 'ADMIN' && (
+                  <a
+                    href="/admin"
+                    className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-orange-500 hover:bg-orange-600 text-white rounded-lg transition-colors"
+                  >
+                    <Shield className="w-5 h-5" />
+                    <span>Admin Panel</span>
+                  </a>
+                )}
                 <button
                   onClick={handleLogout}
                   className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-neutral-100 hover:bg-neutral-200 text-neutral-700 rounded-lg transition-colors"
