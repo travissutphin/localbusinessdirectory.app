@@ -310,17 +310,23 @@ export default function EditBusinessPage({ params }: { params: { id: string } })
                   required
                   value={formData.zipCode}
                   onChange={handleChange}
-                  disabled={!formData.city}
-                  className="w-full px-4 py-2 bg-slate-900 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full px-4 py-2 bg-slate-900 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
                 >
                   <option value="">Select ZIP code</option>
-                  {formData.city && cityZipData
-                    .find(c => c.city === formData.city)
-                    ?.zipCodes.map(zip => (
-                      <option key={zip.code} value={zip.code}>
-                        {zip.code} - {zip.area}
-                      </option>
-                    ))}
+                  {cityZipData.length === 1
+                    ? cityZipData[0].zipCodes.map(zip => (
+                        <option key={zip.code} value={zip.code}>
+                          {zip.code} - {zip.area}
+                        </option>
+                      ))
+                    : formData.city && cityZipData
+                        .find(c => c.city === formData.city)
+                        ?.zipCodes.map(zip => (
+                          <option key={zip.code} value={zip.code}>
+                            {zip.code} - {zip.area}
+                          </option>
+                        ))
+                  }
                 </select>
               </div>
             </div>
