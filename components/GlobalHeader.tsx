@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { usePathname, useRouter } from 'next/navigation'
 import { signOut } from 'next-auth/react'
 import Image from 'next/image'
-import { Menu, X, Home, Shield, Phone, LogOut, Building2 as Building, UserPlus, LogIn, ChevronDown, MapPin, User as UserIcon } from 'lucide-react'
+import { Menu, X, Home, Shield, Phone, LogOut, Building2 as Building, UserPlus, LogIn, ChevronDown, MapPin, User as UserIcon, Info } from 'lucide-react'
 
 type User = {
   id: string
@@ -122,6 +122,11 @@ export default function GlobalHeader() {
       icon: Home,
       label: 'Home',
       href: '/',
+    },
+    {
+      icon: Info,
+      label: 'About',
+      href: '/about',
     },
     {
       icon: Phone,
