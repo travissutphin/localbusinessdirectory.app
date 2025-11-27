@@ -26,10 +26,11 @@ export default function Home() {
                   <ArrowRight className="ml-2 w-5 h-5" />
                 </a>
                 <a
-                  href="/about"
-                  className="inline-flex items-center justify-center px-8 py-4 text-lg font-semibold text-neutral-700 bg-white border-2 border-neutral-300 rounded-lg hover:border-primary-500 hover:text-primary-600 transition-all"
+                  href="/directories"
+                  className="inline-flex items-center justify-center px-8 py-4 text-lg font-semibold text-white bg-orange-500 rounded-lg hover:bg-orange-600 transition-all shadow-lg hover:shadow-xl"
                 >
-                  Learn More
+                  <MapPin className="mr-2 w-5 h-5" />
+                  View Directories
                 </a>
               </div>
               <p className="mt-6 text-sm text-neutral-600">
