@@ -715,7 +715,7 @@ export default function EditBusinessPage({ params }: { params: { id: string } })
             )}
 
             <p className="mt-2 text-xs text-slate-400">
-              Image will be automatically optimized and delivered via CDN
+              Recommended: 1200x630px (landscape). Formats: JPG, PNG, WebP
             </p>
           </div>
 
