@@ -154,7 +154,7 @@ export default function OwnerDashboard() {
               className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-orange-500 to-orange-600 text-white text-sm font-medium rounded-lg hover:from-orange-600 hover:to-orange-700 transition-all shadow-md hover:shadow-orange-500/30"
             >
               <Plus className="w-4 h-4 mr-1.5" />
-              Add Business
+              Business
             </a>
           ) : (
             <div className="text-sm text-slate-400">

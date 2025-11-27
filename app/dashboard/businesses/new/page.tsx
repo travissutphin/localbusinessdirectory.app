@@ -336,7 +336,7 @@ export default function NewBusinessPage() {
 
       {/* Main Content */}
       <main className="max-w-4xl mx-auto px-4 py-12 sm:px-6 lg:px-8">
-        <form onSubmit={handleSubmit} className="bg-slate-800/50 backdrop-blur-sm border border-slate-700 rounded-lg p-8">
+        <form onSubmit={handleSubmit} className="bg-slate-800/50 backdrop-blur-sm border border-slate-700 rounded-lg p-4 sm:p-8">
           {error && (
             <div className="mb-6 bg-red-500/20 border border-red-500/30 text-red-400 px-4 py-3 rounded-lg">
               {error}

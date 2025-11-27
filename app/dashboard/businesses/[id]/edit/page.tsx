@@ -274,7 +274,7 @@ export default function EditBusinessPage({ params }: { params: { id: string } })
           </p>
         </div>
 
-        <form onSubmit={handleSubmit} className="bg-slate-800/50 backdrop-blur-sm border border-slate-700 rounded-lg p-8">
+        <form onSubmit={handleSubmit} className="bg-slate-800/50 backdrop-blur-sm border border-slate-700 rounded-lg p-4 sm:p-8">
           {error && (
             <div className="mb-6 bg-red-500/20 border border-red-500/30 text-red-400 px-4 py-3 rounded-lg">
               {error}
@@ -727,7 +727,7 @@ export default function EditBusinessPage({ params }: { params: { id: string } })
               className="flex-1 inline-flex items-center justify-center px-6 py-3 bg-gradient-to-r from-orange-500 to-orange-600 text-white font-semibold rounded-lg hover:from-orange-600 hover:to-orange-700 transition-all shadow-lg hover:shadow-orange-500/50 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <Save className="w-5 h-5 mr-2" />
-              {submitting ? 'Saving...' : 'Save Changes'}
+              {submitting ? 'Saving...' : 'Save'}
             </button>
             <a
               href="/dashboard"

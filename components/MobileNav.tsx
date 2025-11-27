@@ -113,7 +113,7 @@ export default function MobileNav() {
         },
         {
           icon: Building2,
-          label: 'My Dashboard',
+          label: 'Dashboard',
           href: '/dashboard',
         },
         {
