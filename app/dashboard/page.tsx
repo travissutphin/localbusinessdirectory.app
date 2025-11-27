@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { Building2, Plus, Edit, Trash2, Clock, CheckCircle, XCircle } from 'lucide-react'
+import { Building2, Plus, Edit, Trash2, Clock, CheckCircle, XCircle, Search, ExternalLink, X } from 'lucide-react'
 
 export const dynamic = 'force-dynamic'
 
@@ -29,8 +29,11 @@ export default function OwnerDashboard() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const [user, setUser] = useState<any>(null)
+  const [showSeoTip, setShowSeoTip] = useState(true)
 
   useEffect(() => {
+    const dismissed = localStorage.getItem('seoTipDismissed')
+    if (dismissed) setShowSeoTip(false)
     checkAuth()
   }, [])
 
@@ -78,6 +81,11 @@ export default function OwnerDashboard() {
     } catch (err) {
       alert('Failed to delete business. Please try again.')
     }
+  }
+
+  function dismissSeoTip() {
+    setShowSeoTip(false)
+    localStorage.setItem('seoTipDismissed', 'true')
   }
 
   function getStatusBadge(status: string) {
@@ -138,6 +146,62 @@ export default function OwnerDashboard() {
           </div>
         </div>
       </header>
+
+      {/* SEO Optimization Tip */}
+      {showSeoTip && businesses.some(b => b.status === 'APPROVED') && (
+        <div className="bg-gradient-to-r from-blue-600/20 to-indigo-600/20 border-b border-blue-500/30">
+          <div className="max-w-7xl mx-auto px-4 py-4 sm:px-6 lg:px-8">
+            <div className="flex items-start gap-4">
+              <div className="flex-shrink-0 w-10 h-10 bg-blue-500/20 rounded-lg flex items-center justify-center">
+                <Search className="w-5 h-5 text-blue-400" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <h3 className="text-sm font-semibold text-white mb-1">
+                  Your Business is Easier to Find Online!
+                </h3>
+                <p className="text-sm text-slate-300 mb-2">
+                  Your listing is optimized for search engines and AI assistants. Complete your profile for best visibility.
+                </p>
+                <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-xs">
+                  <span className="text-slate-400">For best results, add:</span>
+                  <span className="text-blue-300">Description & hours</span>
+                  <span className="text-slate-500">•</span>
+                  <span className="text-blue-300">Website & social links</span>
+                  <span className="text-slate-500">•</span>
+                  <span className="text-blue-300">Business photo</span>
+                </div>
+                <div className="mt-3 flex flex-wrap items-center gap-3">
+                  <a
+                    href="https://search.google.com/test/rich-results"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center text-xs text-blue-400 hover:text-blue-300"
+                  >
+                    <ExternalLink className="w-3 h-3 mr-1" />
+                    Google Rich Results Test
+                  </a>
+                  <a
+                    href="https://validator.schema.org/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center text-xs text-blue-400 hover:text-blue-300"
+                  >
+                    <ExternalLink className="w-3 h-3 mr-1" />
+                    Schema Validator
+                  </a>
+                </div>
+              </div>
+              <button
+                onClick={dismissSeoTip}
+                className="flex-shrink-0 p-1 text-slate-400 hover:text-white transition-colors"
+                aria-label="Dismiss tip"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 py-12 sm:px-6 lg:px-8">

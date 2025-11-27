@@ -191,7 +191,46 @@ export function getBusinessApprovedEmailHtml(businessName: string, publicUrl: st
                   </td>
                 </tr>
               </table>
-              <div style="background-color: #f0fdf4; border-radius: 12px; padding: 24px; margin-top: 8px;">
+
+              <!-- SEO Optimization Info -->
+              <div style="background-color: #eff6ff; border-radius: 12px; padding: 24px; margin-top: 8px; border-left: 4px solid #3b82f6;">
+                <p style="margin: 0 0 12px 0; font-size: 15px; font-weight: 600; color: #1e40af;">
+                  Your Business is Now Easier to Find Online!
+                </p>
+                <p style="margin: 0 0 16px 0; font-size: 14px; line-height: 22px; color: #475569;">
+                  Your listing is optimized for search engines and AI assistants. The more complete your profile, the better your visibility.
+                </p>
+                <p style="margin: 0 0 8px 0; font-size: 13px; font-weight: 600; color: #1e293b;">
+                  For best results, make sure you&apos;ve added:
+                </p>
+                <table role="presentation" style="width: 100%; border-collapse: collapse;">
+                  <tr>
+                    <td style="padding: 4px 0; font-size: 13px; color: #475569;">
+                      <span style="color: #3b82f6; margin-right: 6px;">&#9679;</span>
+                      Business description &amp; hours
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="padding: 4px 0; font-size: 13px; color: #475569;">
+                      <span style="color: #3b82f6; margin-right: 6px;">&#9679;</span>
+                      Website &amp; social media links
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="padding: 4px 0; font-size: 13px; color: #475569;">
+                      <span style="color: #3b82f6; margin-right: 6px;">&#9679;</span>
+                      Business photo
+                    </td>
+                  </tr>
+                </table>
+                <p style="margin: 16px 0 0 0; font-size: 12px; color: #64748b;">
+                  <strong>Want to see how Google views your listing?</strong><br>
+                  <a href="https://search.google.com/test/rich-results" style="color: #3b82f6; text-decoration: none;">Google Rich Results Test</a> &nbsp;|&nbsp;
+                  <a href="https://validator.schema.org/" style="color: #3b82f6; text-decoration: none;">Schema Validator</a>
+                </p>
+              </div>
+
+              <div style="background-color: #f0fdf4; border-radius: 12px; padding: 24px; margin-top: 16px;">
                 <p style="margin: 0 0 16px 0; font-size: 14px; font-weight: 600; color: #1e293b; text-align: center;">
                   Tips for Success:
                 </p>
@@ -244,6 +283,21 @@ ${businessName}
 Great news! Your business has been reviewed and approved. Customers can now find you in our directory.
 
 View your listing: ${publicUrl}
+
+----------------------------------------
+YOUR BUSINESS IS NOW EASIER TO FIND ONLINE!
+----------------------------------------
+
+Your listing is optimized for search engines and AI assistants. The more complete your profile, the better your visibility.
+
+For best results, make sure you've added:
+- Business description & hours
+- Website & social media links
+- Business photo
+
+Want to see how Google views your listing?
+- Google Rich Results Test: https://search.google.com/test/rich-results
+- Schema Validator: https://validator.schema.org/
 
 Tips for Success:
 - Share your listing on social media
