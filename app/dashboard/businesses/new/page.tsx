@@ -500,7 +500,7 @@ export default function NewBusinessPage() {
             <label htmlFor="address" className="block text-sm font-medium text-slate-300 mb-2">
               Street Address <span className="text-red-400">*</span>
             </label>
-            <div className="flex gap-2">
+            <div className="flex flex-col sm:flex-row gap-2">
               <input
                 type="text"
                 id="address"
@@ -521,7 +521,7 @@ export default function NewBusinessPage() {
                 type="button"
                 onClick={handleValidateAddress}
                 disabled={!formData.address || validatingAddress}
-                className="px-4 py-2 bg-slate-700 hover:bg-slate-600 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-lg transition-colors flex items-center gap-2"
+                className="px-4 py-2 bg-slate-700 hover:bg-slate-600 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-lg transition-colors flex items-center justify-center gap-2"
               >
                 {validatingAddress ? (
                   <Loader2 className="w-4 h-4 animate-spin" />
