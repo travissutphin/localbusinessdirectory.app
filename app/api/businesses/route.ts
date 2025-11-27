@@ -145,6 +145,8 @@ export async function POST(request: NextRequest) {
       tiktokUrl,
       hoursJson,
       imageUrl,
+      duplicateFlag,
+      potentialDuplicates,
     } = body
 
     // Validate required fields
@@ -228,7 +230,9 @@ export async function POST(request: NextRequest) {
         tiktokUrl,
         hoursJson,
         imageUrl,
-        status: 'PENDING', // Default status
+        status: 'PENDING',
+        duplicateFlag: duplicateFlag || false,
+        potentialDuplicates: potentialDuplicates || [],
       },
       include: {
         location: {

@@ -1,4 +1,12 @@
 import { createEmailService, EmailService } from './email-factory'
+import {
+  getBusinessApprovedEmailHtml,
+  getBusinessApprovedEmailText,
+  getBusinessPendingEmailHtml,
+  getBusinessPendingEmailText,
+  getBusinessRejectedEmailHtml,
+  getBusinessRejectedEmailText
+} from './email-templates'
 
 let emailService: EmailService | null = null
 
@@ -357,5 +365,79 @@ Saint Augustine, FL • Connecting Local Communities
     console.error('❌ Failed to send password reset email:', error)
     console.error('❌ Error details:', JSON.stringify(error, null, 2))
     throw new Error('Failed to send password reset email')
+  }
+}
+
+/**
+ * Send a business status change email
+ * @param email - Business owner's email address
+ * @param ownerName - Business owner's name
+ * @param businessName - Name of the business
+ * @param newStatus - The new status (PENDING, APPROVED, REJECTED)
+ * @param options - Additional options including rejection reason and URLs
+ */
+export async function sendBusinessStatusEmail(
+  email: string,
+  ownerName: string,
+  businessName: string,
+  newStatus: 'PENDING' | 'APPROVED' | 'REJECTED',
+  options?: {
+    rejectionReason?: string
+    publicUrl?: string
+    editUrl?: string
+  }
+): Promise<void> {
+  const dashboardUrl = `${process.env.NEXT_PUBLIC_APP_URL}/dashboard`
+
+  let subject: string
+  let html: string
+  let text: string
+
+  switch (newStatus) {
+    case 'APPROVED':
+      subject = `Congratulations! ${businessName} is now live`
+      html = getBusinessApprovedEmailHtml(businessName, options?.publicUrl || dashboardUrl)
+      text = getBusinessApprovedEmailText(businessName, options?.publicUrl || dashboardUrl)
+      break
+    case 'PENDING':
+      subject = `Your business listing "${businessName}" requires review`
+      html = getBusinessPendingEmailHtml(businessName, dashboardUrl)
+      text = getBusinessPendingEmailText(businessName, dashboardUrl)
+      break
+    case 'REJECTED':
+      subject = `Your business listing "${businessName}" was not approved`
+      html = getBusinessRejectedEmailHtml(
+        businessName,
+        options?.rejectionReason || 'No reason provided',
+        options?.editUrl || dashboardUrl
+      )
+      text = getBusinessRejectedEmailText(
+        businessName,
+        options?.rejectionReason || 'No reason provided',
+        options?.editUrl || dashboardUrl
+      )
+      break
+  }
+
+  try {
+    console.log(`🔄 Sending business status (${newStatus}) email to:`, email)
+
+    const response = await getEmailService().send({
+      from: 'My Home Based Business - myhbb.app <info@myhbb.app>',
+      to: email,
+      subject,
+      html,
+      text
+    })
+
+    if (response.error) {
+      console.error('❌ Email service returned an error:', response.error)
+      throw new Error(`Email sending error: ${response.error.message || JSON.stringify(response.error)}`)
+    }
+
+    console.log(`✅ Business status (${newStatus}) email sent successfully. Message ID:`, response.id)
+  } catch (error) {
+    console.error(`❌ Failed to send business status (${newStatus}) email:`, error)
+    throw error
   }
 }

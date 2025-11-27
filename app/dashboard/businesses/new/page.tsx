@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { ArrowLeft, Save, Upload, X, Image as ImageIcon, Facebook, Instagram, Linkedin, Twitter, Youtube, MapPin } from 'lucide-react'
+import { ArrowLeft, Save, Upload, X, Image as ImageIcon, Facebook, Instagram, Linkedin, Twitter, Youtube, MapPin, AlertTriangle } from 'lucide-react'
 
 export const dynamic = 'force-dynamic'
 
@@ -18,6 +18,14 @@ type Directory = {
   slug: string
 }
 
+type DuplicateMatch = {
+  businessId: string
+  businessName: string
+  ownerEmail: string
+  similarity: number
+  matchType: 'exact' | 'similar' | 'partial'
+}
+
 export default function NewBusinessPage() {
   const router = useRouter()
   const [locations, setLocations] = useState<Location[]>([])
@@ -26,6 +34,9 @@ export default function NewBusinessPage() {
   const [error, setError] = useState('')
   const [uploading, setUploading] = useState(false)
   const [imagePreview, setImagePreview] = useState<string>('')
+  const [duplicates, setDuplicates] = useState<DuplicateMatch[]>([])
+  const [showDuplicateModal, setShowDuplicateModal] = useState(false)
+  const [confirmedNoDuplicate, setConfirmedNoDuplicate] = useState(false)
 
   const [formData, setFormData] = useState({
     name: '',
@@ -95,16 +106,60 @@ export default function NewBusinessPage() {
     }
   }
 
+  async function checkDuplicates(): Promise<boolean> {
+    if (!formData.name || !formData.locationId) return false
+
+    try {
+      const response = await fetch('/api/businesses/duplicates', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: formData.name,
+          locationId: formData.locationId
+        }),
+      })
+
+      if (!response.ok) return false
+
+      const data = await response.json()
+      if (data.hasDuplicates && data.matches.length > 0) {
+        setDuplicates(data.matches)
+        return true
+      }
+      return false
+    } catch (err) {
+      console.error('Failed to check duplicates:', err)
+      return false
+    }
+  }
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     setLoading(true)
     setError('')
 
+    if (!confirmedNoDuplicate) {
+      const hasDuplicates = await checkDuplicates()
+      if (hasDuplicates) {
+        setShowDuplicateModal(true)
+        setLoading(false)
+        return
+      }
+    }
+
+    await submitBusiness()
+  }
+
+  async function submitBusiness(flagAsDuplicate: boolean = false) {
     try {
       const response = await fetch('/api/businesses', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          ...formData,
+          duplicateFlag: flagAsDuplicate,
+          potentialDuplicates: flagAsDuplicate ? duplicates.map(d => d.businessId) : []
+        }),
       })
 
       const data = await response.json()
@@ -119,6 +174,12 @@ export default function NewBusinessPage() {
     } finally {
       setLoading(false)
     }
+  }
+
+  function handleConfirmNoDuplicate() {
+    setConfirmedNoDuplicate(true)
+    setShowDuplicateModal(false)
+    submitBusiness(true)
   }
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) {
@@ -610,6 +671,66 @@ export default function NewBusinessPage() {
           </p>
         </form>
       </main>
+
+      {/* Duplicate Warning Modal */}
+      {showDuplicateModal && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+          <div className="bg-slate-800 border border-slate-700 rounded-lg p-6 max-w-md w-full mx-4">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-10 h-10 bg-yellow-500/20 rounded-full flex items-center justify-center">
+                <AlertTriangle className="w-5 h-5 text-yellow-500" />
+              </div>
+              <h2 className="text-xl font-bold text-white">Similar Business Found</h2>
+            </div>
+
+            <p className="text-slate-300 text-sm mb-4">
+              We found businesses with similar names in this area. Please verify this is a new business:
+            </p>
+
+            <div className="bg-slate-900 rounded-lg p-4 mb-6 max-h-48 overflow-y-auto">
+              {duplicates.map((dup) => (
+                <div key={dup.businessId} className="flex items-center justify-between py-2 border-b border-slate-700 last:border-0">
+                  <div>
+                    <p className="text-white font-medium">{dup.businessName}</p>
+                    <p className="text-slate-400 text-xs">{dup.matchType === 'exact' ? 'Exact match' : `${dup.similarity}% similar`}</p>
+                  </div>
+                  <span className={`px-2 py-1 rounded text-xs font-medium ${
+                    dup.matchType === 'exact' ? 'bg-red-500/20 text-red-400' :
+                    dup.similarity >= 90 ? 'bg-yellow-500/20 text-yellow-400' :
+                    'bg-blue-500/20 text-blue-400'
+                  }`}>
+                    {dup.similarity}%
+                  </span>
+                </div>
+              ))}
+            </div>
+
+            <div className="flex gap-3">
+              <button
+                onClick={handleConfirmNoDuplicate}
+                disabled={loading}
+                className="flex-1 inline-flex items-center justify-center px-4 py-3 bg-orange-600 hover:bg-orange-700 text-white font-medium rounded-lg transition-colors disabled:opacity-50"
+              >
+                {loading ? 'Submitting...' : 'Yes, Submit New Business'}
+              </button>
+              <button
+                onClick={() => {
+                  setShowDuplicateModal(false)
+                  setLoading(false)
+                }}
+                disabled={loading}
+                className="px-4 py-3 bg-slate-700 hover:bg-slate-600 text-white font-medium rounded-lg transition-colors"
+              >
+                Cancel
+              </button>
+            </div>
+
+            <p className="mt-3 text-xs text-slate-400 text-center">
+              If this is a duplicate, your submission will be flagged for admin review.
+            </p>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

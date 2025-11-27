@@ -145,6 +145,9 @@ model Business {
   isActive                 Boolean   @default(true) @map("is_active") // Admin can deactivate approved businesses
   rejectionReason          String?   @map("rejection_reason")
   businessRegistrationNumber String? @map("business_registration_number")
+  duplicateFlag            Boolean   @default(false) @map("duplicate_flag")
+  duplicateNotes           String?   @map("duplicate_notes")
+  potentialDuplicates      String[]  @default([]) @map("potential_duplicates")
   createdAt                DateTime  @default(now()) @map("created_at")
   updatedAt                DateTime  @updatedAt @map("updated_at")
   approvedAt               DateTime? @map("approved_at")
@@ -164,6 +167,7 @@ model Business {
   @@index([approvedAt])
   @@index([isActive])
   @@index([slug])
+  @@index([duplicateFlag])
   @@map("businesses")
 }
 
