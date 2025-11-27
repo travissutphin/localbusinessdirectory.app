@@ -75,53 +75,147 @@ export default function Home() {
       </section>
 
       {/* Value Proposition - Guide with Empathy */}
-      <section className="py-16 md:py-24 bg-gradient-to-br from-white to-primary-50">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="py-20 md:py-32 bg-gradient-to-b from-white via-primary-50/30 to-white relative overflow-hidden">
+        {/* Background decoration */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute -top-40 -right-40 w-80 h-80 bg-primary-100 rounded-full opacity-50 blur-3xl"></div>
+          <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-secondary-100 rounded-full opacity-50 blur-3xl"></div>
+        </div>
+
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative">
           <div className="text-center mb-16">
+            <div className="inline-flex items-center gap-2 bg-primary-100 px-4 py-2 rounded-full mb-6">
+              <Globe className="w-4 h-4 text-primary-600" />
+              <span className="text-sm font-semibold text-primary-700">Enterprise-Level Visibility</span>
+            </div>
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-neutral-900 mb-6">
               We Help Home Businesses Get the Attention They Deserve
             </h2>
-            <p className="text-xl text-neutral-700 max-w-4xl mx-auto leading-relaxed">
-              We know how hard it is to compete with big brands and their big budgets. That&apos;s why we built a free directory specifically for home-based businesses like yours. When local customers search for services, your business shows up.
+            <p className="text-xl text-neutral-600 max-w-3xl mx-auto leading-relaxed">
+              Big brands spend thousands on SEO experts and marketing agencies. We level the playing field by giving your home business the same powerful online presence—<span className="text-primary-600 font-semibold">completely free</span>.
             </p>
           </div>
 
-          {/* Features Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
-            <div className="bg-white rounded-xl p-8 shadow-lg hover:shadow-xl transition-shadow">
-              <div className="w-14 h-14 bg-primary-100 rounded-lg flex items-center justify-center mb-6">
-                <Search className="w-8 h-8 text-primary-600" />
+          {/* Main Feature Cards */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-16">
+            {/* SEO Card */}
+            <div className="group bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 border border-neutral-100 hover:border-primary-200 relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-blue-500/10 to-transparent rounded-bl-full"></div>
+              <div className="relative">
+                <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center mb-6 shadow-lg shadow-blue-500/25 group-hover:scale-110 transition-transform">
+                  <Search className="w-8 h-8 text-white" />
+                </div>
+                <div className="inline-block px-3 py-1 bg-blue-100 text-blue-700 text-xs font-bold rounded-full mb-4">
+                  SEO OPTIMIZED
+                </div>
+                <h3 className="text-2xl font-bold text-neutral-900 mb-4">
+                  Rank in Search Results
+                </h3>
+                <p className="text-neutral-600 leading-relaxed mb-4">
+                  Your listing is built with Schema.org LocalBusiness markup—the gold standard that Google, Bing, and Yahoo use to understand and rank local businesses.
+                </p>
+                <ul className="space-y-2">
+                  <li className="flex items-center gap-2 text-sm text-neutral-600">
+                    <CheckCircle2 className="w-4 h-4 text-blue-500 flex-shrink-0" />
+                    Structured data for rich search results
+                  </li>
+                  <li className="flex items-center gap-2 text-sm text-neutral-600">
+                    <CheckCircle2 className="w-4 h-4 text-blue-500 flex-shrink-0" />
+                    Optimized meta titles and descriptions
+                  </li>
+                  <li className="flex items-center gap-2 text-sm text-neutral-600">
+                    <CheckCircle2 className="w-4 h-4 text-blue-500 flex-shrink-0" />
+                    Canonical URLs for search engines
+                  </li>
+                </ul>
               </div>
-              <h3 className="text-xl font-bold text-neutral-900 mb-3">
-                Get Discovered
-              </h3>
-              <p className="text-neutral-600 leading-relaxed">
-                Appear in search results when local customers look for services like yours. No expensive ads required.
-              </p>
             </div>
 
-            <div className="bg-white rounded-xl p-8 shadow-lg hover:shadow-xl transition-shadow">
-              <div className="w-14 h-14 bg-secondary-100 rounded-lg flex items-center justify-center mb-6">
-                <Users className="w-8 h-8 text-secondary-600" />
+            {/* AEO Card */}
+            <div className="group bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 border border-neutral-100 hover:border-purple-200 relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-purple-500/10 to-transparent rounded-bl-full"></div>
+              <div className="relative">
+                <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl flex items-center justify-center mb-6 shadow-lg shadow-purple-500/25 group-hover:scale-110 transition-transform">
+                  <Bot className="w-8 h-8 text-white" />
+                </div>
+                <div className="inline-block px-3 py-1 bg-purple-100 text-purple-700 text-xs font-bold rounded-full mb-4">
+                  AI DISCOVERABLE
+                </div>
+                <h3 className="text-2xl font-bold text-neutral-900 mb-4">
+                  Found by AI Assistants
+                </h3>
+                <p className="text-neutral-600 leading-relaxed mb-4">
+                  When customers ask ChatGPT, Google AI, or Siri for local recommendations, your structured business data helps AI understand and suggest your services.
+                </p>
+                <ul className="space-y-2">
+                  <li className="flex items-center gap-2 text-sm text-neutral-600">
+                    <CheckCircle2 className="w-4 h-4 text-purple-500 flex-shrink-0" />
+                    Machine-readable business information
+                  </li>
+                  <li className="flex items-center gap-2 text-sm text-neutral-600">
+                    <CheckCircle2 className="w-4 h-4 text-purple-500 flex-shrink-0" />
+                    AI-friendly content structure
+                  </li>
+                  <li className="flex items-center gap-2 text-sm text-neutral-600">
+                    <CheckCircle2 className="w-4 h-4 text-purple-500 flex-shrink-0" />
+                    Voice search optimized
+                  </li>
+                </ul>
               </div>
-              <h3 className="text-xl font-bold text-neutral-900 mb-3">
-                Connect with Customers
-              </h3>
-              <p className="text-neutral-600 leading-relaxed">
-                Reach people who are actively searching for what you offer. They&apos;re ready to buy, not just browsing.
-              </p>
             </div>
 
-            <div className="bg-white rounded-xl p-8 shadow-lg hover:shadow-xl transition-shadow">
-              <div className="w-14 h-14 bg-green-100 rounded-lg flex items-center justify-center mb-6">
-                <TrendingUp className="w-8 h-8 text-green-600" />
+            {/* GEO Card */}
+            <div className="group bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 border border-neutral-100 hover:border-green-200 relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-green-500/10 to-transparent rounded-bl-full"></div>
+              <div className="relative">
+                <div className="w-16 h-16 bg-gradient-to-br from-green-500 to-green-600 rounded-2xl flex items-center justify-center mb-6 shadow-lg shadow-green-500/25 group-hover:scale-110 transition-transform">
+                  <MapPin className="w-8 h-8 text-white" />
+                </div>
+                <div className="inline-block px-3 py-1 bg-green-100 text-green-700 text-xs font-bold rounded-full mb-4">
+                  LOCAL TARGETING
+                </div>
+                <h3 className="text-2xl font-bold text-neutral-900 mb-4">
+                  Dominate Local Search
+                </h3>
+                <p className="text-neutral-600 leading-relaxed mb-4">
+                  Your verified address, service area, and location data are formatted for Google Maps, Apple Maps, and &quot;near me&quot; searches that local customers use daily.
+                </p>
+                <ul className="space-y-2">
+                  <li className="flex items-center gap-2 text-sm text-neutral-600">
+                    <CheckCircle2 className="w-4 h-4 text-green-500 flex-shrink-0" />
+                    Interactive map on your listing
+                  </li>
+                  <li className="flex items-center gap-2 text-sm text-neutral-600">
+                    <CheckCircle2 className="w-4 h-4 text-green-500 flex-shrink-0" />
+                    Address verification system
+                  </li>
+                  <li className="flex items-center gap-2 text-sm text-neutral-600">
+                    <CheckCircle2 className="w-4 h-4 text-green-500 flex-shrink-0" />
+                    City and ZIP code targeting
+                  </li>
+                </ul>
               </div>
-              <h3 className="text-xl font-bold text-neutral-900 mb-3">
-                Grow Your Business
-              </h3>
-              <p className="text-neutral-600 leading-relaxed">
-                Build a steady stream of customer inquiries without spending on expensive marketing campaigns.
-              </p>
+            </div>
+          </div>
+
+          {/* Bottom Stats/Trust Bar */}
+          <div className="bg-gradient-to-r from-neutral-900 to-neutral-800 rounded-2xl p-8 md:p-10">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+              <div>
+                <div className="text-3xl md:text-4xl font-bold text-white mb-2">100%</div>
+                <div className="text-neutral-400 text-sm">Free Forever</div>
+                <div className="text-neutral-500 text-xs mt-1">No hidden fees or premium tiers</div>
+              </div>
+              <div>
+                <div className="text-3xl md:text-4xl font-bold text-white mb-2">3 min</div>
+                <div className="text-neutral-400 text-sm">Setup Time</div>
+                <div className="text-neutral-500 text-xs mt-1">From signup to live listing</div>
+              </div>
+              <div>
+                <div className="text-3xl md:text-4xl font-bold text-white mb-2">24/7</div>
+                <div className="text-neutral-400 text-sm">Always Visible</div>
+                <div className="text-neutral-500 text-xs mt-1">Your listing works while you sleep</div>
+              </div>
             </div>
           </div>
         </div>
