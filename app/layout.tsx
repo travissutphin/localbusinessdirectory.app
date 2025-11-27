@@ -4,6 +4,7 @@ import "./globals.css";
 import MobileNav from "@/components/MobileNav";
 import GlobalHeader from "@/components/GlobalHeader";
 import GlobalFooter from "@/components/GlobalFooter";
+import LocationDetectionBanner from "@/components/LocationDetectionBanner";
 
 export const metadata: Metadata = {
   title: "My Home Based Business - Get Found by Local Customers | myhbb.app",
@@ -44,6 +45,7 @@ export default function RootLayout({
         </Script>
       </head>
       <body className="antialiased">
+        <LocationDetectionBanner />
         <GlobalHeader />
         {children}
         <GlobalFooter />
