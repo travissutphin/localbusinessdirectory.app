@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import Script from "next/script";
 import "./globals.css";
 import MobileNav from "@/components/MobileNav";
 import GlobalHeader from "@/components/GlobalHeader";
@@ -28,6 +29,20 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-3343L4R1SP"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-3343L4R1SP');
+          `}
+        </Script>
+      </head>
       <body className="antialiased">
         <GlobalHeader />
         {children}
