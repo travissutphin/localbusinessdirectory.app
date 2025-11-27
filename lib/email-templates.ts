@@ -450,3 +450,220 @@ My Home Based Business
 https://myhbb.app
   `.trim()
 }
+
+// Admin notification templates
+
+export function getAdminPendingBusinessEmailHtml(
+  businessName: string,
+  ownerName: string,
+  ownerEmail: string,
+  locationName: string,
+  directoryName: string,
+  adminUrl: string,
+  isUpdate: boolean = false
+): string {
+  const action = isUpdate ? 'Updated' : 'New'
+  return `
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>${action} Business Pending Review</title>
+</head>
+<body style="margin: 0; padding: 0; background-color: #f8fafc; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;">
+  <table role="presentation" style="width: 100%; border-collapse: collapse;">
+    <tr>
+      <td align="center" style="padding: 40px 20px;">
+        <table role="presentation" style="max-width: 520px; width: 100%; border-collapse: collapse;">
+          <tr>
+            <td align="center" style="padding-bottom: 24px;">
+              <h1 style="margin: 0; font-size: 28px; font-weight: 700; color: #1e40af;">
+                My Home Based Business
+              </h1>
+              <p style="margin: 8px 0 0 0; font-size: 14px; color: #64748b;">
+                Admin Notification
+              </p>
+            </td>
+          </tr>
+          <tr>
+            <td style="background: linear-gradient(135deg, #f97316 0%, #ea580c 100%); border-radius: 16px 16px 0 0; padding: 32px 40px; text-align: center;">
+              <h2 style="margin: 0 0 8px 0; font-size: 24px; font-weight: 600; color: #ffffff;">
+                ${action} Business Pending
+              </h2>
+              <p style="margin: 0; font-size: 16px; color: #fed7aa;">
+                A business listing requires your review
+              </p>
+            </td>
+          </tr>
+          <tr>
+            <td style="background-color: #ffffff; border-radius: 0 0 16px 16px; padding: 40px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);">
+              <p style="margin: 0 0 16px 0; font-size: 18px; font-weight: 600; color: #1e293b;">
+                ${businessName}
+              </p>
+              <table role="presentation" style="width: 100%; border-collapse: collapse; margin-bottom: 24px;">
+                <tr>
+                  <td style="padding: 8px 0; font-size: 14px; color: #64748b;">Owner:</td>
+                  <td style="padding: 8px 0; font-size: 14px; color: #1e293b; text-align: right;">${ownerName}</td>
+                </tr>
+                <tr>
+                  <td style="padding: 8px 0; font-size: 14px; color: #64748b;">Email:</td>
+                  <td style="padding: 8px 0; font-size: 14px; color: #1e293b; text-align: right;">${ownerEmail}</td>
+                </tr>
+                <tr>
+                  <td style="padding: 8px 0; font-size: 14px; color: #64748b;">Location:</td>
+                  <td style="padding: 8px 0; font-size: 14px; color: #1e293b; text-align: right;">${locationName}</td>
+                </tr>
+                <tr>
+                  <td style="padding: 8px 0; font-size: 14px; color: #64748b;">Category:</td>
+                  <td style="padding: 8px 0; font-size: 14px; color: #1e293b; text-align: right;">${directoryName}</td>
+                </tr>
+              </table>
+              <table role="presentation" style="width: 100%; border-collapse: collapse;">
+                <tr>
+                  <td align="center" style="padding: 8px 0;">
+                    <a href="${adminUrl}"
+                       style="display: inline-block; padding: 16px 40px; background: linear-gradient(135deg, #f97316 0%, #ea580c 100%); color: #ffffff; text-decoration: none; font-size: 18px; font-weight: 600; border-radius: 10px;">
+                      Review Now
+                    </a>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding-top: 32px; text-align: center;">
+              <p style="margin: 0; font-size: 12px; color: #94a3b8;">
+                &copy; 2025 My Home Based Business. All rights reserved.
+              </p>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>
+  `.trim()
+}
+
+export function getAdminPendingBusinessEmailText(
+  businessName: string,
+  ownerName: string,
+  ownerEmail: string,
+  locationName: string,
+  directoryName: string,
+  adminUrl: string,
+  isUpdate: boolean = false
+): string {
+  const action = isUpdate ? 'Updated' : 'New'
+  return `
+${action} Business Pending Review
+${'='.repeat(action.length + 24)}
+
+A business listing requires your review.
+
+Business: ${businessName}
+Owner: ${ownerName}
+Email: ${ownerEmail}
+Location: ${locationName}
+Category: ${directoryName}
+
+Review now: ${adminUrl}
+
+---
+My Home Based Business - Admin Notification
+https://myhbb.app
+  `.trim()
+}
+
+export function getBusinessUpdatedPendingEmailHtml(businessName: string, dashboardUrl: string): string {
+  return `
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Business Listing Update is Pending Review</title>
+</head>
+<body style="margin: 0; padding: 0; background-color: #f8fafc; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;">
+  <table role="presentation" style="width: 100%; border-collapse: collapse;">
+    <tr>
+      <td align="center" style="padding: 40px 20px;">
+        <table role="presentation" style="max-width: 520px; width: 100%; border-collapse: collapse;">
+          <tr>
+            <td align="center" style="padding-bottom: 24px;">
+              <h1 style="margin: 0; font-size: 28px; font-weight: 700; color: #1e40af;">
+                My Home Based Business
+              </h1>
+            </td>
+          </tr>
+          <tr>
+            <td style="background: linear-gradient(135deg, #ca8a04 0%, #eab308 100%); border-radius: 16px 16px 0 0; padding: 32px 40px; text-align: center;">
+              <h2 style="margin: 0 0 8px 0; font-size: 24px; font-weight: 600; color: #ffffff;">
+                Update Received
+              </h2>
+              <p style="margin: 0; font-size: 16px; color: #fef9c3;">
+                Your changes are pending review
+              </p>
+            </td>
+          </tr>
+          <tr>
+            <td style="background-color: #ffffff; border-radius: 0 0 16px 16px; padding: 40px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);">
+              <p style="margin: 0 0 16px 0; font-size: 18px; font-weight: 600; color: #1e293b; text-align: center;">
+                ${businessName}
+              </p>
+              <p style="margin: 0 0 24px 0; font-size: 16px; line-height: 26px; color: #475569; text-align: center;">
+                Your business listing has been updated and is now pending review. Our team will review your changes shortly and you will be notified once approved.
+              </p>
+              <table role="presentation" style="width: 100%; border-collapse: collapse;">
+                <tr>
+                  <td align="center" style="padding: 8px 0 24px 0;">
+                    <a href="${dashboardUrl}"
+                       style="display: inline-block; padding: 16px 40px; background: linear-gradient(135deg, #ca8a04 0%, #eab308 100%); color: #ffffff; text-decoration: none; font-size: 18px; font-weight: 600; border-radius: 10px;">
+                      View Dashboard
+                    </a>
+                  </td>
+                </tr>
+              </table>
+              <div style="background-color: #fefce8; border-radius: 12px; padding: 24px; margin-top: 8px;">
+                <p style="margin: 0; font-size: 14px; color: #854d0e; text-align: center;">
+                  Your listing will not be visible to the public until it has been approved.
+                </p>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding-top: 32px; text-align: center;">
+              <p style="margin: 0; font-size: 12px; color: #94a3b8;">
+                &copy; 2025 My Home Based Business. All rights reserved.
+              </p>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>
+  `.trim()
+}
+
+export function getBusinessUpdatedPendingEmailText(businessName: string, dashboardUrl: string): string {
+  return `
+Your Business Listing Update is Pending Review
+===============================================
+
+${businessName}
+
+Your business listing has been updated and is now pending review. Our team will review your changes shortly and you will be notified once approved.
+
+View your dashboard: ${dashboardUrl}
+
+Your listing will not be visible to the public until it has been approved.
+
+---
+My Home Based Business
+https://myhbb.app
+  `.trim()
+}

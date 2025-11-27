@@ -5,7 +5,11 @@ import {
   getBusinessPendingEmailHtml,
   getBusinessPendingEmailText,
   getBusinessRejectedEmailHtml,
-  getBusinessRejectedEmailText
+  getBusinessRejectedEmailText,
+  getAdminPendingBusinessEmailHtml,
+  getAdminPendingBusinessEmailText,
+  getBusinessUpdatedPendingEmailHtml,
+  getBusinessUpdatedPendingEmailText
 } from './email-templates'
 
 let emailService: EmailService | null = null
@@ -438,6 +442,85 @@ export async function sendBusinessStatusEmail(
     console.log(`✅ Business status (${newStatus}) email sent successfully. Message ID:`, response.id)
   } catch (error) {
     console.error(`❌ Failed to send business status (${newStatus}) email:`, error)
+    throw error
+  }
+}
+
+/**
+ * Send notification to admin about pending business
+ * @param businessName - Name of the business
+ * @param ownerName - Business owner's name
+ * @param ownerEmail - Business owner's email
+ * @param locationName - Location name
+ * @param directoryName - Directory/category name
+ * @param isUpdate - Whether this is an update (true) or new business (false)
+ */
+export async function sendAdminPendingBusinessEmail(
+  businessName: string,
+  ownerName: string,
+  ownerEmail: string,
+  locationName: string,
+  directoryName: string,
+  isUpdate: boolean = false
+): Promise<void> {
+  const adminUrl = `${process.env.NEXT_PUBLIC_APP_URL}/admin/businesses?filter=PENDING`
+  const action = isUpdate ? 'Updated' : 'New'
+
+  try {
+    console.log(`🔄 Sending admin notification (${action} business pending) email`)
+
+    const response = await getEmailService().send({
+      from: 'My Home Based Business - myhbb.app <info@myhbb.app>',
+      to: 'travis@websuasion.com',
+      subject: `[Admin] ${action} Business Pending: ${businessName}`,
+      html: getAdminPendingBusinessEmailHtml(businessName, ownerName, ownerEmail, locationName, directoryName, adminUrl, isUpdate),
+      text: getAdminPendingBusinessEmailText(businessName, ownerName, ownerEmail, locationName, directoryName, adminUrl, isUpdate)
+    })
+
+    if (response.error) {
+      console.error('❌ Email service returned an error:', response.error)
+      throw new Error(`Email sending error: ${response.error.message || JSON.stringify(response.error)}`)
+    }
+
+    console.log(`✅ Admin notification email sent successfully. Message ID:`, response.id)
+  } catch (error) {
+    console.error(`❌ Failed to send admin notification email:`, error)
+    // Don't throw - admin notification is nice-to-have, not critical
+  }
+}
+
+/**
+ * Send notification to owner that their business update is pending
+ * @param email - Business owner's email address
+ * @param ownerName - Business owner's name
+ * @param businessName - Name of the business
+ */
+export async function sendBusinessUpdatedPendingEmail(
+  email: string,
+  ownerName: string,
+  businessName: string
+): Promise<void> {
+  const dashboardUrl = `${process.env.NEXT_PUBLIC_APP_URL}/dashboard`
+
+  try {
+    console.log(`🔄 Sending business updated pending email to:`, email)
+
+    const response = await getEmailService().send({
+      from: 'My Home Based Business - myhbb.app <info@myhbb.app>',
+      to: email,
+      subject: `Your business listing "${businessName}" is pending review`,
+      html: getBusinessUpdatedPendingEmailHtml(businessName, dashboardUrl),
+      text: getBusinessUpdatedPendingEmailText(businessName, dashboardUrl)
+    })
+
+    if (response.error) {
+      console.error('❌ Email service returned an error:', response.error)
+      throw new Error(`Email sending error: ${response.error.message || JSON.stringify(response.error)}`)
+    }
+
+    console.log(`✅ Business updated pending email sent successfully. Message ID:`, response.id)
+  } catch (error) {
+    console.error(`❌ Failed to send business updated pending email:`, error)
     throw error
   }
 }

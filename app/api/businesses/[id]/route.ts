@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { auth } from '@/lib/auth'
 import { prisma } from '@/lib/db'
 import { generateUniqueSlug } from '@/lib/slug'
+import { sendBusinessUpdatedPendingEmail, sendAdminPendingBusinessEmail } from '@/lib/email'
 
 // GET /api/businesses/[id] - Get single business
 export async function GET(
@@ -66,6 +67,17 @@ export async function PUT(
     // Check if business exists and belongs to user
     const existingBusiness = await prisma.business.findUnique({
       where: { id: params.id },
+      include: {
+        owner: {
+          select: { email: true, name: true }
+        },
+        location: {
+          select: { name: true }
+        },
+        directory: {
+          select: { name: true }
+        }
+      }
     })
 
     if (!existingBusiness) {
@@ -148,6 +160,28 @@ export async function PUT(
         },
       },
     })
+
+    // Send email notifications (non-blocking)
+    try {
+      // Notify owner that their update is pending
+      await sendBusinessUpdatedPendingEmail(
+        existingBusiness.owner.email,
+        existingBusiness.owner.name || 'Business Owner',
+        business.name
+      )
+
+      // Notify admin about pending business
+      await sendAdminPendingBusinessEmail(
+        business.name,
+        existingBusiness.owner.name || 'Business Owner',
+        existingBusiness.owner.email,
+        existingBusiness.location.name,
+        existingBusiness.directory.name,
+        true // isUpdate = true
+      )
+    } catch (emailError) {
+      console.error('Failed to send update notification emails:', emailError)
+    }
 
     return NextResponse.json({ business })
   } catch (error) {
