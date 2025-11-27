@@ -1,4 +1,5 @@
 import { notFound, redirect } from 'next/navigation'
+import { Metadata } from 'next'
 import { prisma } from '@/lib/db'
 import { MapPin, Phone, Mail, Globe, Clock, ArrowLeft, MessageSquare } from 'lucide-react'
 
@@ -14,6 +15,13 @@ type Business = {
   imageUrl: string | null
   hoursJson: any | null
   status: string
+  facebookUrl: string | null
+  instagramUrl: string | null
+  linkedinUrl: string | null
+  twitterUrl: string | null
+  youtubeUrl: string | null
+  googleBusinessUrl: string | null
+  tiktokUrl: string | null
   location: {
     name: string
     slug: string
@@ -77,6 +85,13 @@ async function getBusinessData(
           imageUrl: true,
           hoursJson: true,
           status: true,
+          facebookUrl: true,
+          instagramUrl: true,
+          linkedinUrl: true,
+          twitterUrl: true,
+          youtubeUrl: true,
+          googleBusinessUrl: true,
+          tiktokUrl: true,
           location: {
             select: {
               name: true,
@@ -113,6 +128,13 @@ async function getBusinessData(
         imageUrl: true,
         hoursJson: true,
         status: true,
+        facebookUrl: true,
+        instagramUrl: true,
+        linkedinUrl: true,
+        twitterUrl: true,
+        youtubeUrl: true,
+        googleBusinessUrl: true,
+        tiktokUrl: true,
         location: {
           select: {
             name: true,
@@ -140,6 +162,167 @@ async function getBusinessData(
   }
 }
 
+const BASE_URL = process.env.NEXT_PUBLIC_APP_URL || 'https://myhbb.app'
+
+export async function generateMetadata({
+  params,
+}: {
+  params: { location: string; directory: string; business: string }
+}): Promise<Metadata> {
+  const { business } = await getBusinessData(
+    params.business,
+    params.location,
+    params.directory
+  )
+
+  if (!business) {
+    return {
+      title: 'Business Not Found | My Home Based Business',
+      description: 'The business listing you are looking for could not be found.',
+    }
+  }
+
+  const businessUrl = `${BASE_URL}/${business.location.slug}/${business.directory.slug}/${business.slug || params.business}`
+  const truncatedDescription = business.description
+    ? business.description.length > 155
+      ? business.description.substring(0, 155) + '...'
+      : business.description
+    : `${business.name} - ${business.directory.name} in ${business.location.name}. Contact us for quality home-based business services.`
+
+  return {
+    title: `${business.name} | ${business.directory.name} in ${business.location.name}`,
+    description: truncatedDescription,
+    keywords: [
+      business.name,
+      business.directory.name,
+      business.location.name,
+      'home-based business',
+      'local business',
+      'small business',
+    ].join(', '),
+    alternates: {
+      canonical: businessUrl,
+    },
+    openGraph: {
+      title: `${business.name} | ${business.directory.name}`,
+      description: truncatedDescription,
+      url: businessUrl,
+      siteName: 'My Home Based Business',
+      type: 'website',
+      locale: 'en_US',
+      images: business.imageUrl
+        ? [
+            {
+              url: business.imageUrl,
+              width: 1200,
+              height: 630,
+              alt: business.name,
+            },
+          ]
+        : undefined,
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${business.name} | ${business.directory.name}`,
+      description: truncatedDescription,
+      images: business.imageUrl ? [business.imageUrl] : undefined,
+    },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        'max-video-preview': -1,
+        'max-image-preview': 'large',
+        'max-snippet': -1,
+      },
+    },
+  }
+}
+
+function generateLocalBusinessSchema(business: Business) {
+  const businessUrl = `${BASE_URL}/${business.location.slug}/${business.directory.slug}/${business.slug}`
+
+  const sameAs: string[] = []
+  if (business.facebookUrl) sameAs.push(business.facebookUrl)
+  if (business.instagramUrl) sameAs.push(business.instagramUrl)
+  if (business.linkedinUrl) sameAs.push(business.linkedinUrl)
+  if (business.twitterUrl) sameAs.push(business.twitterUrl)
+  if (business.youtubeUrl) sameAs.push(business.youtubeUrl)
+  if (business.tiktokUrl) sameAs.push(business.tiktokUrl)
+
+  const schema: Record<string, unknown> = {
+    '@context': 'https://schema.org',
+    '@type': 'LocalBusiness',
+    '@id': businessUrl,
+    name: business.name,
+    description: business.description,
+    url: businessUrl,
+    telephone: business.phone,
+    email: business.email,
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: business.address,
+      addressLocality: business.location.name.split(',')[0]?.trim(),
+      addressRegion: business.location.name.split(',')[1]?.trim() || '',
+      addressCountry: 'US',
+    },
+  }
+
+  if (business.imageUrl) {
+    schema.image = business.imageUrl
+  }
+
+  if (business.website) {
+    schema.sameAs = [business.website, ...sameAs]
+  } else if (sameAs.length > 0) {
+    schema.sameAs = sameAs
+  }
+
+  if (business.hoursJson) {
+    const hoursText = typeof business.hoursJson === 'string'
+      ? business.hoursJson
+      : JSON.stringify(business.hoursJson)
+    schema.openingHours = hoursText
+  }
+
+  return schema
+}
+
+function generateBreadcrumbSchema(business: Business) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: 'Home',
+        item: BASE_URL,
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: business.location.name,
+        item: `${BASE_URL}/${business.location.slug}`,
+      },
+      {
+        '@type': 'ListItem',
+        position: 3,
+        name: business.directory.name,
+        item: `${BASE_URL}/${business.location.slug}/${business.directory.slug}`,
+      },
+      {
+        '@type': 'ListItem',
+        position: 4,
+        name: business.name,
+        item: `${BASE_URL}/${business.location.slug}/${business.directory.slug}/${business.slug}`,
+      },
+    ],
+  }
+}
+
 export default async function BusinessDetailPage({
   params,
 }: {
@@ -160,9 +343,21 @@ export default async function BusinessDetailPage({
     notFound()
   }
 
+  const localBusinessSchema = generateLocalBusinessSchema(business)
+  const breadcrumbSchema = generateBreadcrumbSchema(business)
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900">
-      {/* Header */}
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900">
+        {/* Header */}
       <header className="bg-slate-900/80 backdrop-blur-sm border-b border-slate-700">
         <div className="max-w-5xl mx-auto px-4 py-6 sm:px-6 lg:px-8">
           <nav className="text-sm text-slate-400 mb-4">
@@ -353,5 +548,6 @@ export default async function BusinessDetailPage({
         </div>
       </footer>
     </div>
+    </>
   )
 }
