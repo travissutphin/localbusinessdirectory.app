@@ -454,6 +454,7 @@ export async function sendBusinessStatusEmail(
  * @param locationName - Location name
  * @param directoryName - Directory/category name
  * @param isUpdate - Whether this is an update (true) or new business (false)
+ * @param changes - Array of field changes with old and new values (for updates)
  */
 export async function sendAdminPendingBusinessEmail(
   businessName: string,
@@ -461,7 +462,8 @@ export async function sendAdminPendingBusinessEmail(
   ownerEmail: string,
   locationName: string,
   directoryName: string,
-  isUpdate: boolean = false
+  isUpdate: boolean = false,
+  changes?: Array<{ field: string; oldValue: string; newValue: string }>
 ): Promise<void> {
   const adminUrl = `${process.env.NEXT_PUBLIC_APP_URL}/admin/businesses?filter=PENDING`
   const action = isUpdate ? 'Updated' : 'New'
@@ -473,8 +475,8 @@ export async function sendAdminPendingBusinessEmail(
       from: 'My Home Based Business - myhbb.app <info@myhbb.app>',
       to: 'info@myhbb.app',
       subject: `[Admin] ${action} Business Pending: ${businessName}`,
-      html: getAdminPendingBusinessEmailHtml(businessName, ownerName, ownerEmail, locationName, directoryName, adminUrl, isUpdate),
-      text: getAdminPendingBusinessEmailText(businessName, ownerName, ownerEmail, locationName, directoryName, adminUrl, isUpdate)
+      html: getAdminPendingBusinessEmailHtml(businessName, ownerName, ownerEmail, locationName, directoryName, adminUrl, isUpdate, changes),
+      text: getAdminPendingBusinessEmailText(businessName, ownerName, ownerEmail, locationName, directoryName, adminUrl, isUpdate, changes)
     })
 
     if (response.error) {

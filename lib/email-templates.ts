@@ -460,9 +460,42 @@ export function getAdminPendingBusinessEmailHtml(
   locationName: string,
   directoryName: string,
   adminUrl: string,
-  isUpdate: boolean = false
+  isUpdate: boolean = false,
+  changes?: Array<{ field: string; oldValue: string; newValue: string }>
 ): string {
   const action = isUpdate ? 'Updated' : 'New'
+
+  const truncate = (str: string, maxLen: number = 100) => {
+    if (str.length <= maxLen) return str
+    return str.substring(0, maxLen) + '...'
+  }
+
+  const changesHtml = isUpdate && changes && changes.length > 0 ? `
+              <div style="background-color: #fef3c7; border-radius: 12px; padding: 24px; margin-bottom: 24px;">
+                <p style="margin: 0 0 16px 0; font-size: 14px; font-weight: 600; color: #92400e;">
+                  Changes Made (${changes.length} field${changes.length > 1 ? 's' : ''} updated):
+                </p>
+                <table role="presentation" style="width: 100%; border-collapse: collapse;">
+                  ${changes.map(change => `
+                  <tr>
+                    <td colspan="2" style="padding: 12px 0 4px 0; font-size: 13px; font-weight: 600; color: #1e293b; border-top: 1px solid #fde68a;">
+                      ${change.field}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="padding: 4px 0; font-size: 12px; color: #dc2626; width: 50%; vertical-align: top;">
+                      <span style="font-weight: 600;">OLD:</span><br>
+                      <span style="word-break: break-word;">${truncate(change.oldValue)}</span>
+                    </td>
+                    <td style="padding: 4px 0 4px 12px; font-size: 12px; color: #16a34a; width: 50%; vertical-align: top;">
+                      <span style="font-weight: 600;">NEW:</span><br>
+                      <span style="word-break: break-word;">${truncate(change.newValue)}</span>
+                    </td>
+                  </tr>
+                  `).join('')}
+                </table>
+              </div>` : ''
+
   return `
 <!DOCTYPE html>
 <html>
@@ -519,6 +552,7 @@ export function getAdminPendingBusinessEmailHtml(
                   <td style="padding: 8px 0; font-size: 14px; color: #1e293b; text-align: right;">${directoryName}</td>
                 </tr>
               </table>
+              ${changesHtml}
               <table role="presentation" style="width: 100%; border-collapse: collapse;">
                 <tr>
                   <td align="center" style="padding: 8px 0;">
@@ -554,9 +588,22 @@ export function getAdminPendingBusinessEmailText(
   locationName: string,
   directoryName: string,
   adminUrl: string,
-  isUpdate: boolean = false
+  isUpdate: boolean = false,
+  changes?: Array<{ field: string; oldValue: string; newValue: string }>
 ): string {
   const action = isUpdate ? 'Updated' : 'New'
+
+  const truncate = (str: string, maxLen: number = 100) => {
+    if (str.length <= maxLen) return str
+    return str.substring(0, maxLen) + '...'
+  }
+
+  const changesText = isUpdate && changes && changes.length > 0
+    ? `\nCHANGES MADE (${changes.length} field${changes.length > 1 ? 's' : ''} updated):\n${'-'.repeat(40)}\n${changes.map(change =>
+        `${change.field}:\n  OLD: ${truncate(change.oldValue)}\n  NEW: ${truncate(change.newValue)}`
+      ).join('\n\n')}\n${'-'.repeat(40)}\n`
+    : ''
+
   return `
 ${action} Business Pending Review
 ${'='.repeat(action.length + 24)}
@@ -568,7 +615,7 @@ Owner: ${ownerName}
 Email: ${ownerEmail}
 Location: ${locationName}
 Category: ${directoryName}
-
+${changesText}
 Review now: ${adminUrl}
 
 ---

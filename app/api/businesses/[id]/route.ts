@@ -111,6 +111,47 @@ export async function PUT(
       imageUrl,
     } = body
 
+    // Track changes for admin notification
+    const changes: Array<{ field: string; oldValue: string; newValue: string }> = []
+
+    const fieldLabels: Record<string, string> = {
+      name: 'Business Name',
+      description: 'Description',
+      address: 'Address',
+      phone: 'Phone',
+      email: 'Email',
+      website: 'Website',
+      facebookUrl: 'Facebook',
+      instagramUrl: 'Instagram',
+      linkedinUrl: 'LinkedIn',
+      twitterUrl: 'Twitter',
+      youtubeUrl: 'YouTube',
+      googleBusinessUrl: 'Google Business',
+      tiktokUrl: 'TikTok',
+      hoursJson: 'Business Hours',
+      imageUrl: 'Image',
+    }
+
+    const fieldsToCheck = {
+      name, description, address, phone, email, website,
+      facebookUrl, instagramUrl, linkedinUrl, twitterUrl,
+      youtubeUrl, googleBusinessUrl, tiktokUrl, hoursJson, imageUrl
+    }
+
+    for (const [field, newValue] of Object.entries(fieldsToCheck)) {
+      const oldValue = existingBusiness[field as keyof typeof existingBusiness]
+      const oldStr = oldValue ? String(oldValue) : ''
+      const newStr = newValue ? String(newValue) : ''
+
+      if (oldStr !== newStr) {
+        changes.push({
+          field: fieldLabels[field] || field,
+          oldValue: oldStr || '(empty)',
+          newValue: newStr || '(empty)'
+        })
+      }
+    }
+
     // Regenerate slug if name or address changed
     let newSlug = existingBusiness.slug
     if (name !== existingBusiness.name || address !== existingBusiness.address) {
@@ -170,14 +211,15 @@ export async function PUT(
         business.name
       )
 
-      // Notify admin about pending business
+      // Notify admin about pending business with changes
       await sendAdminPendingBusinessEmail(
         business.name,
         existingBusiness.owner.name || 'Business Owner',
         existingBusiness.owner.email,
         existingBusiness.location.name,
         existingBusiness.directory.name,
-        true // isUpdate = true
+        true, // isUpdate = true
+        changes // pass the tracked changes
       )
     } catch (emailError) {
       console.error('Failed to send update notification emails:', emailError)
