@@ -2,8 +2,9 @@
 
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { ArrowLeft, Save, Upload, X, Image as ImageIcon, Facebook, Instagram, Linkedin, Twitter, Youtube, MapPin, AlertTriangle } from 'lucide-react'
+import { ArrowLeft, Save, Upload, X, Image as ImageIcon, Facebook, Instagram, Linkedin, Twitter, Youtube, MapPin, AlertTriangle, CheckCircle, Loader2 } from 'lucide-react'
 import { locationZipCodes, type CityZipData } from '@/lib/location-data'
+import { validateAddress, type AddressValidationResult } from '@/lib/address-validation'
 
 export const dynamic = 'force-dynamic'
 
@@ -38,6 +39,9 @@ export default function NewBusinessPage() {
   const [duplicates, setDuplicates] = useState<DuplicateMatch[]>([])
   const [showDuplicateModal, setShowDuplicateModal] = useState(false)
   const [confirmedNoDuplicate, setConfirmedNoDuplicate] = useState(false)
+  const [addressValidation, setAddressValidation] = useState<AddressValidationResult | null>(null)
+  const [validatingAddress, setValidatingAddress] = useState(false)
+  const [addressWarningDismissed, setAddressWarningDismissed] = useState(false)
 
   const [formData, setFormData] = useState({
     name: '',
@@ -149,10 +153,55 @@ export default function NewBusinessPage() {
     }
   }
 
+  async function handleValidateAddress() {
+    if (!formData.address) return
+
+    setValidatingAddress(true)
+    setAddressValidation(null)
+
+    const selectedLoc = locations.find(l => l.id === formData.locationId)
+    const result = await validateAddress(
+      formData.address,
+      formData.city,
+      selectedLoc?.name,
+      formData.zipCode
+    )
+
+    setAddressValidation(result)
+    setValidatingAddress(false)
+    setAddressWarningDismissed(false)
+  }
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     setLoading(true)
     setError('')
+
+    // Validate address if not already validated
+    if (!addressValidation && formData.address) {
+      setValidatingAddress(true)
+      const selectedLoc = locations.find(l => l.id === formData.locationId)
+      const result = await validateAddress(
+        formData.address,
+        formData.city,
+        selectedLoc?.name,
+        formData.zipCode
+      )
+      setAddressValidation(result)
+      setValidatingAddress(false)
+
+      // If address invalid and warning not dismissed, stop submission
+      if (!result.isValid && !addressWarningDismissed) {
+        setLoading(false)
+        return
+      }
+    }
+
+    // If we have validation result and it's invalid and not dismissed, stop
+    if (addressValidation && !addressValidation.isValid && !addressWarningDismissed) {
+      setLoading(false)
+      return
+    }
 
     if (!confirmedNoDuplicate) {
       const hasDuplicates = await checkDuplicates()
@@ -451,17 +500,73 @@ export default function NewBusinessPage() {
             <label htmlFor="address" className="block text-sm font-medium text-slate-300 mb-2">
               Street Address <span className="text-red-400">*</span>
             </label>
-            <input
-              type="text"
-              id="address"
-              name="address"
-              required
-              value={formData.address}
-              onChange={handleChange}
-              className="w-full px-4 py-2 bg-slate-900 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
-              placeholder="123 Main Street"
-            />
+            <div className="flex gap-2">
+              <input
+                type="text"
+                id="address"
+                name="address"
+                required
+                value={formData.address}
+                onChange={(e) => {
+                  handleChange(e)
+                  setAddressValidation(null)
+                  setAddressWarningDismissed(false)
+                }}
+                className={`flex-1 px-4 py-2 bg-slate-900 border rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent ${
+                  addressValidation?.isValid ? 'border-green-500' : addressValidation && !addressValidation.isValid ? 'border-yellow-500' : 'border-slate-600'
+                }`}
+                placeholder="123 Main Street"
+              />
+              <button
+                type="button"
+                onClick={handleValidateAddress}
+                disabled={!formData.address || validatingAddress}
+                className="px-4 py-2 bg-slate-700 hover:bg-slate-600 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-lg transition-colors flex items-center gap-2"
+              >
+                {validatingAddress ? (
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                ) : (
+                  <MapPin className="w-4 h-4" />
+                )}
+                Verify
+              </button>
+            </div>
             <p className="mt-1 text-xs text-slate-400">Enter your street address only (city and ZIP selected above)</p>
+
+            {/* Address Validation Result */}
+            {addressValidation && (
+              <div className={`mt-3 p-3 rounded-lg ${addressValidation.isValid ? 'bg-green-900/30 border border-green-700' : 'bg-yellow-900/30 border border-yellow-700'}`}>
+                {addressValidation.isValid ? (
+                  <div className="flex items-start gap-2">
+                    <CheckCircle className="w-5 h-5 text-green-400 flex-shrink-0 mt-0.5" />
+                    <div>
+                      <p className="text-green-400 font-medium text-sm">Address verified</p>
+                      <p className="text-green-300/70 text-xs mt-1">{addressValidation.displayName}</p>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="flex items-start gap-2">
+                    <AlertTriangle className="w-5 h-5 text-yellow-400 flex-shrink-0 mt-0.5" />
+                    <div className="flex-1">
+                      <p className="text-yellow-400 font-medium text-sm">Address could not be verified</p>
+                      <p className="text-yellow-300/70 text-xs mt-1">{addressValidation.error}</p>
+                      {!addressWarningDismissed && (
+                        <button
+                          type="button"
+                          onClick={() => setAddressWarningDismissed(true)}
+                          className="mt-2 text-xs text-yellow-400 hover:text-yellow-300 underline"
+                        >
+                          Continue anyway with this address
+                        </button>
+                      )}
+                      {addressWarningDismissed && (
+                        <p className="mt-2 text-xs text-yellow-300">You can proceed with submission.</p>
+                      )}
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
 
           {/* Phone & Email */}
