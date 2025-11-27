@@ -210,7 +210,7 @@ export default function MobileNav() {
                   strokeWidth={active ? 2.5 : 2}
                 />
                 <span
-                  className="text-xs font-medium"
+                  className="text-xs font-medium text-center"
                   style={{
                     fontWeight: active ? 600 : 500,
                   }}
