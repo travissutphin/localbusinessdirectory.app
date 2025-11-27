@@ -96,6 +96,8 @@ export async function PUT(
     const {
       name,
       description,
+      city,
+      zipCode,
       address,
       phone,
       email,
@@ -117,6 +119,8 @@ export async function PUT(
     const fieldLabels: Record<string, string> = {
       name: 'Business Name',
       description: 'Description',
+      city: 'City',
+      zipCode: 'ZIP Code',
       address: 'Address',
       phone: 'Phone',
       email: 'Email',
@@ -133,7 +137,7 @@ export async function PUT(
     }
 
     const fieldsToCheck = {
-      name, description, address, phone, email, website,
+      name, description, city, zipCode, address, phone, email, website,
       facebookUrl, instagramUrl, linkedinUrl, twitterUrl,
       youtubeUrl, googleBusinessUrl, tiktokUrl, hoursJson, imageUrl
     }
@@ -171,6 +175,8 @@ export async function PUT(
         name,
         slug: newSlug,
         description,
+        city,
+        zipCode,
         address,
         phone,
         email,

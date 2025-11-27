@@ -8,6 +8,8 @@ type Business = {
   slug: string | null
   name: string
   description: string
+  city: string | null
+  zipCode: string | null
   address: string
   phone: string
   email: string
@@ -78,6 +80,8 @@ async function getBusinessData(
           slug: true,
           name: true,
           description: true,
+          city: true,
+          zipCode: true,
           address: true,
           phone: true,
           email: true,
@@ -121,6 +125,8 @@ async function getBusinessData(
         slug: true,
         name: true,
         description: true,
+        city: true,
+        zipCode: true,
         address: true,
         phone: true,
         email: true,
@@ -252,6 +258,22 @@ function generateLocalBusinessSchema(business: Business) {
   if (business.youtubeUrl) sameAs.push(business.youtubeUrl)
   if (business.tiktokUrl) sameAs.push(business.tiktokUrl)
 
+  const locationParts = business.location.name.split(',')
+  const defaultCity = locationParts[0]?.trim() || ''
+  const stateRegion = locationParts[1]?.trim() || ''
+
+  const postalAddress: Record<string, string> = {
+    '@type': 'PostalAddress',
+    streetAddress: business.address,
+    addressLocality: business.city || defaultCity,
+    addressRegion: stateRegion,
+    addressCountry: 'US',
+  }
+
+  if (business.zipCode) {
+    postalAddress.postalCode = business.zipCode
+  }
+
   const schema: Record<string, unknown> = {
     '@context': 'https://schema.org',
     '@type': 'LocalBusiness',
@@ -261,13 +283,7 @@ function generateLocalBusinessSchema(business: Business) {
     url: businessUrl,
     telephone: business.phone,
     email: business.email,
-    address: {
-      '@type': 'PostalAddress',
-      streetAddress: business.address,
-      addressLocality: business.location.name.split(',')[0]?.trim(),
-      addressRegion: business.location.name.split(',')[1]?.trim() || '',
-      addressCountry: 'US',
-    },
+    address: postalAddress,
   }
 
   if (business.imageUrl) {
@@ -438,8 +454,14 @@ export default async function BusinessDetailPage({
                     <p className="text-sm font-medium text-slate-400 mb-1">
                       Address
                     </p>
-                    <p className="text-white whitespace-pre-line">
+                    <p className="text-white">
                       {business.address}
+                      {(business.city || business.zipCode) && (
+                        <>
+                          <br />
+                          {business.city}{business.city && business.zipCode && ', '}{business.zipCode}
+                        </>
+                      )}
                     </p>
                   </div>
                 </div>

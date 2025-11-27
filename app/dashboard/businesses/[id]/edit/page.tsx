@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { ArrowLeft, Save, Upload, X, Image as ImageIcon, Facebook, Instagram, Linkedin, Twitter, Youtube, MapPin } from 'lucide-react'
+import { locationZipCodes, type CityZipData } from '@/lib/location-data'
 
 export const dynamic = 'force-dynamic'
 
@@ -13,10 +14,14 @@ export default function EditBusinessPage({ params }: { params: { id: string } })
   const [error, setError] = useState('')
   const [uploading, setUploading] = useState(false)
   const [imagePreview, setImagePreview] = useState<string>('')
+  const [cityZipData, setCityZipData] = useState<CityZipData[]>([])
+  const [locationSlug, setLocationSlug] = useState('')
 
   const [formData, setFormData] = useState({
     name: '',
     description: '',
+    city: '',
+    zipCode: '',
     address: '',
     phone: '',
     email: '',
@@ -56,9 +61,20 @@ export default function EditBusinessPage({ params }: { params: { id: string } })
       const data = await response.json()
       const business = data.business
 
+      // Set location slug and load city/zip data
+      if (business.location?.slug) {
+        setLocationSlug(business.location.slug)
+        const zipData = locationZipCodes[business.location.slug]
+        if (zipData) {
+          setCityZipData(zipData.cities)
+        }
+      }
+
       setFormData({
         name: business.name || '',
         description: business.description || '',
+        city: business.city || '',
+        zipCode: business.zipCode || '',
         address: business.address || '',
         phone: business.phone || '',
         email: business.email || '',
@@ -111,7 +127,7 @@ export default function EditBusinessPage({ params }: { params: { id: string } })
     }
   }
 
-  function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
+  function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) {
     const { name, value } = e.target
     setFormData(prev => ({ ...prev, [name]: value }))
   }
@@ -250,20 +266,82 @@ export default function EditBusinessPage({ params }: { params: { id: string } })
             />
           </div>
 
+          {/* City & Zip Code */}
+          {cityZipData.length > 0 && (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+              <div>
+                <label htmlFor="city" className="block text-sm font-medium text-slate-300 mb-2">
+                  City <span className="text-red-400">*</span>
+                </label>
+                <select
+                  id="city"
+                  name="city"
+                  required
+                  value={formData.city}
+                  onChange={(e) => {
+                    handleChange(e)
+                    setFormData(prev => ({ ...prev, zipCode: '' }))
+                  }}
+                  disabled={cityZipData.length === 1}
+                  className="w-full px-4 py-2 bg-slate-900 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent disabled:opacity-70"
+                >
+                  {cityZipData.length === 1 ? (
+                    <option value={cityZipData[0].city}>{cityZipData[0].city}</option>
+                  ) : (
+                    <>
+                      <option value="">Select city</option>
+                      {cityZipData.map(cityData => (
+                        <option key={cityData.city} value={cityData.city}>
+                          {cityData.city}
+                        </option>
+                      ))}
+                    </>
+                  )}
+                </select>
+              </div>
+
+              <div>
+                <label htmlFor="zipCode" className="block text-sm font-medium text-slate-300 mb-2">
+                  ZIP Code <span className="text-red-400">*</span>
+                </label>
+                <select
+                  id="zipCode"
+                  name="zipCode"
+                  required
+                  value={formData.zipCode}
+                  onChange={handleChange}
+                  disabled={!formData.city}
+                  className="w-full px-4 py-2 bg-slate-900 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  <option value="">Select ZIP code</option>
+                  {formData.city && cityZipData
+                    .find(c => c.city === formData.city)
+                    ?.zipCodes.map(zip => (
+                      <option key={zip.code} value={zip.code}>
+                        {zip.code} - {zip.area}
+                      </option>
+                    ))}
+                </select>
+              </div>
+            </div>
+          )}
+
           {/* Address */}
           <div className="mb-6">
             <label htmlFor="address" className="block text-sm font-medium text-slate-300 mb-2">
-              Address <span className="text-red-400">*</span>
+              Street Address <span className="text-red-400">*</span>
             </label>
-            <textarea
+            <input
+              type="text"
               id="address"
               name="address"
               required
-              rows={2}
               value={formData.address}
               onChange={handleChange}
               className="w-full px-4 py-2 bg-slate-900 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+              placeholder="123 Main Street"
             />
+            <p className="mt-1 text-xs text-slate-400">Enter your street address only (city and ZIP selected above)</p>
           </div>
 
           {/* Phone & Email */}
