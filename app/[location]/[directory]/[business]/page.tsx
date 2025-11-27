@@ -348,8 +348,8 @@ function generateBreadcrumbSchema(business: Business) {
   }
 }
 
-function hasCompleteAddress(business: Business): boolean {
-  return !!(business.address && business.city && business.zipCode)
+function hasAddress(business: Business): boolean {
+  return !!business.address
 }
 
 function SocialLink({ href, icon: Icon, label, color }: { href: string; icon: any; label: string; color: string }) {
@@ -395,7 +395,7 @@ export default async function BusinessDetailPage({
 
   const localBusinessSchema = generateLocalBusinessSchema(business)
   const breadcrumbSchema = generateBreadcrumbSchema(business)
-  const showMap = hasCompleteAddress(business)
+  const showMap = hasAddress(business)
 
   const hasSocialMedia = business.facebookUrl || business.instagramUrl || business.linkedinUrl ||
     business.twitterUrl || business.youtubeUrl || business.tiktokUrl || business.googleBusinessUrl
