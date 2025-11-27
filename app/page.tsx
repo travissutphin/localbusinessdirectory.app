@@ -1,6 +1,6 @@
 'use client'
 
-import { CheckCircle2, ArrowRight, Users, Search, TrendingUp } from 'lucide-react'
+import { CheckCircle2, ArrowRight, Users, Search, TrendingUp, Globe, Sparkles, Bot, MapPin } from 'lucide-react'
 
 export default function Home() {
   return (
@@ -199,6 +199,102 @@ export default function Home() {
               Unlike crowded marketplaces where you compete with everyone, our directory is designed specifically for home-based businesses. We understand that you&apos;re offering personalized service, local expertise, and the kind of care that big companies can&apos;t match. Our platform connects you with customers who value exactly that.
             </p>
           </div>
+        </div>
+      </section>
+
+      {/* SEO Power Section */}
+      <section className="py-16 md:py-24 bg-gradient-to-br from-primary-900 via-primary-800 to-neutral-900 text-white overflow-hidden">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <div className="inline-flex items-center gap-2 bg-primary-700/50 px-4 py-2 rounded-full mb-6">
+              <Sparkles className="w-5 h-5 text-yellow-400" />
+              <span className="text-sm font-semibold text-primary-100">Powerful Technology, Zero Cost</span>
+            </div>
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6">
+              Your Business Page Is Built to Be Found
+            </h2>
+            <p className="text-xl text-primary-100 max-w-3xl mx-auto leading-relaxed">
+              Every listing includes enterprise-grade search optimization that big companies pay thousands for—yours is free.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+            {/* SEO Card */}
+            <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20 hover:bg-white/15 transition-colors">
+              <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center mb-4">
+                <Search className="w-6 h-6 text-white" />
+              </div>
+              <h3 className="text-xl font-bold mb-2">Search Engine Optimized</h3>
+              <p className="text-primary-200 text-sm leading-relaxed">
+                Your listing is built with Schema.org structured data—the same technology used by Fortune 500 companies. Google, Bing, and other search engines understand exactly what your business offers.
+              </p>
+            </div>
+
+            {/* AEO Card */}
+            <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20 hover:bg-white/15 transition-colors">
+              <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl flex items-center justify-center mb-4">
+                <Bot className="w-6 h-6 text-white" />
+              </div>
+              <h3 className="text-xl font-bold mb-2">AI-Ready Listing</h3>
+              <p className="text-primary-200 text-sm leading-relaxed">
+                ChatGPT, Google AI, and other AI assistants can read your business details. When customers ask AI for local recommendations, your business can be suggested.
+              </p>
+            </div>
+
+            {/* GEO Card */}
+            <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20 hover:bg-white/15 transition-colors">
+              <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-green-600 rounded-xl flex items-center justify-center mb-4">
+                <MapPin className="w-6 h-6 text-white" />
+              </div>
+              <h3 className="text-xl font-bold mb-2">Local Search Ready</h3>
+              <p className="text-primary-200 text-sm leading-relaxed">
+                Your complete address, service area, and contact info are formatted for map services and &quot;near me&quot; searches. Customers in your area will find you first.
+              </p>
+            </div>
+          </div>
+
+          {/* What You Get List */}
+          <div className="bg-white/5 rounded-2xl p-8 border border-white/10">
+            <h3 className="text-xl font-bold mb-6 text-center">Every Free Listing Includes:</h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              <div className="flex items-center gap-3">
+                <CheckCircle2 className="w-5 h-5 text-green-400 flex-shrink-0" />
+                <span className="text-primary-100 text-sm">LocalBusiness Schema Markup</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <CheckCircle2 className="w-5 h-5 text-green-400 flex-shrink-0" />
+                <span className="text-primary-100 text-sm">SEO-Optimized Page Title</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <CheckCircle2 className="w-5 h-5 text-green-400 flex-shrink-0" />
+                <span className="text-primary-100 text-sm">Rich Social Media Previews</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <CheckCircle2 className="w-5 h-5 text-green-400 flex-shrink-0" />
+                <span className="text-primary-100 text-sm">Interactive Map Location</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <CheckCircle2 className="w-5 h-5 text-green-400 flex-shrink-0" />
+                <span className="text-primary-100 text-sm">Mobile-Friendly Design</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <CheckCircle2 className="w-5 h-5 text-green-400 flex-shrink-0" />
+                <span className="text-primary-100 text-sm">Direct Contact Links</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <CheckCircle2 className="w-5 h-5 text-green-400 flex-shrink-0" />
+                <span className="text-primary-100 text-sm">Social Media Integration</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <CheckCircle2 className="w-5 h-5 text-green-400 flex-shrink-0" />
+                <span className="text-primary-100 text-sm">Verified Address Display</span>
+              </div>
+            </div>
+          </div>
+
+          <p className="text-center text-primary-300 mt-8 text-sm">
+            The more details you add, the better your listing performs in search results and AI recommendations.
+          </p>
         </div>
       </section>
 
