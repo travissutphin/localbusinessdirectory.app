@@ -471,7 +471,7 @@ export async function sendAdminPendingBusinessEmail(
 
     const response = await getEmailService().send({
       from: 'My Home Based Business - myhbb.app <info@myhbb.app>',
-      to: 'travis@websuasion.com',
+      to: 'info@myhbb.app',
       subject: `[Admin] ${action} Business Pending: ${businessName}`,
       html: getAdminPendingBusinessEmailHtml(businessName, ownerName, ownerEmail, locationName, directoryName, adminUrl, isUpdate),
       text: getAdminPendingBusinessEmailText(businessName, ownerName, ownerEmail, locationName, directoryName, adminUrl, isUpdate)
