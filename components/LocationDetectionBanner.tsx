@@ -166,7 +166,7 @@ export default function LocationDetectionBanner() {
                 {geoData ? (
                   <>
                     <span className="hidden sm:inline">We don&apos;t have listings for {geoData.city} yet. </span>
-                    <span className="sm:hidden">Not in {geoData.city}? </span>
+                    <span className="sm:hidden">Not available in {geoData.city} </span>
                   </>
                 ) : (
                   <span>Select your area to browse local businesses</span>
