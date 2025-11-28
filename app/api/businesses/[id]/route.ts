@@ -3,6 +3,8 @@ import { auth } from '@/lib/auth'
 import { prisma } from '@/lib/db'
 import { generateUniqueSlug } from '@/lib/slug'
 import { sendBusinessUpdatedPendingEmail, sendAdminPendingBusinessEmail } from '@/lib/email'
+import { businessUpdateSchema } from '@/lib/validations'
+import { rateLimit, getClientIp, createRateLimitResponse } from '@/lib/rate-limit'
 
 // GET /api/businesses/[id] - Get single business
 export async function GET(
@@ -10,6 +12,8 @@ export async function GET(
   { params }: { params: { id: string } }
 ) {
   try {
+    const session = await auth()
+
     const business = await prisma.business.findUnique({
       where: { id: params.id },
       include: {
@@ -28,8 +32,8 @@ export async function GET(
         },
         owner: {
           select: {
+            id: true,
             name: true,
-            email: true,
           },
         },
       },
@@ -39,7 +43,18 @@ export async function GET(
       return NextResponse.json({ error: 'Business not found' }, { status: 404 })
     }
 
-    return NextResponse.json({ business })
+    // Only include owner email if requester is the owner or admin
+    const isOwnerOrAdmin = session?.user?.id === business.owner.id || session?.user?.role === 'ADMIN'
+
+    const responseData = {
+      ...business,
+      owner: {
+        name: business.owner.name,
+        ...(isOwnerOrAdmin ? { email: business.email } : {}),
+      },
+    }
+
+    return NextResponse.json({ business: responseData })
   } catch (error) {
     console.error('Error fetching business:', error)
     return NextResponse.json(
@@ -55,6 +70,16 @@ export async function PUT(
   { params }: { params: { id: string } }
 ) {
   try {
+    const clientIp = getClientIp(request)
+    const rateLimitResult = rateLimit(clientIp, 'api')
+
+    if (!rateLimitResult.success) {
+      return NextResponse.json(
+        createRateLimitResponse(rateLimitResult.resetIn),
+        { status: 429 }
+      )
+    }
+
     const session = await auth()
 
     if (!session?.user) {
@@ -63,6 +88,14 @@ export async function PUT(
 
     const userId = session.user.id!
     const body = await request.json()
+
+    const validation = businessUpdateSchema.safeParse(body)
+    if (!validation.success) {
+      return NextResponse.json(
+        { error: validation.error.issues[0].message },
+        { status: 400 }
+      )
+    }
 
     // Check if business exists and belongs to user
     const existingBusiness = await prisma.business.findUnique({
@@ -93,25 +126,26 @@ export async function PUT(
       )
     }
 
-    const {
-      name,
-      description,
-      city,
-      zipCode,
-      address,
-      phone,
-      email,
-      website,
-      facebookUrl,
-      instagramUrl,
-      linkedinUrl,
-      twitterUrl,
-      youtubeUrl,
-      googleBusinessUrl,
-      tiktokUrl,
-      hoursJson,
-      imageUrl,
-    } = body
+    const validatedData = validation.data
+
+    // Use existing values as defaults for optional fields
+    const name = validatedData.name ?? existingBusiness.name
+    const description = validatedData.description ?? existingBusiness.description
+    const city = validatedData.city ?? existingBusiness.city
+    const zipCode = validatedData.zipCode ?? existingBusiness.zipCode
+    const address = validatedData.address ?? existingBusiness.address
+    const phone = validatedData.phone ?? existingBusiness.phone
+    const email = validatedData.email ?? existingBusiness.email
+    const website = validatedData.website ?? existingBusiness.website
+    const facebookUrl = validatedData.facebookUrl ?? existingBusiness.facebookUrl
+    const instagramUrl = validatedData.instagramUrl ?? existingBusiness.instagramUrl
+    const linkedinUrl = validatedData.linkedinUrl ?? existingBusiness.linkedinUrl
+    const twitterUrl = validatedData.twitterUrl ?? existingBusiness.twitterUrl
+    const youtubeUrl = validatedData.youtubeUrl ?? existingBusiness.youtubeUrl
+    const googleBusinessUrl = validatedData.googleBusinessUrl ?? existingBusiness.googleBusinessUrl
+    const tiktokUrl = validatedData.tiktokUrl ?? existingBusiness.tiktokUrl
+    const hoursJson = validatedData.hoursJson ?? existingBusiness.hoursJson
+    const imageUrl = validatedData.imageUrl ?? existingBusiness.imageUrl
 
     // Track changes for admin notification
     const changes: Array<{ field: string; oldValue: string; newValue: string }> = []
@@ -247,6 +281,16 @@ export async function DELETE(
   { params }: { params: { id: string } }
 ) {
   try {
+    const clientIp = getClientIp(request)
+    const rateLimitResult = rateLimit(clientIp, 'api')
+
+    if (!rateLimitResult.success) {
+      return NextResponse.json(
+        createRateLimitResponse(rateLimitResult.resetIn),
+        { status: 429 }
+      )
+    }
+
     const session = await auth()
 
     if (!session?.user) {

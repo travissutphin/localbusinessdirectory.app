@@ -1,37 +1,37 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/db'
 
-type IpApiResponse = {
-  status: string
-  country: string
-  countryCode: string
-  region: string
-  regionName: string
+type GeoResponse = {
+  ip: string
   city: string
-  zip: string
-  lat: number
-  lon: number
+  region: string
+  region_code: string
+  country: string
+  country_code: string
+  postal: string
+  latitude: number
+  longitude: number
   timezone: string
-  isp: string
-  org: string
-  as: string
-  query: string
+  error?: boolean
+  reason?: string
 }
 
 export async function GET(request: NextRequest) {
   try {
-    // Get client IP from headers (Railway/Vercel provides this)
     const forwarded = request.headers.get('x-forwarded-for')
     const realIp = request.headers.get('x-real-ip')
-    const clientIp = forwarded?.split(',')[0] || realIp || 'check'
+    const clientIp = forwarded?.split(',')[0] || realIp || ''
 
-    // Call ip-api.com free tier (no API key required, 45 req/min limit)
-    const ipApiUrl = `http://ip-api.com/json/${clientIp}?fields=status,country,countryCode,region,regionName,city,zip,lat,lon,timezone,isp,org,as,query`
+    // Use ipapi.co - free HTTPS tier (1000 req/day)
+    const geoUrl = clientIp
+      ? `https://ipapi.co/${clientIp}/json/`
+      : 'https://ipapi.co/json/'
 
-    const response = await fetch(ipApiUrl, {
+    const response = await fetch(geoUrl, {
       method: 'GET',
       headers: {
         'Accept': 'application/json',
+        'User-Agent': 'myhbb-directory/1.0',
       },
     })
 
@@ -39,18 +39,18 @@ export async function GET(request: NextRequest) {
       throw new Error('IP geolocation API failed')
     }
 
-    const data: IpApiResponse = await response.json()
+    const data: GeoResponse = await response.json()
 
-    if (data.status !== 'success') {
+    if (data.error) {
       return NextResponse.json(
-        { error: 'Geolocation detection failed', data },
+        { error: 'Geolocation detection failed', reason: data.reason },
         { status: 400 }
       )
     }
 
     // First, try to find exact ZIP match in new ZipCode table
     const zipCodeMatch = await prisma.zipCode.findUnique({
-      where: { code: data.zip },
+      where: { code: data.postal },
       include: {
         location: {
           select: {
@@ -76,10 +76,10 @@ export async function GET(request: NextRequest) {
         },
         geoData: {
           city: data.city,
-          region: data.regionName,
-          zip: data.zip,
-          lat: data.lat,
-          lon: data.lon,
+          region: data.region,
+          zip: data.postal,
+          lat: data.latitude,
+          lon: data.longitude,
         },
       })
     }
@@ -87,7 +87,7 @@ export async function GET(request: NextRequest) {
     // Fallback: Check legacy zipCode field on Location (for backwards compatibility)
     const legacyMatch = await prisma.location.findFirst({
       where: {
-        zipCode: data.zip,
+        zipCode: data.postal,
         isActive: true,
       },
     })
@@ -105,10 +105,10 @@ export async function GET(request: NextRequest) {
         },
         geoData: {
           city: data.city,
-          region: data.regionName,
-          zip: data.zip,
-          lat: data.lat,
-          lon: data.lon,
+          region: data.region,
+          zip: data.postal,
+          lat: data.latitude,
+          lon: data.longitude,
         },
       })
     }
@@ -144,10 +144,10 @@ export async function GET(request: NextRequest) {
         },
         geoData: {
           city: data.city,
-          region: data.regionName,
-          zip: data.zip,
-          lat: data.lat,
-          lon: data.lon,
+          region: data.region,
+          zip: data.postal,
+          lat: data.latitude,
+          lon: data.longitude,
         },
       })
     }
@@ -155,7 +155,7 @@ export async function GET(request: NextRequest) {
     // Try by state/region
     const nearbyByState = await prisma.zipCode.findFirst({
       where: {
-        state: { contains: data.regionName, mode: 'insensitive' },
+        state: { contains: data.region, mode: 'insensitive' },
         location: { isActive: true },
       },
       include: {
@@ -183,10 +183,10 @@ export async function GET(request: NextRequest) {
         },
         geoData: {
           city: data.city,
-          region: data.regionName,
-          zip: data.zip,
-          lat: data.lat,
-          lon: data.lon,
+          region: data.region,
+          zip: data.postal,
+          lat: data.latitude,
+          lon: data.longitude,
         },
       })
     }
@@ -207,10 +207,10 @@ export async function GET(request: NextRequest) {
       matched: false,
       geoData: {
         city: data.city,
-        region: data.regionName,
-        zip: data.zip,
-        lat: data.lat,
-        lon: data.lon,
+        region: data.region,
+        zip: data.postal,
+        lat: data.latitude,
+        lon: data.longitude,
       },
       availableLocations,
       message: 'Your location is not yet in our directory. Please select from available locations or check back soon!',

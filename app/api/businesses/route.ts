@@ -3,6 +3,7 @@ import { auth } from '@/lib/auth'
 import { prisma } from '@/lib/db'
 import { generateUniqueSlug } from '@/lib/slug'
 import { businessSchema } from '@/lib/validations'
+import { rateLimit, getClientIp, createRateLimitResponse } from '@/lib/rate-limit'
 
 // GET /api/businesses - List businesses with filtering and pagination
 export async function GET(request: NextRequest) {
@@ -119,6 +120,16 @@ export async function GET(request: NextRequest) {
 // POST /api/businesses - Create new business
 export async function POST(request: NextRequest) {
   try {
+    const clientIp = getClientIp(request)
+    const rateLimitResult = rateLimit(clientIp, 'api')
+
+    if (!rateLimitResult.success) {
+      return NextResponse.json(
+        createRateLimitResponse(rateLimitResult.resetIn),
+        { status: 429 }
+      )
+    }
+
     const session = await auth()
 
     if (!session?.user) {
@@ -161,38 +172,6 @@ export async function POST(request: NextRequest) {
       potentialDuplicates,
     } = validation.data
 
-    // Check owner limit (max 2 businesses)
-    const ownerBusinessCount = await prisma.business.count({
-      where: {
-        ownerId: userId,
-      },
-    })
-
-    if (ownerBusinessCount >= 2) {
-      return NextResponse.json(
-        { error: 'Business limit reached. You can only create up to 2 businesses.' },
-        { status: 403 }
-      )
-    }
-
-    // Check for duplicate (same name in same location and directory)
-    const existingBusiness = await prisma.business.findUnique({
-      where: {
-        ownerId_name_locationId: {
-          ownerId: userId,
-          name,
-          locationId,
-        },
-      },
-    })
-
-    if (existingBusiness) {
-      return NextResponse.json(
-        { error: 'You already have a business with this name in this location' },
-        { status: 409 }
-      )
-    }
-
     // Verify location and directory exist
     const location = await prisma.location.findUnique({
       where: { id: locationId },
@@ -209,55 +188,96 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Generate SEO-friendly slug
-    const slug = await generateUniqueSlug(name, address, locationId, directoryId)
+    // Use transaction to prevent race condition on business limit
+    const business = await prisma.$transaction(async (tx) => {
+      // Check owner limit (max 2 businesses)
+      const ownerBusinessCount = await tx.business.count({
+        where: { ownerId: userId },
+      })
 
-    // Create business
-    const business = await prisma.business.create({
-      data: {
-        name,
-        slug,
-        description,
-        ownerId: userId,
-        locationId,
-        directoryId,
-        city,
-        zipCode,
-        address,
-        phone,
-        email,
-        website,
-        facebookUrl,
-        instagramUrl,
-        linkedinUrl,
-        twitterUrl,
-        youtubeUrl,
-        googleBusinessUrl,
-        tiktokUrl,
-        hoursJson,
-        imageUrl,
-        status: 'PENDING',
-        duplicateFlag: duplicateFlag || false,
-        potentialDuplicates: potentialDuplicates || [],
-      },
-      include: {
-        location: {
-          select: {
-            name: true,
-            slug: true,
+      if (ownerBusinessCount >= 2) {
+        throw new Error('LIMIT_REACHED')
+      }
+
+      // Check for duplicate (same name in same location)
+      const existingBusiness = await tx.business.findUnique({
+        where: {
+          ownerId_name_locationId: {
+            ownerId: userId,
+            name,
+            locationId,
           },
         },
-        directory: {
-          select: {
-            name: true,
-            slug: true,
+      })
+
+      if (existingBusiness) {
+        throw new Error('DUPLICATE_EXISTS')
+      }
+
+      // Generate SEO-friendly slug
+      const slug = await generateUniqueSlug(name, address, locationId, directoryId)
+
+      // Create business
+      return await tx.business.create({
+        data: {
+          name,
+          slug,
+          description,
+          ownerId: userId,
+          locationId,
+          directoryId,
+          city,
+          zipCode,
+          address,
+          phone,
+          email,
+          website,
+          facebookUrl,
+          instagramUrl,
+          linkedinUrl,
+          twitterUrl,
+          youtubeUrl,
+          googleBusinessUrl,
+          tiktokUrl,
+          hoursJson,
+          imageUrl,
+          status: 'PENDING',
+          duplicateFlag: duplicateFlag || false,
+          potentialDuplicates: potentialDuplicates || [],
+        },
+        include: {
+          location: {
+            select: {
+              name: true,
+              slug: true,
+            },
+          },
+          directory: {
+            select: {
+              name: true,
+              slug: true,
+            },
           },
         },
-      },
+      })
     })
 
     return NextResponse.json({ business }, { status: 201 })
   } catch (error) {
+    if (error instanceof Error) {
+      if (error.message === 'LIMIT_REACHED') {
+        return NextResponse.json(
+          { error: 'Business limit reached. You can only create up to 2 businesses.' },
+          { status: 403 }
+        )
+      }
+      if (error.message === 'DUPLICATE_EXISTS') {
+        return NextResponse.json(
+          { error: 'You already have a business with this name in this location' },
+          { status: 409 }
+        )
+      }
+    }
     console.error('Error creating business:', error)
     return NextResponse.json(
       { error: 'Failed to create business' },
