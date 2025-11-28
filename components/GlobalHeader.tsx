@@ -30,10 +30,12 @@ export default function GlobalHeader() {
   const [isLocationDropdownOpen, setIsLocationDropdownOpen] = useState(false)
   const [locations, setLocations] = useState<Location[]>([])
   const [locationsLoaded, setLocationsLoaded] = useState(false)
+  const [isInServiceArea, setIsInServiceArea] = useState(true)
 
   useEffect(() => {
     checkAuth()
     fetchLocations()
+    checkServiceArea()
   }, [])
 
   useEffect(() => {
@@ -88,6 +90,18 @@ export default function GlobalHeader() {
       // Failed to fetch locations
     } finally {
       setLocationsLoaded(true)
+    }
+  }
+
+  async function checkServiceArea() {
+    try {
+      const response = await fetch('/api/geolocation/detect')
+      const data = await response.json()
+      if (data.detected && !data.matched) {
+        setIsInServiceArea(false)
+      }
+    } catch (err) {
+      // If check fails, assume in service area
     }
   }
 
@@ -171,7 +185,7 @@ export default function GlobalHeader() {
 
             {/* Navigation Buttons + Hamburger Menu */}
             <div className="flex items-center gap-3">
-              {/* View Local Directory Button/Dropdown - Always visible */}
+              {/* Browse Directories Button/Dropdown - Always visible */}
               <div className="relative">
                 <button
                   onClick={handleViewDirectory}
@@ -180,7 +194,7 @@ export default function GlobalHeader() {
                   className="flex items-center gap-2 px-4 py-2 rounded-lg transition-colors font-medium border-2 border-primary-600 text-primary-600 hover:bg-primary-50 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <MapPin className="w-4 h-4" />
-                  <span>View Local Directory</span>
+                  <span>Browse Directories</span>
                   {locations.length > 1 && (
                     <ChevronDown className={`w-4 h-4 transition-transform ${isLocationDropdownOpen ? 'rotate-180' : ''}`} />
                   )}
@@ -220,8 +234,8 @@ export default function GlobalHeader() {
                 </a>
               )}
 
-              {/* Business Owner Dropdown - Only for non-logged-in users */}
-              {!user && (
+              {/* Business Owner Dropdown - Only for non-logged-in users in service area */}
+              {!user && isInServiceArea && (
                 <div className="relative">
                   <button
                     onClick={() => setIsDropdownOpen(!isDropdownOpen)}
@@ -381,7 +395,7 @@ export default function GlobalHeader() {
                   <span>Sign Out</span>
                 </button>
               </div>
-            ) : (
+            ) : isInServiceArea ? (
               <div className="space-y-3">
                 <a
                   href="/login"
@@ -395,6 +409,12 @@ export default function GlobalHeader() {
                 >
                   Create Account
                 </a>
+              </div>
+            ) : (
+              <div className="px-4 py-3 bg-neutral-100 rounded-lg text-center">
+                <p className="text-sm text-neutral-600">
+                  Sign in available only in service areas
+                </p>
               </div>
             )}
           </div>

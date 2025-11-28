@@ -1,13 +1,48 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { signIn } from 'next-auth/react'
-import { Mail, CheckCircle, AlertCircle } from 'lucide-react'
+import { Mail, CheckCircle, AlertCircle, MapPin } from 'lucide-react'
+import Link from 'next/link'
+
+type AvailableLocation = {
+  id: string
+  name: string
+  slug: string
+}
 
 export default function LoginPage() {
   const [email, setEmail] = useState('')
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
   const [error, setError] = useState('')
+  const [locationBlocked, setLocationBlocked] = useState(false)
+  const [checkingLocation, setCheckingLocation] = useState(true)
+  const [availableLocations, setAvailableLocations] = useState<AvailableLocation[]>([])
+  const [detectedCity, setDetectedCity] = useState<string | null>(null)
+
+  useEffect(() => {
+    checkLocationAccess()
+  }, [])
+
+  async function checkLocationAccess() {
+    try {
+      const response = await fetch('/api/geolocation/detect')
+      const data = await response.json()
+
+      if (data.detected && !data.matched) {
+        setLocationBlocked(true)
+        setDetectedCity(data.geoData?.city || null)
+        if (data.availableLocations) {
+          setAvailableLocations(data.availableLocations)
+        }
+      }
+    } catch (err) {
+      // If geolocation fails, allow access
+      console.error('Location check failed:', err)
+    } finally {
+      setCheckingLocation(false)
+    }
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -32,6 +67,67 @@ export default function LoginPage() {
       setError('An error occurred. Please try again.')
       setStatus('error')
     }
+  }
+
+  if (checkingLocation) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 flex items-center justify-center px-4 py-12">
+        <div className="text-center">
+          <div className="w-8 h-8 border-2 border-white border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+          <p className="text-neutral-300">Checking your location...</p>
+        </div>
+      </div>
+    )
+  }
+
+  if (locationBlocked) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 flex items-center justify-center px-4 py-12">
+        <div className="max-w-md w-full">
+          <div className="text-center mb-8">
+            <div className="inline-flex items-center justify-center w-16 h-16 bg-orange-900/30 rounded-full mb-6">
+              <MapPin className="w-8 h-8 text-orange-400" />
+            </div>
+            <h1 className="text-3xl font-bold text-white mb-2">Not Available in Your Area</h1>
+            <p className="text-neutral-300">
+              {detectedCity
+                ? `We don't have listings for ${detectedCity} yet.`
+                : `Your location is not currently in our service area.`
+              }
+            </p>
+          </div>
+
+          <div className="card-dark text-white">
+            <p className="text-neutral-300 text-center mb-6">
+              Registration and login are only available for users in our service areas.
+              Browse our available directories to see where we operate.
+            </p>
+
+            {availableLocations.length > 0 && (
+              <div className="space-y-3">
+                <p className="text-sm text-neutral-400 text-center">Available Locations:</p>
+                {availableLocations.map((loc) => (
+                  <Link
+                    key={loc.id}
+                    href={`/${loc.slug}`}
+                    className="flex items-center gap-3 px-4 py-3 bg-neutral-800 hover:bg-neutral-700 rounded-lg transition-colors"
+                  >
+                    <MapPin className="w-5 h-5 text-primary-400" />
+                    <span>{loc.name}</span>
+                  </Link>
+                ))}
+              </div>
+            )}
+          </div>
+
+          <div className="mt-6 text-center">
+            <Link href="/" className="text-neutral-400 hover:text-white text-sm">
+              ← Back to Home
+            </Link>
+          </div>
+        </div>
+      </div>
+    )
   }
 
   return (
