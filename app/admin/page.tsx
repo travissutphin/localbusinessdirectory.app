@@ -94,20 +94,6 @@ export default function AdminDashboard() {
                 </p>
               )}
             </div>
-            <div className="flex items-center gap-4">
-              <a
-                href="/dashboard"
-                className="text-sm text-slate-400 hover:text-white transition-colors"
-              >
-                My Businesses
-              </a>
-              <a
-                href="/"
-                className="text-sm text-blue-400 hover:text-blue-300 transition-colors"
-              >
-                ← Back to Home
-              </a>
-            </div>
           </div>
         </div>
       </header>

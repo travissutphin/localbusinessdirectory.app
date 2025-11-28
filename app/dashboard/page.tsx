@@ -123,7 +123,7 @@ export default function OwnerDashboard() {
         <div className="max-w-7xl mx-auto px-4 py-6 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-3xl font-bold text-white">My Businesses</h1>
+              <h1 className="text-3xl font-bold text-white">Dashboard</h1>
               {user && (
                 <p className="mt-1 text-sm text-slate-400">
                   Welcome back, {user.name || user.email}
