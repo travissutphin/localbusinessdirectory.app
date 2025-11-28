@@ -24,7 +24,7 @@ type Business = {
   city: string | null
   zipCode: string | null
   address: string
-  phone: string
+  phone: string | null
   email: string
   website: string | null
   imageUrl: string | null

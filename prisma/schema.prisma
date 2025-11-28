@@ -147,7 +147,7 @@ model Business {
   name                     String
   slug                     String?
   description              String
-  phone                    String
+  phone                    String?
   website                  String?
   email                    String
   address                  String

@@ -152,9 +152,9 @@ export async function POST(request: NextRequest) {
     } = body
 
     // Validate required fields
-    if (!name || !locationId || !directoryId || !description || !address || !phone || !email) {
+    if (!name || !locationId || !directoryId || !description || !address || !email) {
       return NextResponse.json(
-        { error: 'Missing required fields: name, description, address, phone, email, locationId, directoryId' },
+        { error: 'Missing required fields: name, description, address, email, locationId, directoryId' },
         { status: 400 }
       )
     }

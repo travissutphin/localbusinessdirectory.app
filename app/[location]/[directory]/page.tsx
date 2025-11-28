@@ -7,7 +7,7 @@ type Business = {
   name: string
   description: string
   address: string
-  phone: string
+  phone: string | null
   email: string
   website: string | null
   imageUrl: string | null
