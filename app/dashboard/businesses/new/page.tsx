@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { ArrowLeft, Save, Upload, X, Image as ImageIcon, Facebook, Instagram, Linkedin, Twitter, Youtube, MapPin, AlertTriangle, CheckCircle, Loader2 } from 'lucide-react'
+import { ArrowLeft, Save, Upload, X, Image as ImageIcon, Facebook, Instagram, Linkedin, Twitter, Youtube, MapPin, AlertTriangle, CheckCircle, Loader2, MapPinOff } from 'lucide-react'
+import Link from 'next/link'
 import { locationZipCodes, type CityZipData } from '@/lib/location-data'
 import { validateAddress, type AddressValidationResult } from '@/lib/address-validation'
 
@@ -42,6 +43,9 @@ export default function NewBusinessPage() {
   const [addressValidation, setAddressValidation] = useState<AddressValidationResult | null>(null)
   const [validatingAddress, setValidatingAddress] = useState(false)
   const [addressWarningDismissed, setAddressWarningDismissed] = useState(false)
+  const [locationBlocked, setLocationBlocked] = useState(false)
+  const [checkingLocation, setCheckingLocation] = useState(true)
+  const [detectedCity, setDetectedCity] = useState<string | null>(null)
 
   const [formData, setFormData] = useState({
     name: '',
@@ -69,7 +73,23 @@ export default function NewBusinessPage() {
   useEffect(() => {
     checkAuth()
     fetchLocations()
+    checkServiceArea()
   }, [])
+
+  async function checkServiceArea() {
+    try {
+      const response = await fetch('/api/geolocation/detect')
+      const data = await response.json()
+      if (data.detected && !data.matched) {
+        setLocationBlocked(true)
+        setDetectedCity(data.geoData?.city || null)
+      }
+    } catch (err) {
+      // If check fails, allow access
+    } finally {
+      setCheckingLocation(false)
+    }
+  }
 
   useEffect(() => {
     if (formData.locationId) {
@@ -315,6 +335,53 @@ export default function NewBusinessPage() {
 
   // Find location slug from ID
   const selectedLocation = locations.find(l => l.id === formData.locationId)
+
+  if (checkingLocation) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-8 h-8 border-2 border-white border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+          <p className="text-neutral-300">Verifying your location...</p>
+        </div>
+      </div>
+    )
+  }
+
+  if (locationBlocked) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 flex items-center justify-center px-4 py-12">
+        <div className="max-w-md w-full text-center">
+          <div className="inline-flex items-center justify-center w-20 h-20 bg-orange-900/30 rounded-full mb-6">
+            <MapPinOff className="w-10 h-10 text-orange-400" />
+          </div>
+          <h1 className="text-3xl font-bold text-white mb-4">Not Available in Your Area</h1>
+          <p className="text-neutral-300 mb-6">
+            {detectedCity
+              ? `Business registration is not available for ${detectedCity} yet.`
+              : `Business registration is only available in our service areas.`
+            }
+          </p>
+          <p className="text-neutral-400 text-sm mb-8">
+            We&apos;re expanding to new locations soon! Check back later or browse our current directories.
+          </p>
+          <div className="space-y-3">
+            <Link
+              href="/directories"
+              className="block w-full px-4 py-3 bg-primary-600 hover:bg-primary-700 text-white text-center font-medium rounded-lg transition-colors"
+            >
+              Browse Directories
+            </Link>
+            <Link
+              href="/dashboard"
+              className="block w-full px-4 py-3 bg-slate-700 hover:bg-slate-600 text-white text-center font-medium rounded-lg transition-colors"
+            >
+              Back to Dashboard
+            </Link>
+          </div>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900">
