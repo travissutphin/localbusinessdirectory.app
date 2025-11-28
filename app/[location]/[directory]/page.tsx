@@ -27,7 +27,7 @@ type Location = {
   id: string
   name: string
   slug: string
-  zipCode: string
+  zipCode: string | null
 }
 
 type PageData = {

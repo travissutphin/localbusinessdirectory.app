@@ -10,7 +10,7 @@ async function main() {
   console.log('📍 Seeding locations...')
 
   const location = await prisma.location.upsert({
-    where: { zipCode: '32080' },
+    where: { slug: 'saint-augustine-fl' },
     update: {},
     create: {
       name: 'Saint Augustine, FL',

@@ -38,7 +38,7 @@ type LocationData = {
   id: string
   name: string
   slug: string
-  zipCode: string
+  zipCode: string | null
   region: string | null
   description: string | null
 }

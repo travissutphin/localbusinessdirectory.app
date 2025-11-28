@@ -13,7 +13,7 @@ datasource db {
 model Location {
   id          String       @id @default(uuid())
   name        String       // "Saint Augustine, FL"
-  zipCode     String       @unique @map("zip_code")
+  zipCode     String?      @map("zip_code") // Legacy field, use zipCodes relation
   slug        String       @unique
   region      String?
   description String?
@@ -21,6 +21,7 @@ model Location {
   createdAt   DateTime     @default(now()) @map("created_at")
   updatedAt   DateTime     @updatedAt @map("updated_at")
 
+  zipCodes    ZipCode[]
   directories Directory[]
   businesses  Business[]
   users       User[]
@@ -28,6 +29,25 @@ model Location {
 
   @@index([isActive])
   @@map("locations")
+}
+
+model ZipCode {
+  id         String   @id @default(uuid())
+  code       String   @unique
+  locationId String   @map("location_id")
+  city       String?
+  state      String?
+  lat        Float?
+  lng        Float?
+  isPrimary  Boolean  @default(false) @map("is_primary")
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  location   Location @relation(fields: [locationId], references: [id], onDelete: Cascade)
+
+  @@index([code])
+  @@index([locationId])
+  @@index([state])
+  @@map("zip_codes")
 }
 
 model Directory {

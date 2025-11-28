@@ -48,24 +48,60 @@ export async function GET(request: NextRequest) {
       )
     }
 
-    // Find closest location by zip code
-    const location = await prisma.location.findFirst({
+    // First, try to find exact ZIP match in new ZipCode table
+    const zipCodeMatch = await prisma.zipCode.findUnique({
+      where: { code: data.zip },
+      include: {
+        location: {
+          select: {
+            id: true,
+            name: true,
+            slug: true,
+            isActive: true,
+          },
+        },
+      },
+    })
+
+    if (zipCodeMatch && zipCodeMatch.location.isActive) {
+      return NextResponse.json({
+        detected: true,
+        matched: true,
+        matchType: 'exact_zip',
+        location: {
+          id: zipCodeMatch.location.id,
+          name: zipCodeMatch.location.name,
+          slug: zipCodeMatch.location.slug,
+          zipCode: zipCodeMatch.code,
+        },
+        geoData: {
+          city: data.city,
+          region: data.regionName,
+          zip: data.zip,
+          lat: data.lat,
+          lon: data.lon,
+        },
+      })
+    }
+
+    // Fallback: Check legacy zipCode field on Location (for backwards compatibility)
+    const legacyMatch = await prisma.location.findFirst({
       where: {
         zipCode: data.zip,
         isActive: true,
       },
     })
 
-    if (location) {
-      // Exact zip match found
+    if (legacyMatch) {
       return NextResponse.json({
         detected: true,
         matched: true,
+        matchType: 'legacy_zip',
         location: {
-          id: location.id,
-          name: location.name,
-          slug: location.slug,
-          zipCode: location.zipCode,
+          id: legacyMatch.id,
+          name: legacyMatch.name,
+          slug: legacyMatch.slug,
+          zipCode: legacyMatch.zipCode,
         },
         geoData: {
           city: data.city,
@@ -77,27 +113,34 @@ export async function GET(request: NextRequest) {
       })
     }
 
-    // No exact match - try to find nearby location (same region/city)
-    const nearbyLocation = await prisma.location.findFirst({
+    // Try to find nearby location by city name or region
+    const nearbyByCity = await prisma.zipCode.findFirst({
       where: {
-        OR: [
-          { name: { contains: data.city, mode: 'insensitive' } },
-          { region: { contains: data.regionName, mode: 'insensitive' } },
-        ],
-        isActive: true,
+        city: { contains: data.city, mode: 'insensitive' },
+        location: { isActive: true },
+      },
+      include: {
+        location: {
+          select: {
+            id: true,
+            name: true,
+            slug: true,
+          },
+        },
       },
     })
 
-    if (nearbyLocation) {
+    if (nearbyByCity) {
       return NextResponse.json({
         detected: true,
         matched: true,
+        matchType: 'nearby_city',
         approximate: true,
         location: {
-          id: nearbyLocation.id,
-          name: nearbyLocation.name,
-          slug: nearbyLocation.slug,
-          zipCode: nearbyLocation.zipCode,
+          id: nearbyByCity.location.id,
+          name: nearbyByCity.location.name,
+          slug: nearbyByCity.location.slug,
+          zipCode: nearbyByCity.code,
         },
         geoData: {
           city: data.city,
@@ -109,7 +152,56 @@ export async function GET(request: NextRequest) {
       })
     }
 
-    // No location match found
+    // Try by state/region
+    const nearbyByState = await prisma.zipCode.findFirst({
+      where: {
+        state: { contains: data.regionName, mode: 'insensitive' },
+        location: { isActive: true },
+      },
+      include: {
+        location: {
+          select: {
+            id: true,
+            name: true,
+            slug: true,
+          },
+        },
+      },
+    })
+
+    if (nearbyByState) {
+      return NextResponse.json({
+        detected: true,
+        matched: true,
+        matchType: 'nearby_state',
+        approximate: true,
+        location: {
+          id: nearbyByState.location.id,
+          name: nearbyByState.location.name,
+          slug: nearbyByState.location.slug,
+          zipCode: nearbyByState.code,
+        },
+        geoData: {
+          city: data.city,
+          region: data.regionName,
+          zip: data.zip,
+          lat: data.lat,
+          lon: data.lon,
+        },
+      })
+    }
+
+    // No location match found - return all available locations for manual selection
+    const availableLocations = await prisma.location.findMany({
+      where: { isActive: true },
+      select: {
+        id: true,
+        name: true,
+        slug: true,
+      },
+      orderBy: { name: 'asc' },
+    })
+
     return NextResponse.json({
       detected: true,
       matched: false,
@@ -120,17 +212,39 @@ export async function GET(request: NextRequest) {
         lat: data.lat,
         lon: data.lon,
       },
-      message: 'Location detected but not available in our directory. Please select manually.',
+      availableLocations,
+      message: 'Your location is not yet in our directory. Please select from available locations or check back soon!',
     })
   } catch (error) {
     console.error('Geolocation detection error:', error)
-    return NextResponse.json(
-      {
+
+    // On error, return available locations for fallback
+    try {
+      const availableLocations = await prisma.location.findMany({
+        where: { isActive: true },
+        select: {
+          id: true,
+          name: true,
+          slug: true,
+        },
+        orderBy: { name: 'asc' },
+      })
+
+      return NextResponse.json({
         detected: false,
         error: 'Failed to detect location',
         fallback: true,
-      },
-      { status: 500 }
-    )
+        availableLocations,
+      })
+    } catch {
+      return NextResponse.json(
+        {
+          detected: false,
+          error: 'Failed to detect location',
+          fallback: true,
+        },
+        { status: 500 }
+      )
+    }
   }
 }
