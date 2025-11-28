@@ -41,9 +41,8 @@ export default function LocationDetectionBanner() {
   }, [])
 
   async function checkAndDetectLocation() {
-    // Check if user already has a stored preference or dismissed the banner
+    // Check if user already has a stored preference
     const storedPreference = localStorage.getItem(LOCATION_STORAGE_KEY)
-    const wasDismissed = localStorage.getItem(LOCATION_DISMISSED_KEY)
 
     if (storedPreference) {
       setHasStoredPreference(true)
@@ -51,11 +50,8 @@ export default function LocationDetectionBanner() {
       return
     }
 
-    if (wasDismissed) {
-      setDismissed(true)
-      setLoading(false)
-      return
-    }
+    // Check if user dismissed banner (only applies to matched locations)
+    const wasDismissed = localStorage.getItem(LOCATION_DISMISSED_KEY)
 
     // Detect location via API
     try {
@@ -65,6 +61,10 @@ export default function LocationDetectionBanner() {
       if (data.detected && data.matched && data.location) {
         setDetectedLocation(data.location)
         setGeoData(data.geoData)
+        // Only honor dismiss for matched locations
+        if (wasDismissed) {
+          setDismissed(true)
+        }
       } else if (data.detected && !data.matched) {
         // Location detected but not in our directory
         setNoMatch(true)
@@ -174,42 +174,32 @@ export default function LocationDetectionBanner() {
               </p>
             </div>
 
-            <div className="flex items-center gap-2 flex-shrink-0 relative">
-              <div className="relative">
-                <button
-                  onClick={() => setShowDropdown(!showDropdown)}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white text-secondary-600 text-sm font-semibold rounded-lg hover:bg-secondary-50 transition-colors"
-                >
-                  <MapPin className="w-4 h-4" />
-                  <span className="hidden sm:inline">Browse Available Areas</span>
-                  <span className="sm:hidden">Browse</span>
-                  <ChevronDown className={`w-4 h-4 transition-transform ${showDropdown ? 'rotate-180' : ''}`} />
-                </button>
-
-                {showDropdown && (
-                  <div className="absolute right-0 top-full mt-2 w-56 bg-white rounded-lg shadow-xl border border-neutral-200 py-2 z-50">
-                    {availableLocations.map((loc) => (
-                      <Link
-                        key={loc.id}
-                        href={`/${loc.slug}`}
-                        onClick={() => handleAccept(loc)}
-                        className="flex items-center gap-3 px-4 py-2 text-neutral-700 hover:bg-neutral-100 transition-colors"
-                      >
-                        <MapPin className="w-4 h-4 text-secondary-500" />
-                        <span>{loc.name}</span>
-                      </Link>
-                    ))}
-                  </div>
-                )}
-              </div>
-
+            <div className="relative">
               <button
-                onClick={handleDismiss}
-                className="p-1.5 hover:bg-white/20 rounded-lg transition-colors"
-                aria-label="Dismiss"
+                onClick={() => setShowDropdown(!showDropdown)}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white text-secondary-600 text-sm font-semibold rounded-lg hover:bg-secondary-50 transition-colors"
               >
-                <X className="w-5 h-5" />
+                <MapPin className="w-4 h-4" />
+                <span className="hidden sm:inline">Browse Available Areas</span>
+                <span className="sm:hidden">Browse</span>
+                <ChevronDown className={`w-4 h-4 transition-transform ${showDropdown ? 'rotate-180' : ''}`} />
               </button>
+
+              {showDropdown && (
+                <div className="absolute right-0 top-full mt-2 w-56 bg-white rounded-lg shadow-xl border border-neutral-200 py-2 z-50">
+                  {availableLocations.map((loc) => (
+                    <Link
+                      key={loc.id}
+                      href={`/${loc.slug}`}
+                      onClick={() => handleAccept(loc)}
+                      className="flex items-center gap-3 px-4 py-2 text-neutral-700 hover:bg-neutral-100 transition-colors"
+                    >
+                      <MapPin className="w-4 h-4 text-secondary-500" />
+                      <span>{loc.name}</span>
+                    </Link>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
         </div>
