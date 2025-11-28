@@ -89,8 +89,9 @@ export async function PUT(
     let emailSent = false
     if (previousStatus !== status && existingBusiness.owner.email) {
       try {
-        const publicUrl = `https://myhbb.app/${business.location.slug}/${business.directory.slug}/${business.slug || business.id}`
-        const editUrl = `https://myhbb.app/dashboard/businesses/${business.id}/edit`
+        const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://myhbb.app'
+        const publicUrl = `${baseUrl}/${business.location.slug}/${business.directory.slug}/${business.slug || business.id}`
+        const editUrl = `${baseUrl}/dashboard/businesses/${business.id}/edit`
 
         await sendBusinessStatusEmail(
           existingBusiness.owner.email,

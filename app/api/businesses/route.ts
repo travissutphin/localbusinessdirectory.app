@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { auth } from '@/lib/auth'
 import { prisma } from '@/lib/db'
 import { generateUniqueSlug } from '@/lib/slug'
+import { businessSchema } from '@/lib/validations'
 
 // GET /api/businesses - List businesses with filtering and pagination
 export async function GET(request: NextRequest) {
@@ -127,6 +128,15 @@ export async function POST(request: NextRequest) {
     const userId = session.user.id!
     const body = await request.json()
 
+    const validation = businessSchema.safeParse(body)
+    if (!validation.success) {
+      const firstError = validation.error.issues[0]
+      return NextResponse.json(
+        { error: firstError.message },
+        { status: 400 }
+      )
+    }
+
     const {
       name,
       description,
@@ -149,15 +159,7 @@ export async function POST(request: NextRequest) {
       imageUrl,
       duplicateFlag,
       potentialDuplicates,
-    } = body
-
-    // Validate required fields
-    if (!name || !locationId || !directoryId || !description || !address || !email) {
-      return NextResponse.json(
-        { error: 'Missing required fields: name, description, address, email, locationId, directoryId' },
-        { status: 400 }
-      )
-    }
+    } = validation.data
 
     // Check owner limit (max 2 businesses)
     const ownerBusinessCount = await prisma.business.count({

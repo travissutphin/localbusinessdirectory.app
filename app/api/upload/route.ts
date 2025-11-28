@@ -1,17 +1,25 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { uploadImage } from '@/lib/cloudinary'
 import { requireAuth } from '@/lib/auth-utils'
+import { rateLimit, getClientIp, createRateLimitResponse } from '@/lib/rate-limit'
 
-/**
- * POST /api/upload
- * Upload image to Cloudinary
- * Requires authentication
- */
+const MAX_FILE_SIZE_MB = 5
+const MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024
+
 export async function POST(req: NextRequest): Promise<Response> {
   let response: Response;
 
   try {
-    // Require authentication
+    const clientIp = getClientIp(req)
+    const rateLimitResult = rateLimit(clientIp, 'upload')
+
+    if (!rateLimitResult.success) {
+      return NextResponse.json(
+        createRateLimitResponse(rateLimitResult.resetIn),
+        { status: 429 }
+      )
+    }
+
     await requireAuth()
 
     const body = await req.json()
@@ -25,11 +33,21 @@ export async function POST(req: NextRequest): Promise<Response> {
       return response
     }
 
-    // Validate file is base64 encoded image
     if (!file.startsWith('data:image/')) {
       response = NextResponse.json(
         { error: 'Invalid file format. Must be an image.' },
         { status: 400 }
+      )
+      return response
+    }
+
+    const base64Data = file.split(',')[1] || file
+    const sizeInBytes = Math.ceil((base64Data.length * 3) / 4)
+
+    if (sizeInBytes > MAX_FILE_SIZE_BYTES) {
+      response = NextResponse.json(
+        { error: `File too large. Maximum size is ${MAX_FILE_SIZE_MB}MB.` },
+        { status: 413 }
       )
       return response
     }

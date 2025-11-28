@@ -2,9 +2,20 @@ import { NextResponse } from 'next/server'
 import bcrypt from 'bcryptjs'
 import { prisma } from '@/lib/db'
 import { verifyPasswordResetToken, deletePasswordResetToken } from '@/lib/password-reset'
+import { rateLimit, getClientIp, createRateLimitResponse } from '@/lib/rate-limit'
 
 export async function POST(req: Request) {
   try {
+    const clientIp = getClientIp(req)
+    const rateLimitResult = rateLimit(clientIp, 'auth')
+
+    if (!rateLimitResult.success) {
+      return NextResponse.json(
+        createRateLimitResponse(rateLimitResult.resetIn),
+        { status: 429 }
+      )
+    }
+
     const body = await req.json()
     const { token, password } = body
 

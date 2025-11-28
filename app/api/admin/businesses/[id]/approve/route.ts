@@ -37,7 +37,8 @@ export async function PUT(
       data: {
         status: 'APPROVED',
         approvedAt: new Date(),
-        rejectionReason: null, // Clear any previous rejection reason
+        approvedBy: session.user.id,
+        rejectionReason: null,
       },
       include: {
         location: {
