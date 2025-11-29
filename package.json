@@ -13,9 +13,6 @@
     "db:push": "prisma db push",
     "kill-port": "npx kill-port 3002"
   },
-  "prisma": {
-    "seed": "tsx prisma/seed.ts"
-  },
   "dependencies": {
     "@auth/prisma-adapter": "^2.11.1",
     "@prisma/client": "^5.22.0",
