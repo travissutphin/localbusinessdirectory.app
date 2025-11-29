@@ -80,7 +80,17 @@ export default function GlobalFooter() {
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             {/* Copyright */}
             <p className="text-neutral-500 text-sm">
-              © {currentYear} My Home Based Business - myhbb.app. All rights reserved.
+              © {currentYear} My Home Based Business - myhbb.app. All rights reserved.{' '}
+              <span className="text-neutral-600">•</span>{' '}
+              Built and Maintained by{' '}
+              <a
+                href="https://travissutphin.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-primary-400 hover:text-primary-300 transition-colors"
+              >
+                travissutphin.com
+              </a>
             </p>
 
             {/* Social Media Links */}
