@@ -370,6 +370,21 @@ export default function MobileNav() {
               </button>
             </div>
           )}
+
+          {/* Built By Credit */}
+          <div className="border-t border-neutral-200 py-4 px-6">
+            <p className="text-center text-sm text-neutral-500">
+              Built and Maintained by{' '}
+              <a
+                href="https://travissutphin.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-primary-600 hover:text-primary-700 font-medium"
+              >
+                travissutphin.com
+              </a>
+            </p>
+          </div>
         </div>
       </div>
 
