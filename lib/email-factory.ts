@@ -4,6 +4,7 @@ import nodemailer from 'nodemailer'
 export interface EmailService {
   send(params: {
     from: string
+    replyTo?: string
     to: string
     subject: string
     html: string
@@ -31,6 +32,7 @@ class ResendEmailService implements EmailService {
 
   async send(params: {
     from: string
+    replyTo?: string
     to: string
     subject: string
     html: string
@@ -40,6 +42,7 @@ class ResendEmailService implements EmailService {
       const resend = this.getResendClient()
       const response = await resend.emails.send({
         from: params.from,
+        replyTo: params.replyTo,
         to: params.to,
         subject: params.subject,
         html: params.html,
@@ -73,6 +76,7 @@ class MailHogEmailService implements EmailService {
 
   async send(params: {
     from: string
+    replyTo?: string
     to: string
     subject: string
     html: string
@@ -81,6 +85,7 @@ class MailHogEmailService implements EmailService {
     try {
       const info = await this.transporter.sendMail({
         from: params.from,
+        replyTo: params.replyTo,
         to: params.to,
         subject: params.subject,
         html: params.html,

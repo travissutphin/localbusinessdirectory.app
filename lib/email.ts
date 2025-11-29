@@ -41,7 +41,8 @@ export async function sendVerificationEmail(
     console.log('🔄 Attempting to send email to:', email)
 
     const response = await getEmailService().send({
-      from: 'My Home Based Business - myhbb.app <info@myhbb.app>',
+      from: 'My Home Based Business <info@myhbb.app>',
+      replyTo: 'info@myhbb.app',
       to: email,
       subject: 'Verify your email address',
       html: `
@@ -155,9 +156,10 @@ export async function sendWelcomeEmail(
     console.log('🔄 Sending welcome email to:', email)
 
     const response = await getEmailService().send({
-      from: 'My Home Based Business - myhbb.app <info@myhbb.app>',
+      from: 'My Home Based Business <info@myhbb.app>',
+      replyTo: 'info@myhbb.app',
       to: email,
-      subject: 'Welcome to My Home Based Business - myhbb.app!',
+      subject: 'Welcome to My Home Based Business',
       html: `
         <!DOCTYPE html>
         <html>
@@ -273,7 +275,8 @@ export async function sendPasswordResetEmail(
     console.log('🔄 Sending password reset email to:', email)
 
     const response = await getEmailService().send({
-      from: 'My Home Based Business - myhbb.app <info@myhbb.app>',
+      from: 'My Home Based Business <info@myhbb.app>',
+      replyTo: 'info@myhbb.app',
       to: email,
       subject: 'Reset Your Password',
       html: `
@@ -427,7 +430,8 @@ export async function sendBusinessStatusEmail(
     console.log(`🔄 Sending business status (${newStatus}) email to:`, email)
 
     const response = await getEmailService().send({
-      from: 'My Home Based Business - myhbb.app <info@myhbb.app>',
+      from: 'My Home Based Business <info@myhbb.app>',
+      replyTo: 'info@myhbb.app',
       to: email,
       subject,
       html,
@@ -472,7 +476,8 @@ export async function sendAdminPendingBusinessEmail(
     console.log(`🔄 Sending admin notification (${action} business pending) email`)
 
     const response = await getEmailService().send({
-      from: 'My Home Based Business - myhbb.app <info@myhbb.app>',
+      from: 'My Home Based Business <info@myhbb.app>',
+      replyTo: 'info@myhbb.app',
       to: 'info@myhbb.app',
       subject: `[Admin] ${action} Business Pending: ${businessName}`,
       html: getAdminPendingBusinessEmailHtml(businessName, ownerName, ownerEmail, locationName, directoryName, adminUrl, isUpdate, changes),
@@ -508,9 +513,10 @@ export async function sendBusinessUpdatedPendingEmail(
     console.log(`🔄 Sending business updated pending email to:`, email)
 
     const response = await getEmailService().send({
-      from: 'My Home Based Business - myhbb.app <info@myhbb.app>',
+      from: 'My Home Based Business <info@myhbb.app>',
+      replyTo: 'info@myhbb.app',
       to: email,
-      subject: `Your business listing "${businessName}" is pending review`,
+      subject: `Your business "${businessName}" is pending review`,
       html: getBusinessUpdatedPendingEmailHtml(businessName, dashboardUrl),
       text: getBusinessUpdatedPendingEmailText(businessName, dashboardUrl)
     })
