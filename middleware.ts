@@ -12,6 +12,7 @@ export function middleware(request: NextRequest) {
     const newUrl = new URL(request.url)
     newUrl.hostname = NEW_DOMAIN
     newUrl.protocol = 'https'
+    newUrl.port = ''
     return NextResponse.redirect(newUrl.toString(), 301)
   }
 
