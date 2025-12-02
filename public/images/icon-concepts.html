@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Front Door Directory - Icon Concepts</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 40px;
+      background: #f5f5f5;
+    }
+    h1 { color: #1E3A5F; }
+    .concepts-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+      margin-top: 30px;
+    }
+    .concept-card {
+      background: #fff;
+      border-radius: 12px;
+      padding: 30px;
+      text-align: center;
+      border: 2px solid #e5e5e5;
+      transition: border-color 0.2s;
+    }
+    .concept-card:hover {
+      border-color: #E67E22;
+    }
+    .concept-card h3 {
+      margin-top: 20px;
+      color: #1E3A5F;
+    }
+    .concept-card p {
+      color: #6B7280;
+      font-size: 14px;
+    }
+    .icon-preview {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+      margin-top: 20px;
+    }
+    .dark-preview {
+      background: #1E3A5F;
+      padding: 15px;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Front Door Directory - Icon Concepts</h1>
+  <p>Select your preferred icon style. Each concept maintains the door/welcome theme.</p>
+
+  <div class="concepts-grid">
+
+    <!-- Concept A: Modern Geometric Door -->
+    <div class="concept-card">
+      <svg viewBox="0 0 80 80" width="80" height="80">
+        <defs>
+          <linearGradient id="doorGradA" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#1E3A5F"/>
+            <stop offset="100%" style="stop-color:#2C4A6E"/>
+          </linearGradient>
+        </defs>
+        <!-- Rounded square base -->
+        <rect x="8" y="8" width="64" height="64" rx="16" fill="url(#doorGradA)"/>
+        <!-- Door shape cutout effect -->
+        <path d="M24 18 L24 62 L42 62 L42 18 Q33 14 24 18 Z" fill="#FFFFFF" opacity="0.95"/>
+        <!-- Door accent line -->
+        <rect x="28" y="24" width="10" height="32" rx="2" fill="#E67E22" opacity="0.2"/>
+        <!-- Door handle -->
+        <circle cx="38" cy="42" r="4" fill="#E67E22"/>
+        <!-- Light rays suggesting openness -->
+        <path d="M46 30 L58 26 L58 30 L46 33 Z" fill="#E67E22" opacity="0.6"/>
+        <path d="M46 40 L62 38 L62 42 L46 43 Z" fill="#E67E22" opacity="0.8"/>
+        <path d="M46 50 L58 52 L58 56 L46 53 Z" fill="#E67E22" opacity="0.6"/>
+      </svg>
+      <h3>Concept A: Modern Geometric</h3>
+      <p>Clean rounded square with door silhouette and light rays</p>
+    </div>
+
+    <!-- Concept B: Keyhole/Door Hybrid -->
+    <div class="concept-card">
+      <svg viewBox="0 0 80 80" width="80" height="80">
+        <defs>
+          <linearGradient id="doorGradB" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" style="stop-color:#1E3A5F"/>
+            <stop offset="100%" style="stop-color:#0F2439"/>
+          </linearGradient>
+        </defs>
+        <!-- Circle base -->
+        <circle cx="40" cy="40" r="36" fill="url(#doorGradB)"/>
+        <!-- Keyhole shape that looks like a door -->
+        <path d="M32 20 L32 52 L28 58 L52 58 L48 52 L48 20 Q40 14 32 20 Z" fill="#FFFFFF"/>
+        <!-- Inner door detail -->
+        <rect x="35" y="26" width="10" height="20" rx="2" fill="#E67E22" opacity="0.15"/>
+        <!-- Keyhole/handle circle -->
+        <circle cx="40" cy="50" r="5" fill="#E67E22"/>
+        <circle cx="40" cy="50" r="2" fill="#1E3A5F"/>
+      </svg>
+      <h3>Concept B: Keyhole Door</h3>
+      <p>Circular badge with keyhole-inspired door shape</p>
+    </div>
+
+    <!-- Concept C: Abstract Open Door -->
+    <div class="concept-card">
+      <svg viewBox="0 0 80 80" width="80" height="80">
+        <defs>
+          <linearGradient id="warmGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#FEF3C7"/>
+            <stop offset="100%" style="stop-color:#FCD34D"/>
+          </linearGradient>
+        </defs>
+        <!-- Background -->
+        <rect x="8" y="8" width="64" height="64" rx="12" fill="#1E3A5F"/>
+        <!-- Warm glow from inside -->
+        <ellipse cx="48" cy="40" rx="20" ry="28" fill="url(#warmGlow)" opacity="0.3"/>
+        <!-- Door frame -->
+        <path d="M22 16 L22 64 L38 64 L38 16 Q30 12 22 16 Z" fill="#2C4A6E" stroke="#FFFFFF" stroke-width="2"/>
+        <!-- Open door with perspective -->
+        <path d="M38 16 L38 64 L54 58 L54 22 Z" fill="#FFFFFF"/>
+        <path d="M38 16 L54 22 L54 58 L38 64" fill="none" stroke="#E5E7EB" stroke-width="1"/>
+        <!-- Door handle -->
+        <ellipse cx="42" cy="42" rx="3" ry="4" fill="#E67E22"/>
+      </svg>
+      <h3>Concept C: Open Door Perspective</h3>
+      <p>3D open door with warm interior glow</p>
+    </div>
+
+    <!-- Concept D: Minimalist Arch -->
+    <div class="concept-card">
+      <svg viewBox="0 0 80 80" width="80" height="80">
+        <!-- Clean background -->
+        <rect x="8" y="8" width="64" height="64" rx="14" fill="#1E3A5F"/>
+        <!-- Arched doorway -->
+        <path d="M26 62 L26 32 Q26 18 40 18 Q54 18 54 32 L54 62 Z" fill="none" stroke="#FFFFFF" stroke-width="4"/>
+        <!-- Inner arch fill -->
+        <path d="M30 62 L30 34 Q30 22 40 22 Q50 22 50 34 L50 62 Z" fill="#E67E22" opacity="0.2"/>
+        <!-- Door handle -->
+        <circle cx="46" cy="44" r="4" fill="#E67E22"/>
+        <!-- Welcome mat line -->
+        <rect x="28" y="60" width="24" height="3" rx="1.5" fill="#E67E22" opacity="0.6"/>
+      </svg>
+      <h3>Concept D: Minimalist Arch</h3>
+      <p>Clean arched doorway with elegant simplicity</p>
+    </div>
+
+    <!-- Concept E: Shield/Badge Door -->
+    <div class="concept-card">
+      <svg viewBox="0 0 80 80" width="80" height="80">
+        <defs>
+          <linearGradient id="shieldGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" style="stop-color:#1E3A5F"/>
+            <stop offset="100%" style="stop-color:#0F2439"/>
+          </linearGradient>
+        </defs>
+        <!-- Shield shape -->
+        <path d="M40 6 L70 16 L70 44 Q70 68 40 76 Q10 68 10 44 L10 16 Z" fill="url(#shieldGrad)"/>
+        <!-- Inner shield border -->
+        <path d="M40 12 L64 20 L64 44 Q64 64 40 70 Q16 64 16 44 L16 20 Z" fill="none" stroke="#FFFFFF" stroke-width="2" opacity="0.3"/>
+        <!-- Door -->
+        <path d="M30 28 L30 56 L40 56 L40 28 Q35 24 30 28 Z" fill="#FFFFFF"/>
+        <path d="M40 28 L40 56 L50 52 L50 32 Z" fill="#E5E7EB"/>
+        <!-- Handle -->
+        <circle cx="36" cy="44" r="3" fill="#E67E22"/>
+      </svg>
+      <h3>Concept E: Shield Badge</h3>
+      <p>Trust-inspiring shield with door emblem</p>
+    </div>
+
+    <!-- Concept F: Stacked Doors/Layers -->
+    <div class="concept-card">
+      <svg viewBox="0 0 80 80" width="80" height="80">
+        <!-- Background -->
+        <rect x="8" y="8" width="64" height="64" rx="8" fill="#1E3A5F"/>
+        <!-- Back door (larger, faded) -->
+        <rect x="20" y="18" width="26" height="44" rx="4" fill="#FFFFFF" opacity="0.2"/>
+        <!-- Middle door -->
+        <rect x="28" y="22" width="26" height="44" rx="4" fill="#FFFFFF" opacity="0.5"/>
+        <!-- Front door -->
+        <rect x="36" y="26" width="26" height="44" rx="4" fill="#FFFFFF"/>
+        <!-- Door details on front -->
+        <rect x="40" y="32" width="18" height="14" rx="2" fill="#E67E22" opacity="0.15"/>
+        <rect x="40" y="50" width="18" height="16" rx="2" fill="#E67E22" opacity="0.15"/>
+        <!-- Handle -->
+        <circle cx="56" cy="52" r="3" fill="#E67E22"/>
+      </svg>
+      <h3>Concept F: Layered Doors</h3>
+      <p>Multiple doors suggesting directory/many options</p>
+    </div>
+
+  </div>
+
+  <!-- Concept G: Simple Key with F - Horizontal -->
+    <div class="concept-card" style="border-color: #E67E22;">
+      <svg viewBox="0 0 80 80" width="80" height="80">
+        <!-- Background -->
+        <rect x="8" y="8" width="64" height="64" rx="14" fill="#1E3A5F"/>
+        <!-- Simple key - horizontal -->
+        <!-- Key head (round bow) -->
+        <circle cx="24" cy="40" r="12" fill="none" stroke="#FFFFFF" stroke-width="4"/>
+        <!-- F in key head -->
+        <text x="24" y="45" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#FFFFFF" text-anchor="middle">F</text>
+        <!-- Key shaft -->
+        <rect x="32" y="37" width="36" height="6" fill="#FFFFFF"/>
+        <!-- Key teeth - simple notches -->
+        <rect x="52" y="43" width="5" height="8" fill="#FFFFFF"/>
+        <rect x="60" y="43" width="5" height="12" fill="#FFFFFF"/>
+        <!-- Orange accent in key hole -->
+        <circle cx="24" cy="40" r="5" fill="#E67E22"/>
+        <text x="24" y="44" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#FFFFFF" text-anchor="middle">F</text>
+      </svg>
+      <h3>Concept G: Key with F</h3>
+      <p>Clean key with F in the bow</p>
+    </div>
+
+    <!-- Concept H: Simple Key with F - Diagonal -->
+    <div class="concept-card">
+      <svg viewBox="0 0 80 80" width="80" height="80">
+        <!-- Background -->
+        <rect x="8" y="8" width="64" height="64" rx="14" fill="#1E3A5F"/>
+        <!-- Simple key - diagonal -->
+        <g transform="rotate(-45, 40, 40)">
+          <!-- Key head (round bow) -->
+          <circle cx="24" cy="40" r="12" fill="none" stroke="#FFFFFF" stroke-width="4"/>
+          <!-- Key shaft -->
+          <rect x="32" y="37" width="36" height="6" fill="#FFFFFF"/>
+          <!-- Key teeth -->
+          <rect x="54" y="43" width="5" height="8" fill="#FFFFFF"/>
+          <rect x="62" y="43" width="5" height="11" fill="#FFFFFF"/>
+          <!-- Orange accent -->
+          <circle cx="24" cy="40" r="5" fill="#E67E22"/>
+        </g>
+        <!-- F rotated to stay upright -->
+        <text x="28" y="36" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#FFFFFF" text-anchor="middle">F</text>
+      </svg>
+      <h3>Concept H: Diagonal Key with F</h3>
+      <p>Angled key with upright F</p>
+    </div>
+
+    <!-- Concept I: Key with F - Vertical -->
+    <div class="concept-card">
+      <svg viewBox="0 0 80 80" width="80" height="80">
+        <!-- Background -->
+        <rect x="8" y="8" width="64" height="64" rx="14" fill="#1E3A5F"/>
+        <!-- Simple key - vertical -->
+        <!-- Key head (round bow) -->
+        <circle cx="40" cy="22" r="10" fill="none" stroke="#FFFFFF" stroke-width="4"/>
+        <!-- Key shaft -->
+        <rect x="37" y="28" width="6" height="38" fill="#FFFFFF"/>
+        <!-- Key teeth -->
+        <rect x="43" y="52" width="8" height="5" fill="#FFFFFF"/>
+        <rect x="43" y="60" width="12" height="5" fill="#FFFFFF"/>
+        <!-- Orange accent with F -->
+        <circle cx="40" cy="22" r="5" fill="#E67E22"/>
+        <text x="40" y="26" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#FFFFFF" text-anchor="middle">F</text>
+      </svg>
+      <h3>Concept I: Vertical Key with F</h3>
+      <p>Upright key with F in bow</p>
+    </div>
+
+    <!-- Concept J: Large Bold Key with F -->
+    <div class="concept-card">
+      <svg viewBox="0 0 80 80" width="80" height="80">
+        <!-- Background -->
+        <rect x="8" y="8" width="64" height="64" rx="14" fill="#1E3A5F"/>
+        <!-- Bold chunky key -->
+        <!-- Key head -->
+        <circle cx="26" cy="40" r="14" fill="#FFFFFF"/>
+        <circle cx="26" cy="40" r="8" fill="#E67E22"/>
+        <!-- F in center -->
+        <text x="26" y="45" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#FFFFFF" text-anchor="middle">F</text>
+        <!-- Thick key shaft -->
+        <rect x="36" y="35" width="30" height="10" rx="2" fill="#FFFFFF"/>
+        <!-- Bold teeth -->
+        <rect x="52" y="45" width="6" height="10" rx="1" fill="#FFFFFF"/>
+        <rect x="60" y="45" width="6" height="14" rx="1" fill="#FFFFFF"/>
+      </svg>
+      <h3>Concept J: Bold Key with F</h3>
+      <p>Chunky key with prominent F</p>
+    </div>
+
+  </div>
+
+  <div style="margin-top: 40px; padding: 20px; background: #fff; border-radius: 8px;">
+    <h3>Current Favorites</h3>
+    <p><strong>Concept F (Layered Doors)</strong> - Selected</p>
+    <p>Plus simple key concepts G through J for comparison.</p>
+  </div>
+</body>
+</html>

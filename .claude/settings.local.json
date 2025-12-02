@@ -34,7 +34,22 @@
       "Bash(npm run kill-port:*)",
       "Bash(git tag:*)",
       "Bash(git rebase:*)",
-      "Bash(GIT_EDITOR=true git rebase:*)"
+      "Bash(GIT_EDITOR=true git rebase:*)",
+      "Bash(git stash:*)",
+      "Bash(git pull:*)",
+      "WebFetch(domain:myhbb.app)",
+      "Bash(DATABASE_URL=\"postgresql://postgres:yHJpjEQECgHdSbgcntmZCGLHOKLUdZxB@ballast.proxy.rlwy.net:46928/railway\" npx prisma db push:*)",
+      "Bash(git check-ignore:*)",
+      "Bash(find:*)",
+      "Bash(DATABASE_URL=\"postgresql://postgres:mVbIhCQiPUbVJlILvZUHgjgvULJNTZOQ@ballast.proxy.rlwy.net:46928/railway\" npx prisma db push:*)",
+      "Bash(DATABASE_URL=\"postgresql://postgres:mVbIhCQiPUbVJlILvZUHgjgvULJNTZOQ@ballast.proxy.rlwy.net:46928/railway\" npx tsx:*)",
+      "Bash(DATABASE_URL=\"postgresql://postgres:OXyAwyuTbhxubhUmDmlCwHUxhgpoHmHZ@ballast.proxy.rlwy.net:46928/railway\" npx prisma db push:*)",
+      "Bash(DATABASE_URL=\"postgresql://postgres:oVSgSjssODaIfTvYjdJKhehUHZLoWito@ballast.proxy.rlwy.net:46928/railway\" npx prisma db push:*)",
+      "Bash(DATABASE_URL=\"postgresql://postgres:fnVqxbnvznBXpqlJJspFYDeFGOJHwgQW@ballast.proxy.rlwy.net:46928/railway\" npx prisma db push:*)",
+      "Bash(DATABASE_URL=\"postgresql://postgres:fnVqxbnvznBXpqlJJspFYDeFGOJHwgQW@ballast.proxy.rlwy.net:46928/railway\" npx tsx:*)",
+      "Bash(DATABASE_URL=\"postgresql://postgres:pcphFIxDqWPViFDIHTNFSsMdpqIWnuWM@ballast.proxy.rlwy.net:46928/railway\" npx prisma db push:*)",
+      "Bash(DATABASE_URL=\"postgresql://postgres:ztDSVXKpcOYOrSBfCarjWIsgCTDCsgVM@ballast.proxy.rlwy.net:46928/railway\" npx tsx:*)",
+      "WebFetch(domain:travissutphin.com)"
     ],
     "deny": [],
     "ask": []

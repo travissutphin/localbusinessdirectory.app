@@ -44,6 +44,7 @@ Keep it simple, efficient, robust, best practice and scalable. No overengineerin
 - [Bran] : Digital Marketing Specialist:  works to create and implement marketing campaigns that leverage the power of online channels. Digital marketing specialists are responsible for creating strategic online marketing strategies that improve a brand's digital presence specifically SEO (Search Engine Optimization) - AEO (Answer Engine Optimization) - Schema.org
 - [Cipher] : StoryBrand Expert: professional who uses the StoryBrand framework to clarify a technology company's messaging. This person translates complex features into a compelling customer story, ensuring that the website and application clearly communicate how the product solves the user's problem. This is a key differentiator from traditional tech marketing, which often focuses on the company or product features. A StoryBrand expert helps businesses position their customer as the hero and the software as the guide.
 - [Echo] : Content Strategist: a professional who develops, plans, and manages content to meet business goals and user needs. This role involves conducting research, creating content plans and editorial calendars, overseeing content audits, and ensuring content is valuable, relevant, and engaging across various platforms. Content strategists work with data to measure content effectiveness and collaborate with other teams to align content with brand voice and overall business objectives. 
+
 - [ ] : CRM manager:
 - [WebFetch] : use webfetch to analyze web content
 
@@ -59,10 +60,7 @@ Keep it simple, efficient, robust, best practice and scalable. No overengineerin
 	2) [Flow](Lead),[Sentinal](Support) : verify current working branch and report back the [Travis] before proceeding
 	3) [Codey](Lead) : review and report to [Travis] on current active task in Sprint and current status on /docs/kanban_dev.html als report any blockers
 	4) [Flow](Lead),[Sentinal](Support) : ensure local server is up and running through XAMPP and Docker started and provide [Travis] the url including port
-- [ProcessTaskStart] :
 - [ProcessTaskQA] : [Codey], provide current task report outome to [Verity] to QA
-- [ProgressTaskStage] : 
-- [ProcessTaskLive] : 
 - [ProcessTaskComplete] : [Codey](Lead) :
 	1) assign tasks to Team Member Role as needed.
 	2) review the /docs/kanban_dev.html and determine and take action on if a card eeds moved, or created based on the completed task.
@@ -81,10 +79,12 @@ Keep it simple, efficient, robust, best practice and scalable. No overengineerin
 	6) Push: `git push origin main`
 	7) Post-push: Verify deployment succeeded on Railway
 	If secrets found: STOP, rotate credentials, remove from code, then proceed.
+- [Coordinte] : [Codey] coordinate with the [Team] to plan and execute based on Team Member Roles best suited to complete
 - [ProcessEndDay] : 
 
 ##Blog Creation
- - [Blog] : [Echo](Lead), [Bran](Support) - use guide /docs/process/BLOG-CREATION-GUIDE.md
+- [Blog] : use guide /docs/process/BLOG-CREATION-GUIDE.md
+- [CaseStudy] : use guide /docs/process/CASE-STUDT-CREATION-GUIDE.md
 
 ## Development Practices
 

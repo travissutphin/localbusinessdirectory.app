@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48">
+  <!-- Layered Doors - 48x48 -->
+  <rect x="3" y="3" width="42" height="42" rx="6" fill="#1E3A5F"/>
+  <!-- Back door -->
+  <rect x="8" y="8" width="16" height="30" rx="2" fill="#FFFFFF" opacity="0.2"/>
+  <!-- Middle door -->
+  <rect x="13" y="11" width="16" height="30" rx="2" fill="#FFFFFF" opacity="0.5"/>
+  <!-- Front door -->
+  <rect x="18" y="14" width="16" height="30" rx="2" fill="#FFFFFF"/>
+  <!-- Door details -->
+  <rect x="21" y="18" width="10" height="9" rx="1" fill="#E67E22" opacity="0.15"/>
+  <rect x="21" y="30" width="10" height="10" rx="1" fill="#E67E22" opacity="0.15"/>
+  <!-- Handle -->
+  <circle cx="31" cy="33" r="2" fill="#E67E22"/>
+</svg>

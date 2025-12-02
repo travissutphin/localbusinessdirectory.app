@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <!-- Layered Doors Icon with F - White version -->
+  <!-- Background -->
+  <rect x="4" y="4" width="56" height="56" rx="8" fill="#FFFFFF" opacity="0.15"/>
+  <!-- Back door (faded) -->
+  <rect x="10" y="10" width="22" height="40" rx="3" fill="#FFFFFF" opacity="0.2"/>
+  <!-- Middle door -->
+  <rect x="18" y="14" width="22" height="40" rx="3" fill="#FFFFFF" opacity="0.5"/>
+  <!-- Front door -->
+  <rect x="26" y="18" width="22" height="40" rx="3" fill="#FFFFFF"/>
+  <!-- Door details -->
+  <rect x="30" y="24" width="14" height="12" rx="2" fill="#E67E22" opacity="0.15"/>
+  <rect x="30" y="40" width="14" height="14" rx="2" fill="#E67E22" opacity="0.15"/>
+  <!-- Handle -->
+  <circle cx="44" cy="44" r="2.5" fill="#E67E22"/>
+</svg>

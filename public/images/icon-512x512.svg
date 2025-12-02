@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <!-- Layered Doors - PWA Icon Large 512x512 -->
+  <rect x="0" y="0" width="512" height="512" rx="102" fill="#1E3A5F"/>
+  <!-- Back door -->
+  <rect x="80" y="80" width="140" height="280" rx="16" fill="#FFFFFF" opacity="0.2"/>
+  <!-- Middle door -->
+  <rect x="140" y="110" width="140" height="280" rx="16" fill="#FFFFFF" opacity="0.5"/>
+  <!-- Front door -->
+  <rect x="200" y="140" width="140" height="280" rx="16" fill="#FFFFFF"/>
+  <!-- Door details -->
+  <rect x="220" y="170" width="100" height="80" rx="8" fill="#E67E22" opacity="0.15"/>
+  <rect x="220" y="270" width="100" height="110" rx="8" fill="#E67E22" opacity="0.15"/>
+  <!-- Handle -->
+  <circle cx="316" cy="310" r="18" fill="#E67E22"/>
+</svg>
