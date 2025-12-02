@@ -1,20 +1,9 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
-const OLD_DOMAIN = 'myhbb.app'
-const NEW_DOMAIN = 'frontdoordirectory.com'
-
 export function middleware(request: NextRequest) {
-  const hostname = request.headers.get('host') || ''
-
-  // 301 Redirect from old domain to new domain
-  if (hostname === OLD_DOMAIN || hostname === `www.${OLD_DOMAIN}`) {
-    const newUrl = new URL(request.url)
-    newUrl.hostname = NEW_DOMAIN
-    newUrl.protocol = 'https'
-    newUrl.port = ''
-    return NextResponse.redirect(newUrl.toString(), 301)
-  }
+  // Domain redirect from myhbb.app is handled client-side by DomainRedirectPopup
+  // component to show user a "We've Moved" message before redirecting
 
   if (['POST', 'PUT', 'DELETE', 'PATCH'].includes(request.method)) {
     const origin = request.headers.get('origin')
