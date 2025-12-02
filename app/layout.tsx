@@ -5,6 +5,7 @@ import MobileNav from "@/components/MobileNav";
 import GlobalHeader from "@/components/GlobalHeader";
 import GlobalFooter from "@/components/GlobalFooter";
 import LocationDetectionBanner from "@/components/LocationDetectionBanner";
+import DomainRedirectPopup from "@/components/DomainRedirectPopup";
 
 export const metadata: Metadata = {
   title: "Front Door Directory - Get Found by Local Customers | frontdoordirectory.com",
@@ -45,6 +46,7 @@ export default function RootLayout({
         </Script>
       </head>
       <body className="antialiased">
+        <DomainRedirectPopup />
         <LocationDetectionBanner />
         <GlobalHeader />
         {children}
