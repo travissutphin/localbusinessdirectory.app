@@ -136,8 +136,8 @@ Add to business detail pages:
   },
   "telephone": "+1-904-555-0123",
   "email": "joe@example.com",
-  "url": "https://myhbb.app/saint-augustine-fl/digital-tech-services/joes-computer-repair",
-  "image": "https://myhbb.app/uploads/business-image.jpg",
+  "url": "https://frontdoordirectory.com/saint-augustine-fl/digital-tech-services/joes-computer-repair",
+  "image": "https://frontdoordirectory.com/uploads/business-image.jpg",
   "priceRange": "$$",
   "openingHoursSpecification": [...]
 }
@@ -150,9 +150,9 @@ Add to business detail pages:
   "@context": "https://schema.org",
   "@type": "BreadcrumbList",
   "itemListElement": [
-    { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://myhbb.app" },
-    { "@type": "ListItem", "position": 2, "name": "Saint Augustine, FL", "item": "https://myhbb.app/saint-augustine-fl" },
-    { "@type": "ListItem", "position": 3, "name": "Digital Tech Services", "item": "https://myhbb.app/saint-augustine-fl/digital-tech-services" },
+    { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://frontdoordirectory.com" },
+    { "@type": "ListItem", "position": 2, "name": "Saint Augustine, FL", "item": "https://frontdoordirectory.com/saint-augustine-fl" },
+    { "@type": "ListItem", "position": 3, "name": "Digital Tech Services", "item": "https://frontdoordirectory.com/saint-augustine-fl/digital-tech-services" },
     { "@type": "ListItem", "position": 4, "name": "Joe's Computer Repair" }
   ]
 }
@@ -178,9 +178,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   })
 
   return [
-    { url: 'https://myhbb.app', lastModified: new Date() },
+    { url: 'https://frontdoordirectory.com', lastModified: new Date() },
     ...businesses.map(b => ({
-      url: `https://myhbb.app/${b.location.slug}/${b.directory.slug}/${b.slug}`,
+      url: `https://frontdoordirectory.com/${b.location.slug}/${b.directory.slug}/${b.slug}`,
       lastModified: b.updatedAt,
       changeFrequency: 'weekly',
       priority: 0.8
@@ -197,7 +197,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 export default function robots(): MetadataRoute.Robots {
   return {
     rules: { userAgent: '*', allow: '/', disallow: ['/api/', '/admin/', '/dashboard/'] },
-    sitemap: 'https://myhbb.app/sitemap.xml',
+    sitemap: 'https://frontdoordirectory.com/sitemap.xml',
   }
 }
 ```
@@ -210,7 +210,7 @@ export default function robots(): MetadataRoute.Robots {
 
 Prevent duplicate content issues:
 ```html
-<link rel="canonical" href="https://myhbb.app/saint-augustine-fl/digital-tech-services/joes-computer-repair" />
+<link rel="canonical" href="https://frontdoordirectory.com/saint-augustine-fl/digital-tech-services/joes-computer-repair" />
 ```
 
 ### 5.2 Social Media Optimization

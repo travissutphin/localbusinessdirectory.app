@@ -128,10 +128,10 @@ export default function GlobalHeader() {
               <Image
                 src="/images/logo-frontdoor.svg"
                 alt="Front Door Directory"
-                width={216}
-                height={58}
+                width={270}
+                height={72}
                 priority
-                className="h-12 w-auto"
+                className="h-14 w-auto"
               />
             </a>
 
