@@ -31,7 +31,7 @@ export async function GET(request: NextRequest) {
       method: 'GET',
       headers: {
         'Accept': 'application/json',
-        'User-Agent': 'myhbb-directory/1.0',
+        'User-Agent': 'frontdoor-directory/1.0',
       },
     })
 

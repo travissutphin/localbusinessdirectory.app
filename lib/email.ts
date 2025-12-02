@@ -41,8 +41,8 @@ export async function sendVerificationEmail(
     console.log('🔄 Attempting to send email to:', email)
 
     const response = await getEmailService().send({
-      from: 'My Home Based Business <info@myhbb.app>',
-      replyTo: 'info@myhbb.app',
+      from: 'Front Door Directory <info@frontdoordirectory.com>',
+      replyTo: 'info@frontdoordirectory.com',
       to: email,
       subject: 'Verify your email address',
       html: `
@@ -58,7 +58,7 @@ export async function sendVerificationEmail(
               <!-- Header -->
               <div style="background: linear-gradient(135deg, #003d82 0%, #0056b3 100%); padding: 40px 20px; text-align: center;">
                 <h1 style="color: #ffffff; margin: 0; font-size: 28px; font-weight: 600;">
-                  Welcome to My Home Based Business - myhbb.app!
+                  Welcome to Front Door Directory!
                 </h1>
               </div>
 
@@ -69,7 +69,7 @@ export async function sendVerificationEmail(
                 </p>
 
                 <p style="color: #555555; font-size: 16px; line-height: 1.6; margin: 0 0 20px 0;">
-                  Thank you for registering with My Home Based Business - myhbb.app! We're excited to have you join our community of local business owners.
+                  Thank you for registering with Front Door Directory! We're excited to have you join our community of local business owners.
                 </p>
 
                 <p style="color: #555555; font-size: 16px; line-height: 1.6; margin: 0 0 30px 0;">
@@ -101,7 +101,7 @@ export async function sendVerificationEmail(
               <!-- Footer -->
               <div style="background-color: #f8f9fa; padding: 30px; text-align: center; border-top: 1px solid #e9ecef;">
                 <p style="color: #999999; font-size: 12px; line-height: 1.5; margin: 0;">
-                  © 2025 My Home Based Business - myhbb.app. All rights reserved.
+                  © 2025 Front Door Directory. All rights reserved.
                 </p>
                 <p style="color: #999999; font-size: 12px; line-height: 1.5; margin: 10px 0 0 0;">
                   Saint Augustine, FL • Connecting Local Communities
@@ -112,11 +112,11 @@ export async function sendVerificationEmail(
         </html>
       `,
       text: `
-Welcome to My Home Based Business - myhbb.app!
+Welcome to Front Door Directory!
 
 Hi ${name},
 
-Thank you for registering with My Home Based Business - myhbb.app! We're excited to have you join our community of local business owners.
+Thank you for registering with Front Door Directory! We're excited to have you join our community of local business owners.
 
 Please verify your email address by clicking the link below:
 
@@ -124,7 +124,7 @@ ${verificationUrl}
 
 This verification link expires in 24 hours. If you didn't create this account, you can safely ignore this email.
 
-© 2025 My Home Based Business - myhbb.app. All rights reserved.
+© 2025 Front Door Directory. All rights reserved.
 Saint Augustine, FL • Connecting Local Communities
       `.trim()
     })
@@ -156,10 +156,10 @@ export async function sendWelcomeEmail(
     console.log('🔄 Sending welcome email to:', email)
 
     const response = await getEmailService().send({
-      from: 'My Home Based Business <info@myhbb.app>',
-      replyTo: 'info@myhbb.app',
+      from: 'Front Door Directory <info@frontdoordirectory.com>',
+      replyTo: 'info@frontdoordirectory.com',
       to: email,
-      subject: 'Welcome to My Home Based Business',
+      subject: 'Welcome to Front Door Directory',
       html: `
         <!DOCTYPE html>
         <html>
@@ -184,7 +184,7 @@ export async function sendWelcomeEmail(
                 </p>
 
                 <p style="color: #555555; font-size: 16px; line-height: 1.6; margin: 0 0 20px 0;">
-                  Your email has been successfully verified! You're now ready to explore everything My Home Based Business - myhbb.app has to offer.
+                  Your email has been successfully verified! You're now ready to explore everything Front Door Directory has to offer.
                 </p>
 
                 <h2 style="color: #003d82; font-size: 20px; margin: 30px 0 15px 0;">What's Next?</h2>
@@ -214,7 +214,7 @@ export async function sendWelcomeEmail(
               <!-- Footer -->
               <div style="background-color: #f8f9fa; padding: 30px; text-align: center; border-top: 1px solid #e9ecef;">
                 <p style="color: #999999; font-size: 12px; line-height: 1.5; margin: 0;">
-                  © 2025 My Home Based Business - myhbb.app. All rights reserved.
+                  © 2025 Front Door Directory. All rights reserved.
                 </p>
                 <p style="color: #999999; font-size: 12px; line-height: 1.5; margin: 10px 0 0 0;">
                   Saint Augustine, FL • Connecting Local Communities
@@ -225,11 +225,11 @@ export async function sendWelcomeEmail(
         </html>
       `,
       text: `
-Welcome to My Home Based Business - myhbb.app!
+Welcome to Front Door Directory!
 
 Hi ${name},
 
-Your email has been successfully verified! You're now ready to explore everything My Home Based Business - myhbb.app has to offer.
+Your email has been successfully verified! You're now ready to explore everything Front Door Directory has to offer.
 
 What's Next?
 - Complete your business profile
@@ -241,7 +241,7 @@ Visit your dashboard: ${process.env.NEXT_PUBLIC_APP_URL}/dashboard
 
 Need Help? Our support team is here to help you get started. Feel free to reach out anytime!
 
-© 2025 My Home Based Business - myhbb.app. All rights reserved.
+© 2025 Front Door Directory. All rights reserved.
 Saint Augustine, FL • Connecting Local Communities
       `.trim()
     })
@@ -275,8 +275,8 @@ export async function sendPasswordResetEmail(
     console.log('🔄 Sending password reset email to:', email)
 
     const response = await getEmailService().send({
-      from: 'My Home Based Business <info@myhbb.app>',
-      replyTo: 'info@myhbb.app',
+      from: 'Front Door Directory <info@frontdoordirectory.com>',
+      replyTo: 'info@frontdoordirectory.com',
       to: email,
       subject: 'Reset Your Password',
       html: `
@@ -303,7 +303,7 @@ export async function sendPasswordResetEmail(
                 </p>
 
                 <p style="color: #555555; font-size: 16px; line-height: 1.6; margin: 0 0 20px 0;">
-                  We received a request to reset your password for your My Home Based Business - myhbb.app account.
+                  We received a request to reset your password for your Front Door Directory account.
                 </p>
 
                 <p style="color: #555555; font-size: 16px; line-height: 1.6; margin: 0 0 30px 0;">
@@ -335,7 +335,7 @@ export async function sendPasswordResetEmail(
               <!-- Footer -->
               <div style="background-color: #f8f9fa; padding: 30px; text-align: center; border-top: 1px solid #e9ecef;">
                 <p style="color: #999999; font-size: 12px; line-height: 1.5; margin: 0;">
-                  © 2025 My Home Based Business - myhbb.app. All rights reserved.
+                  © 2025 Front Door Directory. All rights reserved.
                 </p>
                 <p style="color: #999999; font-size: 12px; line-height: 1.5; margin: 10px 0 0 0;">
                   Saint Augustine, FL • Connecting Local Communities
@@ -350,14 +350,14 @@ Password Reset Request
 
 Hi ${name},
 
-We received a request to reset your password for your My Home Based Business - myhbb.app account.
+We received a request to reset your password for your Front Door Directory account.
 
 Click the link below to reset your password:
 ${resetUrl}
 
 Security Notice: This password reset link expires in 1 hour. If you didn't request a password reset, please ignore this email or contact support if you have concerns.
 
-© 2025 My Home Based Business - myhbb.app. All rights reserved.
+© 2025 Front Door Directory. All rights reserved.
 Saint Augustine, FL • Connecting Local Communities
       `.trim()
     })
@@ -430,8 +430,8 @@ export async function sendBusinessStatusEmail(
     console.log(`🔄 Sending business status (${newStatus}) email to:`, email)
 
     const response = await getEmailService().send({
-      from: 'My Home Based Business <info@myhbb.app>',
-      replyTo: 'info@myhbb.app',
+      from: 'Front Door Directory <info@frontdoordirectory.com>',
+      replyTo: 'info@frontdoordirectory.com',
       to: email,
       subject,
       html,
@@ -476,9 +476,9 @@ export async function sendAdminPendingBusinessEmail(
     console.log(`🔄 Sending admin notification (${action} business pending) email`)
 
     const response = await getEmailService().send({
-      from: 'My Home Based Business <info@myhbb.app>',
-      replyTo: 'info@myhbb.app',
-      to: 'info@myhbb.app',
+      from: 'Front Door Directory <info@frontdoordirectory.com>',
+      replyTo: 'info@frontdoordirectory.com',
+      to: 'info@frontdoordirectory.com',
       subject: `[Admin] ${action} Business Pending: ${businessName}`,
       html: getAdminPendingBusinessEmailHtml(businessName, ownerName, ownerEmail, locationName, directoryName, adminUrl, isUpdate, changes),
       text: getAdminPendingBusinessEmailText(businessName, ownerName, ownerEmail, locationName, directoryName, adminUrl, isUpdate, changes)
@@ -513,8 +513,8 @@ export async function sendBusinessUpdatedPendingEmail(
     console.log(`🔄 Sending business updated pending email to:`, email)
 
     const response = await getEmailService().send({
-      from: 'My Home Based Business <info@myhbb.app>',
-      replyTo: 'info@myhbb.app',
+      from: 'Front Door Directory <info@frontdoordirectory.com>',
+      replyTo: 'info@frontdoordirectory.com',
       to: email,
       subject: `Your business "${businessName}" is pending review`,
       html: getBusinessUpdatedPendingEmailHtml(businessName, dashboardUrl),

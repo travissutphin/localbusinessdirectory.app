@@ -89,7 +89,7 @@ export async function PUT(
     let emailSent = false
     if (previousStatus !== status && existingBusiness.owner.email) {
       try {
-        const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://myhbb.app'
+        const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://frontdoordirectory.com'
         const publicUrl = `${baseUrl}/${business.location.slug}/${business.directory.slug}/${business.slug || business.id}`
         const editUrl = `${baseUrl}/dashboard/businesses/${business.id}/edit`
 

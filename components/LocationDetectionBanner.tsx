@@ -23,8 +23,8 @@ type GeoData = {
   zip: string
 }
 
-const LOCATION_STORAGE_KEY = 'myhbb_location_preference'
-const LOCATION_DISMISSED_KEY = 'myhbb_location_dismissed'
+const LOCATION_STORAGE_KEY = 'frontdoor_location_preference'
+const LOCATION_DISMISSED_KEY = 'frontdoor_location_dismissed'
 
 export default function LocationDetectionBanner() {
   const [loading, setLoading] = useState(true)

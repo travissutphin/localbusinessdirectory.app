@@ -199,7 +199,7 @@ export default async function LocationPage({
       <footer className="bg-slate-900/80 backdrop-blur-sm border-t border-slate-700 mt-16">
         <div className="max-w-7xl mx-auto px-4 py-6 sm:px-6 lg:px-8">
           <p className="text-center text-sm text-slate-400">
-            © 2025 My Home Based Business - myhbb.app. All rights reserved.
+            © 2025 Front Door Directory. All rights reserved.
           </p>
         </div>
       </footer>

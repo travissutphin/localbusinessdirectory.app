@@ -126,8 +126,8 @@ export default function GlobalHeader() {
               className="flex items-center transition-opacity hover:opacity-80"
             >
               <Image
-                src="/images/logo-myhbb.png"
-                alt="My Home Based Business - myhbb.app"
+                src="/images/logo-frontdoor.svg"
+                alt="Front Door Directory"
                 width={216}
                 height={58}
                 priority
@@ -214,8 +214,8 @@ export default function GlobalHeader() {
             className="flex items-center transition-opacity active:opacity-70"
           >
             <Image
-              src="/images/logo-myhbb.png"
-              alt="My Home Based Business - myhbb.app"
+              src="/images/logo-frontdoor.svg"
+              alt="Front Door Directory"
               width={168}
               height={44}
               priority

@@ -24,7 +24,7 @@ export async function validateAddress(
       `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(fullAddress)}&limit=1&addressdetails=1`,
       {
         headers: {
-          'User-Agent': 'MyHBB-Directory/1.0 (https://myhbb.app)',
+          'User-Agent': 'FrontDoorDirectory/1.0 (https://frontdoordirectory.com)',
         },
       }
     )

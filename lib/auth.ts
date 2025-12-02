@@ -16,14 +16,14 @@ export const authConfig = {
     // Magic Link Email Provider
     EmailProvider({
       server: process.env.EMAIL_SERVER || "smtp://resend:placeholder@smtp.resend.com:587",
-      from: process.env.EMAIL_FROM || "My Home Based Business <info@myhbb.app>",
+      from: process.env.EMAIL_FROM || "Front Door Directory <info@frontdoordirectory.com>",
       sendVerificationRequest: async ({ identifier: email, url }) => {
         const emailService = createEmailService()
         const result = await emailService.send({
-          from: process.env.EMAIL_FROM || "My Home Based Business <info@myhbb.app>",
-          replyTo: "info@myhbb.app",
+          from: process.env.EMAIL_FROM || "Front Door Directory <info@frontdoordirectory.com>",
+          replyTo: "info@frontdoordirectory.com",
           to: email,
-          subject: "Sign in to My Home Based Business",
+          subject: "Sign in to Front Door Directory",
           html: getMagicLinkEmailHtml(url),
           text: getMagicLinkEmailText(url),
         })

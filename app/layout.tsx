@@ -7,7 +7,7 @@ import GlobalFooter from "@/components/GlobalFooter";
 import LocationDetectionBanner from "@/components/LocationDetectionBanner";
 
 export const metadata: Metadata = {
-  title: "My Home Based Business - Get Found by Local Customers | myhbb.app",
+  title: "Front Door Directory - Get Found by Local Customers | frontdoordirectory.com",
   description: "Free directory for home-based businesses. Get discovered by local customers searching for your services. List your business in 3 minutes—no ads, no fees, just visibility.",
   keywords: "home-based business directory, local business listings, free business directory, home business marketing, get found online, small business directory",
   openGraph: {

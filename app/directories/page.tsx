@@ -5,7 +5,7 @@ import Link from 'next/link'
 export const dynamic = 'force-dynamic'
 
 export const metadata = {
-  title: 'Browse Local Directories | My Home Based Business',
+  title: 'Browse Local Directories | Front Door Directory',
   description: 'Find home-based businesses in your area. Browse our local business directories by location.',
 }
 

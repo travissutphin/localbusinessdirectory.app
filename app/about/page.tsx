@@ -2,24 +2,24 @@ import { Metadata } from 'next'
 import { CheckCircle2, ArrowRight, Search, Globe, Sparkles, Bot, MapPin } from 'lucide-react'
 
 export const metadata: Metadata = {
-  title: 'About My Home Based Business Directory | Free Local Business Listings',
-  description: 'Learn how My Home Based Business Directory helps home-based entrepreneurs get found online. Free SEO-optimized listings with Schema.org markup, AI discoverability, and local search optimization.',
+  title: 'About Front Door Directory | Free Local Business Listings',
+  description: 'Learn how Front Door Directory helps home-based entrepreneurs get found online. Free SEO-optimized listings with Schema.org markup, AI discoverability, and local search optimization.',
   keywords: 'home business directory, free business listing, local SEO, home-based business, small business marketing, Schema.org, local business directory',
   openGraph: {
-    title: 'About My Home Based Business Directory | Free Local Business Listings',
-    description: 'Learn how My Home Based Business Directory helps home-based entrepreneurs get found online with free SEO-optimized listings.',
-    url: 'https://myhbb.app/about',
-    siteName: 'My Home Based Business',
+    title: 'About Front Door Directory | Free Local Business Listings',
+    description: 'Learn how Front Door Directory helps home-based entrepreneurs get found online with free SEO-optimized listings.',
+    url: 'https://frontdoordirectory.com/about',
+    siteName: 'Front Door Directory',
     locale: 'en_US',
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'About My Home Based Business Directory',
+    title: 'About Front Door Directory',
     description: 'Free SEO-optimized listings for home-based businesses. Get found by local customers.',
   },
   alternates: {
-    canonical: 'https://myhbb.app/about',
+    canonical: 'https://frontdoordirectory.com/about',
   },
 }
 
@@ -27,29 +27,29 @@ export default function AboutPage() {
   const organizationSchema = {
     '@context': 'https://schema.org',
     '@type': 'Organization',
-    name: 'My Home Based Business',
-    alternateName: 'myhbb.app',
-    url: 'https://myhbb.app',
-    logo: 'https://myhbb.app/images/logo-myhbb.png',
+    name: 'Front Door Directory',
+    alternateName: 'frontdoordirectory.com',
+    url: 'https://frontdoordirectory.com',
+    logo: 'https://frontdoordirectory.com/images/logo-frontdoor.svg',
     description: 'A free online directory connecting local customers with home-based businesses. We provide SEO-optimized business listings with Schema.org markup for maximum online visibility.',
     sameAs: [],
     contactPoint: {
       '@type': 'ContactPoint',
       contactType: 'customer service',
-      url: 'https://myhbb.app/contact',
+      url: 'https://frontdoordirectory.com/contact',
     },
   }
 
   const webPageSchema = {
     '@context': 'https://schema.org',
     '@type': 'WebPage',
-    name: 'About My Home Based Business Directory',
-    description: 'Learn how My Home Based Business Directory helps home-based entrepreneurs get found online with free SEO-optimized listings.',
-    url: 'https://myhbb.app/about',
+    name: 'About Front Door Directory',
+    description: 'Learn how Front Door Directory helps home-based entrepreneurs get found online with free SEO-optimized listings.',
+    url: 'https://frontdoordirectory.com/about',
     isPartOf: {
       '@type': 'WebSite',
-      name: 'My Home Based Business',
-      url: 'https://myhbb.app',
+      name: 'Front Door Directory',
+      url: 'https://frontdoordirectory.com',
     },
     about: {
       '@type': 'Thing',
@@ -61,7 +61,7 @@ export default function AboutPage() {
       name: 'Free Business Directory Listing',
       provider: {
         '@type': 'Organization',
-        name: 'My Home Based Business',
+        name: 'Front Door Directory',
       },
       description: 'Free online business directory listing service with SEO optimization, Schema.org LocalBusiness markup, and AI discoverability for home-based businesses.',
       areaServed: {
@@ -87,7 +87,7 @@ export default function AboutPage() {
         name: 'Is it really free to list my business?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: 'Yes, listing your home-based business on myhbb.app is 100% free forever. There are no hidden fees, premium tiers, or credit card requirements.',
+          text: 'Yes, listing your home-based business on Front Door Directory is 100% free forever. There are no hidden fees, premium tiers, or credit card requirements.',
         },
       },
       {

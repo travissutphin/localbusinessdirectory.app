@@ -177,7 +177,7 @@ async function getBusinessData(
   }
 }
 
-const BASE_URL = process.env.NEXT_PUBLIC_APP_URL || 'https://myhbb.app'
+const BASE_URL = process.env.NEXT_PUBLIC_APP_URL || 'https://frontdoordirectory.com'
 
 export async function generateMetadata({
   params,
@@ -192,7 +192,7 @@ export async function generateMetadata({
 
   if (!business) {
     return {
-      title: 'Business Not Found | My Home Based Business',
+      title: 'Business Not Found | Front Door Directory',
       description: 'The business listing you are looking for could not be found.',
     }
   }
@@ -222,7 +222,7 @@ export async function generateMetadata({
       title: `${business.name} | ${business.directory.name}`,
       description: truncatedDescription,
       url: businessUrl,
-      siteName: 'My Home Based Business',
+      siteName: 'Front Door Directory',
       type: 'website',
       locale: 'en_US',
       images: business.imageUrl
@@ -710,7 +710,7 @@ export default async function BusinessDetailPage({
         <footer className="bg-slate-900/80 backdrop-blur-sm border-t border-slate-800 mt-16">
           <div className="max-w-6xl mx-auto px-4 py-6 sm:px-6 lg:px-8">
             <p className="text-center text-sm text-slate-500">
-              © 2025 My Home Based Business Directory. All rights reserved.
+              © 2025 Front Door Directory. All rights reserved.
             </p>
           </div>
         </footer>

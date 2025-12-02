@@ -5,7 +5,7 @@ export function getMagicLinkEmailHtml(url: string): string {
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sign in to My Home Based Business</title>
+  <title>Sign in to Front Door Directory</title>
 </head>
 <body style="margin: 0; padding: 0; background-color: #f8fafc; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;">
   <table role="presentation" style="width: 100%; border-collapse: collapse;">
@@ -15,7 +15,7 @@ export function getMagicLinkEmailHtml(url: string): string {
           <tr>
             <td style="background-color: #ffffff; border-radius: 8px; padding: 40px; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);">
               <h1 style="margin: 0 0 24px 0; font-size: 20px; font-weight: 600; color: #1e293b; text-align: center;">
-                My Home Based Business
+                Front Door Directory
               </h1>
               <p style="margin: 0 0 24px 0; font-size: 16px; line-height: 24px; color: #475569; text-align: center;">
                 Click the button below to sign in to your account.
@@ -45,7 +45,7 @@ export function getMagicLinkEmailHtml(url: string): string {
           <tr>
             <td style="padding-top: 24px; text-align: center;">
               <p style="margin: 0; font-size: 12px; color: #94a3b8;">
-                My Home Based Business - myhbb.app
+                Front Door Directory - frontdoordirectory.com
               </p>
             </td>
           </tr>
@@ -60,7 +60,7 @@ export function getMagicLinkEmailHtml(url: string): string {
 
 export function getMagicLinkEmailText(url: string): string {
   return `
-Sign in to My Home Based Business
+Sign in to Front Door Directory
 ==================================
 
 Click the link below to sign in to your account:
@@ -70,8 +70,8 @@ ${url}
 This link expires in 24 hours. If you did not request this email, you can safely ignore it.
 
 --
-My Home Based Business
-myhbb.app
+Front Door Directory
+frontdoordirectory.com
   `.trim()
 }
 
@@ -94,7 +94,7 @@ export function getBusinessApprovedEmailHtml(businessName: string, publicUrl: st
           <tr>
             <td align="center" style="padding-bottom: 24px;">
               <h1 style="margin: 0; font-size: 28px; font-weight: 700; color: #1e40af;">
-                My Home Based Business
+                Front Door Directory
               </h1>
             </td>
           </tr>
@@ -195,7 +195,7 @@ export function getBusinessApprovedEmailHtml(businessName: string, publicUrl: st
           <tr>
             <td style="padding-top: 32px; text-align: center;">
               <p style="margin: 0; font-size: 12px; color: #94a3b8;">
-                &copy; 2025 My Home Based Business. All rights reserved.
+                &copy; 2025 Front Door Directory. All rights reserved.
               </p>
             </td>
           </tr>
@@ -240,8 +240,8 @@ Tips for Success:
 - Respond promptly to customer inquiries
 
 ---
-My Home Based Business
-https://myhbb.app
+Front Door Directory
+https://frontdoordirectory.com
   `.trim()
 }
 
@@ -262,7 +262,7 @@ export function getBusinessPendingEmailHtml(businessName: string, dashboardUrl: 
           <tr>
             <td align="center" style="padding-bottom: 24px;">
               <h1 style="margin: 0; font-size: 28px; font-weight: 700; color: #1e40af;">
-                My Home Based Business
+                Front Door Directory
               </h1>
             </td>
           </tr>
@@ -304,7 +304,7 @@ export function getBusinessPendingEmailHtml(businessName: string, dashboardUrl: 
           <tr>
             <td style="padding-top: 32px; text-align: center;">
               <p style="margin: 0; font-size: 12px; color: #94a3b8;">
-                &copy; 2025 My Home Based Business. All rights reserved.
+                &copy; 2025 Front Door Directory. All rights reserved.
               </p>
             </td>
           </tr>
@@ -331,8 +331,8 @@ View your dashboard: ${dashboardUrl}
 No action is required from you at this time. We will notify you once the review is complete.
 
 ---
-My Home Based Business
-https://myhbb.app
+Front Door Directory
+https://frontdoordirectory.com
   `.trim()
 }
 
@@ -353,7 +353,7 @@ export function getBusinessRejectedEmailHtml(businessName: string, reason: strin
           <tr>
             <td align="center" style="padding-bottom: 24px;">
               <h1 style="margin: 0; font-size: 28px; font-weight: 700; color: #1e40af;">
-                My Home Based Business
+                Front Door Directory
               </h1>
             </td>
           </tr>
@@ -401,10 +401,10 @@ export function getBusinessRejectedEmailHtml(businessName: string, reason: strin
           <tr>
             <td style="padding-top: 32px; text-align: center;">
               <p style="margin: 0 0 8px 0; font-size: 13px; color: #64748b;">
-                Need help? Contact us at support@myhbb.app
+                Need help? Contact us at support@frontdoordirectory.com
               </p>
               <p style="margin: 0; font-size: 12px; color: #94a3b8;">
-                &copy; 2025 My Home Based Business. All rights reserved.
+                &copy; 2025 Front Door Directory. All rights reserved.
               </p>
             </td>
           </tr>
@@ -434,9 +434,9 @@ Edit your listing: ${editUrl}
 After making changes, your listing will be submitted for review again.
 
 ---
-Need help? Contact us at support@myhbb.app
-My Home Based Business
-https://myhbb.app
+Need help? Contact us at support@frontdoordirectory.com
+Front Door Directory
+https://frontdoordirectory.com
   `.trim()
 }
 
@@ -501,7 +501,7 @@ export function getAdminPendingBusinessEmailHtml(
           <tr>
             <td align="center" style="padding-bottom: 24px;">
               <h1 style="margin: 0; font-size: 28px; font-weight: 700; color: #1e40af;">
-                My Home Based Business
+                Front Door Directory
               </h1>
               <p style="margin: 8px 0 0 0; font-size: 14px; color: #64748b;">
                 Admin Notification
@@ -557,7 +557,7 @@ export function getAdminPendingBusinessEmailHtml(
           <tr>
             <td style="padding-top: 32px; text-align: center;">
               <p style="margin: 0; font-size: 12px; color: #94a3b8;">
-                &copy; 2025 My Home Based Business. All rights reserved.
+                &copy; 2025 Front Door Directory. All rights reserved.
               </p>
             </td>
           </tr>
@@ -608,8 +608,8 @@ ${changesText}
 Review now: ${adminUrl}
 
 ---
-My Home Based Business - Admin Notification
-https://myhbb.app
+Front Door Directory - Admin Notification
+https://frontdoordirectory.com
   `.trim()
 }
 
@@ -630,7 +630,7 @@ export function getBusinessUpdatedPendingEmailHtml(businessName: string, dashboa
           <tr>
             <td align="center" style="padding-bottom: 24px;">
               <h1 style="margin: 0; font-size: 28px; font-weight: 700; color: #1e40af;">
-                My Home Based Business
+                Front Door Directory
               </h1>
             </td>
           </tr>
@@ -672,7 +672,7 @@ export function getBusinessUpdatedPendingEmailHtml(businessName: string, dashboa
           <tr>
             <td style="padding-top: 32px; text-align: center;">
               <p style="margin: 0; font-size: 12px; color: #94a3b8;">
-                &copy; 2025 My Home Based Business. All rights reserved.
+                &copy; 2025 Front Door Directory. All rights reserved.
               </p>
             </td>
           </tr>
@@ -699,7 +699,7 @@ View your dashboard: ${dashboardUrl}
 Your listing will not be visible to the public until it has been approved.
 
 ---
-My Home Based Business
-https://myhbb.app
+Front Door Directory
+https://frontdoordirectory.com
   `.trim()
 }

@@ -13,11 +13,11 @@ export default function GlobalFooter() {
           {/* Logo & Tagline */}
           <div className="col-span-1 md:col-span-2">
             <Image
-              src="/images/logo-myhbb.png"
-              alt="My Home Based Business - myhbb.app"
+              src="/images/logo-frontdoor-white.svg"
+              alt="Front Door Directory"
               width={180}
               height={48}
-              className="h-10 w-auto mb-4 brightness-0 invert"
+              className="h-10 w-auto mb-4"
             />
             <p className="text-neutral-400 text-sm leading-relaxed max-w-md">
               The free directory built for home-based businesses. Get discovered by local customers searching for exactly what you offer.
@@ -80,7 +80,7 @@ export default function GlobalFooter() {
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             {/* Copyright */}
             <p className="text-neutral-500 text-sm">
-              © {currentYear} My Home Based Business - myhbb.app. All rights reserved.{' '}
+              © {currentYear} Front Door Directory. All rights reserved.{' '}
               <span className="text-neutral-600">•</span>{' '}
               Built and Maintained by{' '}
               <a

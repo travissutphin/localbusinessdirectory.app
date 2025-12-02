@@ -6,7 +6,7 @@ export const dynamic = 'force-dynamic'
 export const revalidate = 0
 
 export const metadata = {
-  title: 'Home Business Directory | My Home Based Business - myhbb.app',
+  title: 'Home Business Directory | Front Door Directory',
   description: 'Discover local home-based businesses in your area. Browse our directory of verified home businesses offering services near you.',
 }
 
