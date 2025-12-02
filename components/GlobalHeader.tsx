@@ -208,7 +208,7 @@ export default function GlobalHeader() {
 
       {/* Mobile Header */}
       <header className="lg:hidden fixed top-0 left-0 right-0 bg-white/95 backdrop-blur-md border-b border-neutral-200 z-50 safe-top">
-        <div className="flex items-center justify-center h-14 px-4">
+        <div className="flex items-center justify-start h-14 px-4">
           <a
             href="/"
             className="flex items-center transition-opacity active:opacity-70"
